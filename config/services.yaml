@@ -16,7 +16,7 @@ services:
             - { name: contao.migration }
             
         
-    Bits\FlyUxBundle\:
+    Bits\MmShopBundle\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
