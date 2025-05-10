@@ -1,5 +1,5 @@
 <?php
-namespace Bits\FlyUxBundle\ContaoManager;
+namespace Bits\MmShopBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
