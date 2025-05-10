@@ -5,7 +5,7 @@
     "keywords":["contao","metamodels","mm","shop","ecommerce","mm_shop"],
     "homepage":"https://github.com/birdsinthesun/mm_shop",
     "license": "MIT",
-    "version":"1.0.0-alpha",
+    "version":"main",
     "prefer-stable": true,
     "authors": [
         {
@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=7.4",
-        "symfony/routing":"7.*",
+        "symfony/routing":"^6.4",
         "contao/core-bundle": "5.3.*"
    
     },
