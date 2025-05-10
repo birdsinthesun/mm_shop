@@ -5,7 +5,7 @@
     "keywords":["contao","metamodels","mm","shop","ecommerce","mm_shop"],
     "homepage":"https://github.com/birdsinthesun/mm_shop",
     "license": "MIT",
-    "version":"main",
+    "version":"1.0.0-alpha",
     "prefer-stable": true,
     "authors": [
         {
@@ -18,11 +18,8 @@
     "require": {
         "php": ">=7.4",
         "symfony/routing":"7.*",
-        "contao/core-bundle": "5.5.*",
-        "metamodels/core": "^2.3",
-        "metamodels/bundle_attributes": "^2.3",
-        "metamodels/bundle_filter": "^2.3",
-        "metamodels/notelist": "^2.3"
+        "contao/core-bundle": "5.3.*"
+   
     },
     "autoload": {
         "psr-4": {

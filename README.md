@@ -1,4 +1,5 @@
 # mm_shop
 Kleiner Shop für MetaModels
 
-Achtung: Alpha, noch nicht benutzen.
+Achtung: Noch nicht benutzbar. Dauert noch paar Tage.
+
