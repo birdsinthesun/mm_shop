@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        
+    mm_shop_bundle:
+        class: 'Bits\MmShopBundle\MmShopBundle'
+        public: true
+        
+    
+        
+    Bits\MmShopBundle\Migration\InstallMmShop:
+        arguments:
+            $connection: '@database_connection'
+        tags:
+            - { name: contao.migration }
+            
+        
+    Bits\FlyUxBundle\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+   

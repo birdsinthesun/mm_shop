@@ -1,0 +1,23 @@
+{% macro renderGrid(elementsByColumn,plusClass) %}
+    {% for column,elements in elementsByColumn %}
+            <div class="{{ column }} {{ plusClass }}">
+                {% if elements is defined %}
+                    {% for element in elements %}
+                        {{ element|raw }}
+                    {% endfor %}
+                {% endif %}
+                
+            </div>
+      
+    {% endfor %}
+{% endmacro %}
+{% import _self as layout %}
+
+<div id="{{ cssId }}" class="{{ cssClass }}" >
+ {% if headline != '' %}
+    <{{ headlineTag }}>{{ headline }}</{{ headlineTag }}>
+    {% endif %}
+    <div>
+        {{ layout.renderGrid(elementsByColumn,plusClass) }}
+    </div>
+</div>

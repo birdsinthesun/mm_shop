@@ -1,0 +1,45 @@
+{
+    "name": "birdsinthesun/mm_shop",
+    "type": "contao-bundle",
+    "description": "Ein kleiner Shop für MetaModels. Theme: https://packagist.org/packages/birdsinthesun/contao-theme-ara",
+    "keywords":["contao","metamodels","mm","shop","ecommerce","mm_shop"],
+    "homepage":"https://github.com/birdsinthesun/mm_shop",
+    "license": "MIT",
+    "version":"main",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Monique Hahnefeld",
+            "email": "info@birdsinthesun.de",
+            "homepage":"https://birdsinthesun.de",
+            "role":"Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "symfony/routing":"7.*",
+        "contao/core-bundle": "5.5.*",
+        "metamodels/core": "^2.3",
+        "metamodels/bundle_attributes": "^2.3",
+        "metamodels/bundle_filter": "^2.3",
+        "metamodels/notelist": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bits\\MmShopBundle\\": "src/"
+        }
+    },
+  "extra": {
+        "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin"
+    },
+    "scripts": {
+    "post-install-cmd": [
+      "php bin/console asset:install --relative"
+    ],
+    "post-update-cmd": [
+      "php bin/console asset:install --relative"
+    ]
+  }
+    
+    
+}
