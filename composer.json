@@ -29,7 +29,7 @@
     },
   "extra": {
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
-        "contao-component-dir": "public/assets",
+        "contao-component-dir": "public",
         "public-dir": "public"
     },
     "scripts": {
