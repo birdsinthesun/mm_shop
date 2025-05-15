@@ -42,12 +42,12 @@
     "scripts": {
     "post-install-cmd": [
         
-        "@php bin/console asset:install --relative",
+        "@php vendor/bin/console asset:install --relative",
         "@php vendor/bin/contao-setup"
     ],
     "post-update-cmd": [
         
-        "@php bin/console asset:install --relative",
+        "@php vendor/bin/console asset:install --relative",
         "@php vendor/bin/contao-setup"
     ]
   }
