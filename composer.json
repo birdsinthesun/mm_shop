@@ -31,8 +31,7 @@
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao": {
             "sources": [
-              "src/Resources/contao",
-              "public"
+              "src/Resources/contao"
               
             ]
         },
@@ -42,12 +41,12 @@
     "scripts": {
     "post-install-cmd": [
         
-        "@php vendor/bin/console asset:install --relative",
+        "@php bin/console asset:install --relative",
         "@php vendor/bin/contao-setup"
     ],
     "post-update-cmd": [
         
-        "@php vendor/bin/console asset:install --relative",
+        "@php bin/console asset:install --relative",
         "@php vendor/bin/contao-setup"
     ]
   }
