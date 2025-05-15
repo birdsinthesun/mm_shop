@@ -14,7 +14,7 @@ services:
         tags:
             - { name: contao.migration }
             
-    Bits\MmShopBundle\EventListener\Asset\AddAssetsListener:
+    Bits\MmShopBundle\EventListener\Asset\AddAssetListener:
         arguments:
             $scopeMatcher: '@contao.routing.scope_matcher'
         tags:
