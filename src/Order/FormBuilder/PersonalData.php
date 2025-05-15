@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\NumericType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
@@ -33,16 +33,22 @@ class PersonalData
     {
         
         $combinedMetamodel = $this->getCombineById('7'); // aus Combine-Tabelle
+        
+        
+        $dcaViewId = $this->connection->fetchAllAssociative(
+                'SELECT personal_data_dca FROM mm_shop WHERE id = ?', 
+                ['1']);
+                
         $properties = $this->connection->fetchAllAssociative(
-            'SELECT * FROM tl_metamodel_dcasetting WHERE pid = ? AND published = "1"',
-            [$combinedMetamodel['pid']]
+            'SELECT * FROM tl_metamodel_dcasetting WHERE pid = ? AND published = "1" ORDER BY sort ASC',
+            [$dcaViewId]
         );
         
         $attributeIDs = array_column($properties, 'attr_id');
         $placeholders = implode(',', array_fill(0, count($attributeIDs), '?'));
      
         $attributes = $this->connection->fetchAllAssociative(
-            'SELECT * FROM tl_metamodel_attribute WHERE id IN ( '.$placeholders.' )',
+            'SELECT * FROM tl_metamodel_attribute WHERE id IN ( '.$placeholders.' ) ORDER BY sort ASC',
             $attributeIDs
         );
          
@@ -52,7 +58,7 @@ class PersonalData
         $arrFormTypes['select'] = ChoiceType::class;
         $arrFormTypes['country'] = ChoiceType::class;
         $arrFormTypes['text'] = TextType::class;
-        $arrFormTypes['numeric'] = NumericType::class;
+        $arrFormTypes['numeric'] = NumberType::class;
         $arrFormTypes['checkbox'] = CheckboxType::class;
         $arrFormTypes['email'] = EmailType::class;
     
@@ -160,15 +166,7 @@ class PersonalData
     }
     
     
-    //ToDos BE Setting = id 7 mm_personal_data
-    private function getCombineById(int $id): ?array
-    {
-
-        return $this->connection->fetchAssociative(
-            'SELECT * FROM tl_metamodel_dca_combine WHERE id = ?',
-            [$id]
-        );
-    }
+   
     
     
     

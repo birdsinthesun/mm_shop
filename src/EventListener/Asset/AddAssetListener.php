@@ -37,7 +37,7 @@ class AddBackendAssetsListener
                 
                 $connection = System::getContainer()->get('database_connection');  
                 $useCustomCss = $connection->fetchAllAssociative(
-                'SELECT use_custom_css FROM tl_member WHERE id = ?', 
+                'SELECT use_custom_css FROM mm_shop WHERE id = ?', 
                 ['1']);
                 
                 if($useCustomCss === false){

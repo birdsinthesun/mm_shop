@@ -26,8 +26,8 @@ class MenuListener
         $node = $factory
             ->createItem('shop')
                 ->setLabel('Shop')
-                ->setLinkAttribute('title', 'Bereich schliesen')
-                ->setLinkAttribute('class', 'group-shop')
+                 ->setAttribute('icon', 'bundles/mmshop/icons/shop.svg')
+                ->setChildrenAttribute('class', 'group-shop') // CSS-Klasse
         ;
 
         $favoritesNode->getParent()->addChild($node);
