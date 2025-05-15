@@ -15,5 +15,13 @@ class MmShopBundle extends Bundle
         return \dirname(__DIR__.'/Resources');
     }
     
+     public function build(ContainerBuilder $container): void
+    {
+     
+        // Füge einen Alias hinzu
+        $container->setAlias('mm_shop_bundle', self::class);
+         
+         parent::build($container);
+    }
 
 }
