@@ -31,12 +31,12 @@
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao": {
             "sources": [
-              "src/Resources/contao",
-              "src/Resources/public"
+              "src/Resources/contao"
               
             ]
         },
-        "contao-component-dir": "assets"
+        "contao-component-dir": "assets",
+        "public-dir": "public"
     },
     "scripts": {
     "post-install-cmd": [
