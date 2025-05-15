@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 
 
 #[AsEventListener]
-class AddAssetsListener
+class AddAssetListener
 {
     private ScopeMatcher $scopeMatcher;
 
