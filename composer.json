@@ -31,7 +31,8 @@
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao": {
             "sources": [
-              "src/Resources/contao"
+              "src/Resources/contao",
+              "public"
               
             ]
         },
