@@ -6,7 +6,6 @@ services:
     mm_shop_bundle:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
-        
     
         
     Bits\MmShopBundle\Migration\InstallMmShop:
@@ -15,9 +14,20 @@ services:
         tags:
             - { name: contao.migration }
             
+    Bits\MmShopBundle\EventListener\Product\DefaultValueCartCount:
+        public: true
+        tags:
+            - { name: kernel.event_listener, event: dc-general.factory.build-data-definition }
+            
+    Contao\CoreBundle\Security\Csrf\ContaoCsrfTokenManager:
+        public: true
+    
+    security.csrf.token_manager:
+        class: Symfony\Component\Security\Csrf\CsrfTokenManager
+        public: true
         
     Bits\MmShopBundle\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
    

@@ -1,0 +1,25 @@
+<ul class="order-navigation">
+    {% for step,key in steps %}
+        {% set isActive = step.alias == current_step %}
+        {% set isDone = step.allowed %}
+        {% set isDisabled = not isDone and not isActive %}
+
+        <li class="
+            {{ isActive ? 'active' : '' }}
+            {{ isDone ? 'done' : '' }}
+            {{ isDisabled ? 'disabled' : '' }}
+        ">
+            <span class="step-number">{{ loop.index }}</span>
+            {% if step == isDone and step != isActive %}
+                <a href="  {{ url }}/{{ step.alias }}.html" title="{{ step.name }}" class="step-label">
+                    {{ step.name }}
+                </a>
+
+            {% endif %}
+                <span class="step-label">
+                    {{ step.name }}
+                </span>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

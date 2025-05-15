@@ -18,6 +18,7 @@
     "require": {
         "php": ">=7.4",
         "symfony/routing":"^6.4",
+        "symfony/form": "^7.2",
         "contao/core-bundle": "5.3.*"
    
     },
@@ -27,14 +28,21 @@
         }
     },
   "extra": {
-        "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
+        "contao": {
+            "sources": [
+              "src/Resources/contao"
+            ]
+        }
     },
     "scripts": {
     "post-install-cmd": [
-      "php bin/console asset:install --relative"
+        "@php vendor/bin/contao-setup",
+        "php bin/console asset:install --relative"
     ],
     "post-update-cmd": [
-      "php bin/console asset:install --relative"
+        "@php vendor/bin/contao-setup",
+        "php bin/console asset:install --relative"
     ]
   }
     

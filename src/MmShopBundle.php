@@ -7,26 +7,32 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+//use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
-class MmShopBundle extends AbstractBundle
+class MmShopBundle extends Bundle
 {
     
      public function build(ContainerBuilder $container): void
     {
         
-        $projectDir = $container->getParameter('kernel.project_dir').'/vendor/birdsinthesun/mm_shop';
-        $loader = new YamlFileLoader($container, new FileLocator($projectDir.'/config')); 
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../config')); 
         $loader->load('services.yaml');
-        $loader2 = new PhpFileLoader($container, new FileLocator($projectDir. '/config'));
+        $loader->load('packages/twig.yaml');
+        
+        
+        $loader2 = new PhpFileLoader($container, new FileLocator(__DIR__.'/../config'));
        
         $loader2->load('bundles.php');
-        parent::build($container);
+        
 
        // $container->addCompilerPass(new RemoveContaoCallbackPass(),PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
        // $container->addCompilerPass(new MakeListenerPublicPass());
      
+        // Füge einen Alias hinzu
+        $container->setAlias('mm_shop_bundle', self::class);
+         
+         parent::build($container);
     }
     protected function addCompilerPass($compilerPass, $type = PassConfig::TYPE_AFTER_REMOVING, $priority = 0)
     {

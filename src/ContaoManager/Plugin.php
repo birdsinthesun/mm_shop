@@ -15,11 +15,7 @@ use MetaModels\CoreBundle\MetaModelsCoreBundle;
 
 class Plugin implements BundlePluginInterface,  RoutingPluginInterface
 {
-    public function build(ContainerBuilder $container)
-    {
-        // Füge einen Alias hinzu
-        $container->setAlias('mm_shop_bundle', MmShopBundle::class);
-    }
+    
   
 
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
