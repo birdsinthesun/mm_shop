@@ -20,7 +20,7 @@
     </ul>
 </section>
 
-{% if order.personal_data.use_for_shipment %}
+{% if order.personal_data.use_for_shipment is not true %}
 
     <section>
         <h3>Lieferadresse</h3>

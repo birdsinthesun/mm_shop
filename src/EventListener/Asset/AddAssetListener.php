@@ -28,11 +28,11 @@ class AddAssetListener
            
              if ($event->getRequest()->getPathInfo() === 'contao/metamodel/mm_product') {
             
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/css/products.css';
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/css/personal-data.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/products.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/personal-data.css';
                 }
         }else{
-            
+           
             //ToDo: $page = PageModel::findOneBy('id',$event->getRequest()->get('id'));
             if(str_contains($event->getRequest()->getPathInfo(),'bestellprozess')){
           
@@ -40,10 +40,10 @@ class AddAssetListener
                 $useCustomCss = $connection->fetchAllAssociative(
                 'SELECT use_custom_css FROM mm_shop WHERE id = ?', 
                 ['1']);
+                  
+                if($useCustomCss[0]['use_custom_css'] === ''){
                 
-                if($useCustomCss === false){
-                    
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/css/ordering-process.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/ordering-process.css';
                 }
                 
             }

@@ -92,34 +92,42 @@ class OrderingProcessModule extends Module
         $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
-        
+        if($this->session->get('order_steps') === Null){
+            $this->session->set('order_steps',[]);
+            }
         if($step){
-            $objNavigation = new Navigation($this->session,$this->twig);
-            $parsedNavigation = $objNavigation->generate($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),$step);
+            $objNavigation = new Navigation($this->container);
+            $parsedNavigation = $objNavigation->generate($step);
         }else{
             $parsedNavigation = '';
             }
         $currentOutput = '';
         
-
+        
         switch ($step) {
             case 'persoenliche-daten':
-                      //$this->session->clear();
+                  //   $this->session->clear();
+                   $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                     $data = ($this->session->get('order_personal_data'))??[];
-                   
+                  
                     $form = $this->generatePersonalDataForm($this->container,true,$data); 
                         
                     $form->handleRequest(null);
                      
-                     if(!Input::post('personal_data')&&!isset($data['use_for_shipment'])){
+                     if(!Input::post('personal_data')&&!isset($data['use_for_shipment'])&&!empty($data)){
                         
                             return $this->redirectToStep('persoenliche-daten-lg','/persoenliche-daten')->send();
                        
                          
                          }
                      
+                     if($form->isSubmitted() && !$form->isValid()){
+                         
+                         
+                         
+                         }
                    // var_dump($_POST,Input::post('personal_data'));exit;
-                    if(!empty($data)&&Input::post('personal_data')&&isset(Input::post('personal_data')['use_for_shipment'])&&Input::post('personal_data')['use_for_shipment'] === false){
+                    if(!empty($data)&&Input::post('personal_data')&&!isset(Input::post('personal_data')['use_for_shipment'])){
                             
                         $this->session->set('order_personal_data', Input::post('personal_data'));
                             $this->session->save();
@@ -127,7 +135,7 @@ class OrderingProcessModule extends Module
                        
                         }
 
-                    if (Input::post('personal_data')&&$form->isSubmitted() && $form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                              
                             $data = $form->getData();
                           if(isset(Input::post('personal_data')['use_for_shipment'])){  
@@ -138,7 +146,7 @@ class OrderingProcessModule extends Module
                             $this->session->save();
                            
                             //redirect
-                            return $this->redirectToStep('versand','/persoenliche-daten')->send();
+                           return $this->redirectToStep('versand','/persoenliche-daten')->send();
                             
                           }else{
                               
@@ -168,6 +176,8 @@ class OrderingProcessModule extends Module
                
                break;
             case 'persoenliche-daten-lg':
+                   $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
+                   
                     $data = ($this->session->get('order_personal_data'))??[];
                     
                   
@@ -175,7 +185,8 @@ class OrderingProcessModule extends Module
                           
                     $form->handleRequest(null);
 
-                   if(!Input::post('personal_data_shipment')&&isset($data['use_for_shipment'])){
+                   if(!Input::post('personal_data_shipment')&&isset($data['use_for_shipment'])
+                        || !Input::post('personal_data_shipment')&&empty($data)){
                         
                             return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
                        
@@ -203,6 +214,7 @@ class OrderingProcessModule extends Module
                           }else{
                               
                               $this->session->set('order_personal_data', $data);
+                              
                             $this->session->save();
                             //redirect
                             return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
@@ -225,17 +237,23 @@ class OrderingProcessModule extends Module
             
                 break;
             case 'versand':
-            
-                if(!$this->session->get('order_personal_data')||!array_key_exists('finished',$this->session->get('order_personal_data'))){
-                     return $this->redirectToStep('persoenliche-daten','/versand')->send();
-                           
-                    }
-                    
+               $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
+                
                 $data = ($this->session->get('order_shipment'))??[];
                 
                 $form = $this->generateShipmentForm($this->container, $data);  
                           
                 $form->handleRequest(null);
+                
+                if(!$this->session->get('order_personal_data')&&!in_array('uebersicht',$this->session->get('order_steps'))
+                ||!array_key_exists('finished',$this->session->get('order_personal_data'))
+                &&!in_array('uebersicht',$this->session->get('order_steps'))){
+                 //  var_dump('test',in_array('overview',$this->session->get('order_steps')));exit; 
+            return $this->redirectToStep('persoenliche-daten','/versand')->send();
+                           
+                    }
+                    
+                
                 if (Input::post('shipment')&&$form->isSubmitted() && $form->isValid()) {
                              
                             $data = $form->getData();
@@ -261,16 +279,19 @@ class OrderingProcessModule extends Module
                break;
 
             case 'zahlung':
-                if(!$this->session->get('order_shipment')||!array_key_exists('finished',$this->session->get('order_shipment'))){
-                     return $this->redirectToStep('versand','/zahlung')->send();
-                           
-                    }
-                    
+               $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
+                   
                 $data = ($this->session->get('order_payment'))??[];
                 
                 $form = $this->generatePaymentForm($this->container, $data);  
                           
                 $form->handleRequest(null);
+                if(!$this->session->get('order_shipment')||!array_key_exists('finished',$this->session->get('order_shipment'))){
+                     return $this->redirectToStep('versand','/zahlung')->send();
+                           
+                    }
+                    
+                
                 if (Input::post('payment')&&$form->isSubmitted() && $form->isValid()) {
                              
                             $data = $form->getData();
@@ -296,16 +317,19 @@ class OrderingProcessModule extends Module
                break;
 
             case 'uebersicht':
-                if(!$this->session->get('order_payment')||!array_key_exists('finished',$this->session->get('order_payment'))){
-                     return $this->redirectToStep('zahlung','/uebersicht')->send();
-                           
-                    }
-                    
+                $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
+                  
                 $data = ($this->session->get('order_overview'))??[];
                 
                 $form = $this->generateOverviewForm($this->container, $data);  
                           
                 $form->handleRequest(null);
+                if(!$this->session->get('order_payment')||!array_key_exists('finished',$this->session->get('order_payment'))){
+                     return $this->redirectToStep('zahlung','/uebersicht')->send();
+                           
+                    }
+                    
+                
                 if (Input::post('overview')&&$form->isSubmitted() && $form->isValid()) {
                              
                             $data = $form->getData();

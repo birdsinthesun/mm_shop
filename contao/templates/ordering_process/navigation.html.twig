@@ -11,7 +11,7 @@
         ">
             <span class="step-number">{{ loop.index }}</span>
             {% if step == isDone and step != isActive %}
-                <a href="  {{ url }}/{{ step.alias }}.html" title="{{ step.name }}" class="step-label">
+                <a href="{{ step.url }}" title="{{ step.name }}" class="step-label">
                     {{ step.name }}
                 </a>
 

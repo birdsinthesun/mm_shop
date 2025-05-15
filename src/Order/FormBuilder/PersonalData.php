@@ -102,17 +102,54 @@ class PersonalData
                 }
             elseif($attr['type'] === 'text'){
                 
+                
+                if($attr['colname'] !== $prefix.'street_number'&&$attr['colname'] !== $prefix.'email'){
                     
-                $builder->add($prefix.$attr['colname'], $arrFormTypes[$attr['type']], [
+                        $constaints = ['constraints' => [
+                            new NotBlank([
+                                'message' => 'Bitte füllen Sie dieses Feld aus.',
+                            ]),
+                            new Length(min: 3)
+                            ],
+                        
+                        ];
+                    }
+                elseif($attr['colname'] === $prefix.'street_number'){
+                        
+                        $constaints = ['constraints' => [
+                            new NotBlank([
+                                'message' => 'Bitte füllen Sie dieses Feld aus.',
+                            ]),
+                            new Length(min: 1)
+                            ],
+                        
+                        ];
+                        
+                        
+                }
+                 elseif($attr['colname'] === $prefix.'email'){
+                        
+                        $constaints = ['constraints' => [
+                            new Email([
+                                'message' => 'Das ist keine gültige Email-Adresse',
+                            ]),
+                            new NotBlank([
+                                'message' => 'Bitte füllen Sie dieses Feld aus.',
+                            ]),
+                            new Length(min:5),
+                            
+                            ],
+                        
+                        ];
+                        
+                        
+                }
+                    
+                $builder->add($prefix.$attr['colname'], $arrFormTypes[$attr['type']],array_merge($constaints, [
                     'label' => $attr['name'],
                     'required' => ($properties[$key]['mandatory'] ==='1'),
-                    'constraints' => [
-                        new NotBlank([
-            'message' => 'Bitte füllen Sie dieses Feld aus.',
-        ]),
-                        new Length(min: 3)
-                    ],
-                ]);
+                    
+                ]));
             }
             elseif($attr['type'] === 'email'){
                 
@@ -122,9 +159,24 @@ class PersonalData
                     'required' => ($properties[$key]['mandatory'] ==='1'),
                     'constraints' => [
                         new NotBlank([
-            'message' => 'Bitte füllen Sie dieses Feld aus.',
-        ]),
+                            'message' => 'Bitte füllen Sie dieses Feld aus.',
+                        ]),
                         new Email(),
+                    ],
+                ]);
+            } 
+            elseif($attr['type'] === 'numeric'){
+                
+                    
+                $builder->add($prefix.$attr['colname'], $arrFormTypes[$attr['type']], [
+                    'label' => $attr['name'],
+                    'required' => ($properties[$key]['mandatory'] ==='1'),
+                    'invalid_message' => 'Bitte geben Sie nur Zahlen ein',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Bitte füllen Sie dieses Feld aus.',
+                        ]),
+                        new Length(min:5),
                     ],
                 ]);
             }
