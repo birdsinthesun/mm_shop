@@ -29,12 +29,6 @@
     },
   "extra": {
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
-        "contao": {
-            "sources": [
-              "src/Resources/contao"
-              
-            ]
-        },
         "contao-component-dir": "assets",
         "public-dir": "public"
     },
