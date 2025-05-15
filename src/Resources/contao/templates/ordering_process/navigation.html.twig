@@ -1,5 +1,5 @@
 <ul class="order-navigation">
-    {% for step,key in steps %}
+    {% for key,step in steps %}
         {% set isActive = step.alias == current_step %}
         {% set isDone = step.allowed %}
         {% set isDisabled = not isDone and not isActive %}
@@ -15,7 +15,7 @@
                     {{ step.name }}
                 </a>
 
-            {% endif %}
+            {% else %}
                 <span class="step-label">
                     {{ step.name }}
                 </span>

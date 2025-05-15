@@ -93,7 +93,7 @@ class OrderingProcessModule extends Module
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         
-        $objNavigation = new Navigation($this->session);
+        $objNavigation = new Navigation($this->session,$this->twig);
         $parsedNavigation = $objNavigation->generate($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),$step);
         
         $currentOutput = '';
@@ -108,7 +108,7 @@ class OrderingProcessModule extends Module
                         
                     $form->handleRequest(null);
                      
-                     if(!Input::post('personal_data')&&!$data['use_for_shipment']){
+                     if(!Input::post('personal_data')&&!isset($data['use_for_shipment'])){
                         
                             return $this->redirectToStep('persoenliche-daten-lg','/persoenliche-daten')->send();
                        
@@ -172,7 +172,7 @@ class OrderingProcessModule extends Module
                           
                     $form->handleRequest(null);
 
-                   if(!Input::post('personal_data_shipment')&&$data['use_for_shipment']){
+                   if(!Input::post('personal_data_shipment')&&isset($data['use_for_shipment'])){
                         
                             return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
                        
@@ -250,7 +250,7 @@ class OrderingProcessModule extends Module
                 $formView = $form->createView();
                 $currentOutput = $this->twig->render('@Contao/ordering_process/shipment.html.twig', [
                     "headline" => 'Versand',
-                    "form" => $formView,
+                    "formular" => $formView,
                     "preview" => 'persoenliche-daten',
                     "next" => 'zahlung'
             
@@ -285,7 +285,7 @@ class OrderingProcessModule extends Module
                 $formView = $form->createView();
                 $currentOutput = $this->twig->render('@Contao/ordering_process/payment.html.twig', [
                     "headline" => 'Zahlung',
-                    "form" => $formView,
+                    "formular" => $formView,
                     "preview" => 'versand',
                     "next" => 'uebersicht'
             
@@ -355,7 +355,7 @@ class OrderingProcessModule extends Module
                     "headline" => 'Übersicht',
                     "order" => $arrOrder,
                     "cart" => $this->arrCart,
-                    "form" => $formView,
+                    "formular" => $formView,
                     "preview" => 'zahlung',
                     "next" => ''
             
@@ -382,7 +382,7 @@ class OrderingProcessModule extends Module
                     "headline" => 'Bestelldetails',
                     "order" => $arrOrder,
                     "cart" => $this->arrCart,
-                    "form" => '',
+                    "formular" => '',
                     "preview" => '',
                     "next" => ''
             
@@ -402,12 +402,13 @@ class OrderingProcessModule extends Module
                   
             
                 ]);
+               // var_dump($arrOrder);exit;
                     //Session löschen
                    // Vielen Dank Nachricht
                  $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => 'Vielen Dank',
-                    "order" => [],
-                    "form" => '<div class="confirmation">Sie erhalten in Kürze eine Bestellbestätigung per Email.</div>',
+                    "order" => '<div class="confirmation">Sie erhalten in Kürze eine Bestellbestätigung per Email.</div>',
+                    "formular" => '',
                     "preview" => '',
                     "next" => ''
             

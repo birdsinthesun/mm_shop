@@ -14,11 +14,11 @@ services:
         tags:
             - { name: contao.migration }
             
-    Bits\MmShopBundle\EventListener\Product\DefaultValueCartCount:
-        public: true
+    Bits\MmShopBundle\EventListener\Asset\AddAssetsListener:
+        arguments:
+            $scopeMatcher: '@contao.routing.scope_matcher'
         tags:
-            - { name: kernel.event_listener, event: dc-general.factory.build-data-definition }
-            
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
     Contao\CoreBundle\Security\Csrf\ContaoCsrfTokenManager:
         public: true
     

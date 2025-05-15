@@ -32,23 +32,20 @@ class PersonalData
     public function fillBuilder($builder,$useForInvoice = true,$prefix='')
     {
         
-        $combinedMetamodel = $this->getCombineById('7'); // aus Combine-Tabelle
-        
-        
         $dcaViewId = $this->connection->fetchAllAssociative(
                 'SELECT personal_data_dca FROM mm_shop WHERE id = ?', 
                 ['1']);
-                
+               // var_dump($dcaViewId[0]['personal_data_dca']);exit;
         $properties = $this->connection->fetchAllAssociative(
-            'SELECT * FROM tl_metamodel_dcasetting WHERE pid = ? AND published = "1" ORDER BY sort ASC',
-            [$dcaViewId]
+            'SELECT * FROM tl_metamodel_dcasetting WHERE pid = ? AND published = "1" ORDER BY sorting ASC',
+            [$dcaViewId[0]['personal_data_dca']]
         );
         
         $attributeIDs = array_column($properties, 'attr_id');
         $placeholders = implode(',', array_fill(0, count($attributeIDs), '?'));
      
         $attributes = $this->connection->fetchAllAssociative(
-            'SELECT * FROM tl_metamodel_attribute WHERE id IN ( '.$placeholders.' ) ORDER BY sort ASC',
+            'SELECT * FROM tl_metamodel_attribute WHERE id IN ( '.$placeholders.' ) ORDER BY sorting ASC',
             $attributeIDs
         );
          

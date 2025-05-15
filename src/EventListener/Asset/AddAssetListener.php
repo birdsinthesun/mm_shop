@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 
 
 #[AsEventListener]
-class AddBackendAssetsListener
+class AddAssetsListener
 {
     private ScopeMatcher $scopeMatcher;
 
@@ -32,9 +32,10 @@ class AddBackendAssetsListener
                     $GLOBALS['TL_CSS'][] = 'bundles/mmshop/css/personal-data.css';
                 }
         }else{
+            
             //ToDo: $page = PageModel::findOneBy('id',$event->getRequest()->get('id'));
             if(str_contains($event->getRequest()->getPathInfo(),'bestellprozess')){
-                
+          
                 $connection = System::getContainer()->get('database_connection');  
                 $useCustomCss = $connection->fetchAllAssociative(
                 'SELECT use_custom_css FROM mm_shop WHERE id = ?', 

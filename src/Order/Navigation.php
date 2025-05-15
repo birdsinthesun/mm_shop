@@ -3,15 +3,19 @@
 namespace Bits\MmShopBundle\Order;
 
 
-class Shippment
+class Navigation
 {
     
     protected $session;
     
+    protected $twig;
     
-    public function __construct($session)
+    
+    public function __construct($session,$twig)
     {
         $this->session = $session;
+        
+        $this->twig = $twig;
     }
     
     public function generate(string $strUrl, string $currentStep)
@@ -48,11 +52,11 @@ class Shippment
 
         foreach ($arrSteps as $key => $step) {
             $steps[$key] = array_merge($step,[
-                'allowed' => ($key === 'personal_data' || $this->session->get('order_'.$key)||array_key_exists('finished',$this->session->get('order_'.$key))),
+                'allowed' => ($key === 'personal_data' || $this->session->get('order_'.$key)||$this->session->get('order_'.$key)&&array_key_exists('finished',$this->session->get('order_'.$key))),
             ]);
         }
 
-        return $this->twig->render('ordering_process/navigation.html.twig', [
+        return $this->twig->render('@Contao/ordering_process/navigation.html.twig', [
             'url' => $strUrl,
             'steps' => $steps,
             'current_step' => $currentStep

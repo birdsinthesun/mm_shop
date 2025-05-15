@@ -18,20 +18,28 @@ class MenuListener
         if ('mainMenu' !== $tree->getName()) {
             return;
         }
-        $children = $tree->getChildren();
+        
         
         
         $favoritesNode = $tree->getChild('content');
-
+//var_dump(get_class_methods( $factory->createItem('shop')));exit;
         $node = $factory
             ->createItem('shop')
+                ->setUri('/contao?mtg=shop')
+                ->setName('shop')
                 ->setLabel('Shop')
-                 ->setAttribute('icon', 'bundles/mmshop/icons/shop.svg')
-                ->setChildrenAttribute('class', 'group-shop') // CSS-Klasse
+                ->setLinkAttribute('data-action',"contao--toggle-navigation#toggle:prevent")
+                ->setLinkAttribute('data-contao--toggle-navigation-category-param','shop')
+                ->setLinkAttribute('contao--toggle-navigation#toggle:prevent','shop')
+                ->setLinkAttribute('aria-controls','shop')
+               ->setLinkAttribute('aria-expanded','true')
+                 ->setLinkAttribute('icon', 'bundles/mmshop/icons/shop.svg')
+                ->setLinkAttribute('class', 'group-shop')
+                 ->setLinkAttribute('title', 'Bereich schließen')
         ;
 
         $favoritesNode->getParent()->addChild($node);
-      
+        $children = $tree->getChildren();
 
         $tree->reorderChildren(
             array_merge(

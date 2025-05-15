@@ -3,7 +3,7 @@
 namespace Bits\MmShopBundle\Order\FormBuilder;
 
 
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Contao\Input;
@@ -30,12 +30,14 @@ class Overview
                     if($tag['alias'] === 'datenschutzerklarung'||$tag['alias'] === 'agbs'){
                         $required = [
                             'required' => true,
-                            new NotNull([
+                            'constraints' => [new NotNull([
                             'message' => 'Bitte wählen Sie eine Versandart aus.'
-                            ])
+                            ])]
                         ];
                     }else{
-                        $required = [];
+                        $required = [
+                            'required' => false,
+                        ];
                         }
                      $builder->add($tag['alias'], CheckboxType::class, array_merge([
                         'label' => $tag['name'],

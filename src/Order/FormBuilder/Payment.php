@@ -3,7 +3,7 @@
 namespace Bits\MmShopBundle\Order\FormBuilder;
 
 
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Contao\Input;
@@ -28,13 +28,15 @@ class Payment
             foreach ($tags as $tag) {
                     $choices[$tag['name']] = $tag['id']; 
                 }
-                 $builder->add('payment', RadioType::class, [
+                 $builder->add('payment', ChoiceType::class, [
                     'choices' => $choices,
-                    'label' => Versandart,
+                    'label' => 'Zahlungsart',
                     'required' => true,
-                    new NotNull([
-                    'message' => 'Bitte wählen Sie eine Zahlungsweise aus.'
-                    ]),
+                    'expanded' => true,
+                    'multiple' => false,
+                    'constraints' => [new NotNull([
+                    'message' => 'Bitte wählen Sie eine Versandart aus.'
+                    ])],
                     'help_html' => true,
                     'help' => $tag['description']
                 ]);
