@@ -33,7 +33,8 @@
             "sources": [
               "src/Resources/contao"
             ]
-        }
+        },
+        "contao-component-dir": "assets"
     },
     "scripts": {
     "post-install-cmd": [

@@ -93,9 +93,12 @@ class OrderingProcessModule extends Module
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         
-        $objNavigation = new Navigation($this->session,$this->twig);
-        $parsedNavigation = $objNavigation->generate($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),$step);
-        
+        if($step){
+            $objNavigation = new Navigation($this->session,$this->twig);
+            $parsedNavigation = $objNavigation->generate($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),$step);
+        }else{
+            $parsedNavigation = '';
+            }
         $currentOutput = '';
         
 
