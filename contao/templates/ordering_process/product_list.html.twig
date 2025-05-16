@@ -1,0 +1,11 @@
+{% for key,item in items %}
+  <div class="custom-before">Vor Item {{ loop.index }}</div>
+
+  <div class="item">
+    {% for attr in item.html5 %}
+    {{ attr|raw }}
+    {% endfor %}
+  </div>
+
+  <div class="custom-after">Nach Item {{ loop.index }}</div>
+{% endfor %}

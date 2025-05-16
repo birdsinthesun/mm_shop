@@ -8,7 +8,6 @@ use Contao\Input;
 use Contao\FrontendTemplate;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Metamodels\Item;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -28,6 +27,13 @@ use Bits\MmShopBundle\Order\FormBuilder\PersonalData;
 use Bits\MmShopBundle\Order\FormBuilder\Shipment;
 use Bits\MmShopBundle\Order\FormBuilder\Payment;
 use Bits\MmShopBundle\Order\FormBuilder\Overview;
+//Productlist
+use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Setting\Collection;
+use MetaModels\Factory;
+use MetaModels\ItemList;
+use MetaModels\Render\Setting\IRenderSettingFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderingProcessModule extends Module
 {
@@ -89,7 +95,7 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
-        $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
+        $arrAllowedSteps = ['test','persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         if($this->session->get('order_steps') === Null){
@@ -105,6 +111,37 @@ class OrderingProcessModule extends Module
         
         
         switch ($step) {
+            case 'test':
+                // Deine Item-IDs:
+                $itemIds = [1, 2];
+
+                // MetaModel-ID und RenderSetting-ID
+                $metaModelId = 2;
+                $renderSettingId = 15;
+                
+
+                // Services laden
+                $factory = $this->container->get('metamodels.factory');
+                $renderFactory = $this->container->get('metamodels.render_setting_factory');
+                $dispatcher = $this->container->get('event_dispatcher');
+
+                // ItemList instanziieren
+                $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
+                $itemList->setMetaModel($metaModelId,$renderSettingId);
+                $itemList->setLanguage('de'); // optional
+                $itemList->prepare();
+                $itemList->addFilterRule(new StaticIdList('id', $itemIds));
+                
+                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+                $items = $itemList->getItems()->parseAll('html5',$objView);
+                
+            
+             $currentOutput =  $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
+                    "headline" => 'Produkte Übersicht',
+                    "items" => $items
+            
+                ]);
+                break;
             case 'persoenliche-daten':
                   //   $this->session->clear();
                    $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
