@@ -26,7 +26,9 @@ class DynamicRouteLoader extends Loader
                 '/'.$rootPageAlias.'/' . $category .'.html',
                 [
                     '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
+                    'scheme' => 'https',
                     'category' => $category,
+                    'type' => 'dynamic'
                 ],
                 ['alias' => '.+']
             );
@@ -39,7 +41,9 @@ class DynamicRouteLoader extends Loader
                 '/'.$rootPageAlias.'/' . $category . '/{alias}',
                 [
                     '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductDetailController::run',
+                    'scheme' => 'https',
                     'category' => $category,
+                    'type' => 'dynamic'
                 ],
                 ['alias' => '.+']
             );
@@ -51,8 +55,8 @@ class DynamicRouteLoader extends Loader
         return $routes;
     }
 
-    public function supports($resource, string $type = null): bool
+    public function supports($resource, string $type = Null): bool
     {
-        return 'mm_shop_dynamic' === $type;
+        return 'dynamic' === $type;
     }
 }

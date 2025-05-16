@@ -8,9 +8,13 @@ use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Bits\MmShopBundle\MmShopBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Bundle\RoutingBundle\RoutingBundle;
+use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use MetaModels\CoreBundle\MetaModelsCoreBundle; 
 
-class Plugin implements BundlePluginInterface
+class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
     
 
@@ -22,9 +26,16 @@ class Plugin implements BundlePluginInterface
                 ->setLoadAfter([
                     FrameworkBundle::class,
                     TwigBundle::class,
+                    RoutingBundle::class,
                     ContaoCoreBundle::class,
                     MetaModelsCoreBundle::class
                 ]),
         ];
+    }
+    
+    
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
+    {
+        return $resolver->resolve(__DIR__ . '/../../config/routes.yaml', 'yaml')->load(__DIR__ . '/../../config/routes.yaml');
     }
 }
