@@ -33,7 +33,7 @@
             "symfony/flex": true,
             "symfony/runtime": true
         }
-    }
+    },
     "extra": {
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao-component-dir": "assets",
