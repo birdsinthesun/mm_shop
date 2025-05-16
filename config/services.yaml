@@ -19,6 +19,10 @@ services:
             $scopeMatcher: '@contao.routing.scope_matcher'
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
+    
+    Bits\MmShopBundle\Routing\DynamicRouteLoader:
+        tags:
+            - { name: routing.loader }
             
     Contao\CoreBundle\Security\Csrf\ContaoCsrfTokenManager:
         public: true

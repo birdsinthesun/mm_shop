@@ -20,8 +20,9 @@ class MmShopBundle extends Bundle
      public function build(ContainerBuilder $container): void
     {
          $projectDir = $container->getParameter('kernel.project_dir').'/vendor/birdsinthesun/mm_shop';
-        $loader = new YamlFileLoader($container, new FileLocator($projectDir.'/config')); 
-        $loader->load('services.yaml');
+         $loader = new YamlFileLoader($container, new FileLocator($projectDir.'/config')); 
+         $loader->load('services.yaml');
+         $loader->load('routes.yaml');
         // Füge einen Alias hinzu
         $container->setAlias('mm_shop_bundle', self::class);
          
