@@ -32,7 +32,7 @@ use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CartModule extends Module
+class ProductListModule extends Module
 {
    
     protected $strTemplate = 'mod_cart';
@@ -104,10 +104,10 @@ class CartModule extends Module
              }else{
                 $data = ($this->session->get('cart_items_data'))??[];
 
- 
-                $removeId = Input::get('remove');
+                //add to card
+                $addId = Input::get('add');
                 // remove from session
-                if($removeId !== Null){
+                if($addId !== Null){
                     
                     
                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
@@ -137,14 +137,12 @@ class CartModule extends Module
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
                 
-                $form = $this->generateForm($items,$data);
-                $form->handleRequest(null);
+               
                 
                 
-                $currentContent =  $this->twig->render('@Contao/cart/product_list.html.twig', [
+                $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
-                    "items" => $items,
-                    "form" => $form->createView()
+                    "items" => $items
              
                 ]);
                 
@@ -157,7 +155,7 @@ class CartModule extends Module
                   
                   
           return $this->twig->render('@Contao/mod_cart.html.twig', [
-                "headline" => 'Warenkorb',
+                "headline" => 'Produkte',
                 "content" => $currentContent
         
             ]);
@@ -170,39 +168,5 @@ class CartModule extends Module
       
     }
     
-    private function generateForm($items,$data = [])
-    {
     
-        $builder = $this->formFactory->createNamedBuilder('cart',FormType::class, $data, [
-                            'action' => $this->request->getUri(),
-                            'method' => 'POST']);
-            foreach($items as $i => $item){
-                $builder->add($item['raw']['id'].'count', NumberType::class, [
-                        'label' => 'Anzahl',
-                        'required' => true,
-                            'constraints' => [new NotBlank([
-                            'message' => 'Bitte geben Sie eine Anzahl ein.'
-                            ])]
-                    ]); 
-            }  
-        $builder->add('aktualisieren', SubmitType::class, [
-                'label' => 'Aktualisieren'
-                ])
-                ->add('FORM_SUBMIT', HiddenType::class, [
-                                    'data' => 'cart_form',
-                                    'mapped' => false,
-                                ])
-                ->add('REQUEST_TOKEN', HiddenType::class, [
-                            'data' => $this->tokenManager->getDefaultTokenValue(),
-                            'mapped' => false,
-                        ]);
-        
-        
-        
-        return $builder->getForm();
-        
-         
-        
-        
-    }
 }

@@ -1,0 +1,37 @@
+<form method="post">
+    {{ form_start(form) }}
+  
+    {% for field in form %}
+        <div class="form-field-wrapper">
+           <div class="product-info">
+            {% set i = loop.index0 %}
+           
+                {% if attribute(items, i) is defined %}
+               
+                    {% for property in items.(i).html5 %}
+                        {{ property|raw }}
+                     {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-input">
+                {{ form_widget(field) }}
+            </div>
+
+            {% if field in form_errors(form) %}
+                <div class="form-errors">
+                    {{ form_errors(field) }}
+                </div>
+            {% endif %}
+            {% if attribute(items, i) is defined %}
+               
+                    {% set product_id = items.(i).raw.id %}
+                    <a href='{{ url }}?remove=product_id' title='Produkt aus den Warenkorb entfernen'>Entfernen</a>
+                       
+                {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Absenden</button>
+
+    {{ form_end(form) }}
+</form>
