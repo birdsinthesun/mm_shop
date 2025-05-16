@@ -32,7 +32,7 @@ use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ProducDetailModule extends Module
+class ProductDetailModule extends Module
 {
    
     protected $strTemplate = 'mod_cart';
@@ -58,7 +58,7 @@ class ProducDetailModule extends Module
 
     public function __construct($module, $column = 'main')
     {
-        parent::__construct($module, $column);
+        
         $this->container = System::getContainer();
         $this->request = $this->container->get('request_stack')->getCurrentRequest();
         $this->session = $this->request->getSession();
@@ -75,8 +75,9 @@ class ProducDetailModule extends Module
             ->addExtension(new ValidatorExtension($validator))
             ->addExtension(new CoreExtension()) // Core Extension für Formulare
             ->getFormFactory();
-            
-        
+            $module->__set('overviewPage','1');
+       // var_dump($module);exit;
+        parent::__construct($module, $column);
     }
     
     public function generate(){
@@ -91,6 +92,12 @@ class ProducDetailModule extends Module
             ]);
             
 		}
+        
+        $arrAllowedSteps = ['contao-rocks','persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
+        $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
+        $step = Input::get('auto_item', false, $stepIsValid);
+        var_dump($step);exit;
+        return $step;exit;
         //test
         $this->session->set('cart_items',['1','2']);
         

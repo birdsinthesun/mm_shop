@@ -97,11 +97,7 @@ class ProductListModule extends Module
         if($this->session->get('cart_items') === Null){
             $this->session->set('cart_items',[]);
             }
-         if(empty($this->session->get('cart_items'))){
-             
-             $currentContent = 'Der Warenkorb ist leer.';
-             
-             }else{
+        
                 $data = ($this->session->get('cart_items_data'))??[];
 
                 //add to card
@@ -119,7 +115,7 @@ class ProductListModule extends Module
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
-                $renderSettingId = 15;
+                $renderSettingId = 13;
                 
 
                 // Services laden
@@ -150,11 +146,11 @@ class ProductListModule extends Module
                
                 
                
-            }
+            
             
                   
                   
-          return $this->twig->render('@Contao/mod_cart.html.twig', [
+          return $this->twig->render('@Contao/mod_product_list.html.twig', [
                 "headline" => 'Produkte',
                 "content" => $currentContent
         
