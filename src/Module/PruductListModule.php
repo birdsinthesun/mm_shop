@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 //Productlist
-use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Rules\SimpleQuery;
 use MetaModels\Filter\Setting\Collection;
 use MetaModels\Factory;
 use MetaModels\ItemList;
@@ -34,8 +34,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductListModule extends Module
 {
-   
-    protected $strTemplate = 'mod_cart';
 
     private $container;
     
@@ -109,7 +107,7 @@ class ProductListModule extends Module
                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
                 }
                 
-                
+                $category = str_replace('.html','',$this->request->get('category'));
                  // Deine Item-IDs:
                 $itemIds = [1, 2];
 
@@ -127,7 +125,7 @@ class ProductListModule extends Module
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
                 $itemList->setMetaModel($metaModelId,$renderSettingId);
                 $itemList->setLanguage('de'); // optional
-                $itemList->addFilterRule(new StaticIdList($itemIds));
+                $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE category = "'.$category.'"'));
                 $itemList->prepare();
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);

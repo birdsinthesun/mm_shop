@@ -36,7 +36,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductDetailModule extends Module
 {
    
-    protected $strTemplate = 'mod_cart';
 
     private $container;
     
@@ -139,17 +138,16 @@ class ProductDetailModule extends Module
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
                 $itemList->setMetaModel($metaModelId,$renderSettingId);
                 $itemList->setLanguage('de'); // optional
-                
-                //var_dump($alias);exit;
                 $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE alias = "'.$alias.'"'));
                 $itemList->prepare();
+                
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
                 
                
                 
                 
-                $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
+                $currentContent =  $this->twig->render('@Contao/products/product_detail.html.twig', [
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
                     "items" => $items
              
@@ -163,8 +161,8 @@ class ProductDetailModule extends Module
             
                   
                   
-          return $this->twig->render('@Contao/mod_cart.html.twig', [
-                "headline" => 'Produkte',
+          return $this->twig->render('@Contao/mod_product_detail.html.twig', [
+                "headline" => 'Produkt-Details',
                 "content" => $currentContent
         
             ]);

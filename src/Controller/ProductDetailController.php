@@ -41,9 +41,6 @@ class ProductDetailController extends AbstractController
             throw new \RuntimeException('Detailseite nicht gefunden.');
         }
 
-        // Setze ggf. Contao-GET-Parameter für Nutzung in Modulen/Templates
-        $_GET['auto_item'] = $alias;
-
         // Übergib die Seite an Contao's regulären Renderer
         $controller = new PageRegular();
         return $controller->getResponse($objPage, false);
