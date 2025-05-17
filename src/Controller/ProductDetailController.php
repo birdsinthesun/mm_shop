@@ -12,27 +12,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Bits\MmShopBundle\Service\ResourceResolver;
 
-
+#[Route(defaults: ['_scope' => 'frontend'])]
 class ProductDetailController extends AbstractController
 {
 
     public function __construct(
+        private ResourceResolver $resourceResolver,
         private readonly ContaoFramework $framework
-    ) {}
+    ) {
+        $this->resourceResolver = $resourceResolver;
+        }
     
     public function __invoke(Request $request, string $alias, string $category): Response
     {
         $this->framework->initialize();
         
-        // Produkt über Alias finden (z. B. aus MetaModels)
-        $product = true; // z. B. über Model oder Repository
-
-        if (!$product) {
+        if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category,)) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
 
-        // Hole die Contao-Detailseite (z. B. aus JumpTo-Spalte)
         global $objPage;
         $objPage = PageModel::findPublishedById('195');
         $request->attributes->set('pageModel', $objPage);

@@ -2,28 +2,46 @@
 
 namespace Bits\MmShopBundle\Service;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
+use Contao\System;
 
 class ResourceResolver
 {
-    private string $baseDirectory;
+    private $connection;
 
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct()
     {
-        $this->baseDirectory = rtrim($parameterBag->get('kernel.project_dir').'/', '');
+        $this->connection = System::getContainer()->get('database_connection');
     }
 
-    public function resolveFilePath(string $fileName): string
+    public function isProduct(string $category, string $alias): string
     {
-        return $this->baseDirectory . '/' . ltrim($fileName, '/');
+        
+        $productId = $this->connection->fetchAllAssociative(
+                'SELECT id FROM mm_product WHERE category = ? AND alias = ? AND published = ?', 
+                [$category,$alias,'1']);
+                
+                
+        return (!$productId)?false:true;
+    }
+    
+    public function hasCategoryProducts(string $category): string
+    {
+        
+        $productIds = $this->connection->fetchAllAssociative(
+                'SELECT id FROM mm_product WHERE category = ? AND published = ?', 
+                [$category,'1']);
+                
+        return (!$productIds)?false:true;
+    }
+    
+     public function isProductCategory(string $category): string
+    {
+        
+        $categoryId = $this->connection->fetchAllAssociative(
+                'SELECT id FROM mm_category WHERE alias = ? AND published = ?', 
+                [$category,'1']);
+                
+        return (!$categoryId)?false:true;
     }
 
-    public function getFileName(): ?string
-    {
-        // Dynamisch den Dateinamen bestimmen (z. B. durch Datenbankabfrage oder API-Aufruf)
-        // Hier ein einfaches Beispiel:
-        $files = glob($this->baseDirectory . '/*.html');
-        return '.'; // Nimmt die erste gefundene XML-Datei
-    }
 }

@@ -6,10 +6,18 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\Loader;
 use Bits\MmShopBundle\Controller\ProductDetailController;
+use Bits\MmShopBundle\Controller\ProductListController;
+use Doctrine\DBAL\Connection;
+
 class DynamicRouteLoader extends Loader
 {
     private bool $loaded = false;
+    private Connection $db; // Doctrine DBAL Connection
 
+    public function __construct(Connection $db)
+    {
+        $this->db = $db;
+    }
     public function load($resource, string $type = null)
     {
         if ($this->loaded) {
@@ -18,19 +26,18 @@ class DynamicRouteLoader extends Loader
 
         $routes = new RouteCollection();
         $rootPageAlias = 'produkte';
-        $categories = ['kategorie-1', 'kategorie-2']; // z. B. aus DB oder Config
+        $sql = "SELECT alias FROM mm_category WHERE published = '1'";
+        $categories = $this->db->fetchFirstColumn($sql);
+       // $categories = ['kategorie-1', 'kategorie-2']; // z. B. aus DB oder Config
 
-        foreach ($categories as $category) {
+        foreach ($categories as $key => $category) {
             
             $routeList = new Route(
-                '/'.$rootPageAlias.'/' . $category .'.html',
+                '/'.$rootPageAlias.'/' . $category,
                 [
-                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
-                   
+                    '_controller' => ProductListController::class,
                     'category' => $category,
-                   
-                ],
-                ['alias' => '.+']
+                ]
             );
             $routes->add('mm_product_list_' . $category, $routeList);
             
@@ -41,9 +48,7 @@ class DynamicRouteLoader extends Loader
                 '/'.$rootPageAlias.'/' . $category . '/{alias}',
                 [
                     '_controller' => ProductDetailController::class,
-                   
                     'category' => $category,
-                    
                 ],
                 ['alias' => '.+']
             );

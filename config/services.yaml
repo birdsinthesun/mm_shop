@@ -8,11 +8,11 @@ services:
     mm_shop_bundle:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
-        
-    Bits\MmShopBundle\Service\ResourceResolver: ~
     
     Bits\MmShopBundle\Routing\DynamicRouteLoader:
         autoconfigure: false
+        arguments:
+            $db: '@doctrine.dbal.default_connection'
         tags:
             - { name: routing.loader }
         
@@ -34,11 +34,14 @@ services:
     
     
     Bits\MmShopBundle\Controller\ProductListController:
-        autoconfigure: false
+        arguments:
+            $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
+            $framework: '@contao.framework'
         tags: ['controller.service_arguments']
         
     Bits\MmShopBundle\Controller\ProductDetailController:
         arguments:
+            $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']
     
