@@ -131,8 +131,8 @@ class CartModule extends Module
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
                 $itemList->setMetaModel($metaModelId,$renderSettingId);
                 $itemList->setLanguage('de'); // optional
+                $itemList->addFilterRule(new StaticIdList($itemIds));
                 $itemList->prepare();
-                $itemList->addFilterRule(new StaticIdList('id', $itemIds));
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);

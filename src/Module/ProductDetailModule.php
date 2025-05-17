@@ -139,10 +139,10 @@ class ProductDetailModule extends Module
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
                 $itemList->setMetaModel($metaModelId,$renderSettingId);
                 $itemList->setLanguage('de'); // optional
+                
+                //var_dump($alias);exit;
+                $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE alias = "'.$alias.'"'));
                 $itemList->prepare();
-                
-                $itemList->addFilterRule(new SimpleQuery('SELECT * FROM mm_product WHERE alias = '.$alias));
-                
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
                 
