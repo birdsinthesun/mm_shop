@@ -13,12 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Bits\MmShopBundle\Service\ResourceResolver;
+use Doctrine\DBAL\Connection;
 
 #[Route(defaults: ['_scope' => 'frontend'])]
 class ProductListController extends AbstractController
 {
 
     public function __construct(
+        private Connection $db,
         private ResourceResolver $resourceResolver,
         private readonly ContaoFramework $framework
     ) {

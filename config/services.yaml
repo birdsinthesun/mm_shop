@@ -8,6 +8,16 @@ services:
     mm_shop_bundle:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
+        
+    Bits\MmShopBundle\EventListener\Session\SessionBagListener:
+        public: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.request}
+      
+    Bits\MmShopBundle\Service\ResourceResolver:
+        public: true
+        arguments:
+            $db: '@doctrine.dbal.default_connection'
     
     Bits\MmShopBundle\Routing\DynamicRouteLoader:
         autoconfigure: false
@@ -35,12 +45,14 @@ services:
     
     Bits\MmShopBundle\Controller\ProductListController:
         arguments:
+            $db: '@doctrine.dbal.default_connection'
             $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']
         
     Bits\MmShopBundle\Controller\ProductDetailController:
         arguments:
+            $db: '@doctrine.dbal.default_connection'
             $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']

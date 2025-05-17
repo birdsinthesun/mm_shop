@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Bits\MmShopBundle\DependencyInjection\SessionCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\RoutingCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
@@ -44,7 +45,8 @@ class MmShopBundle extends Bundle
        
         
          
-         
+        $container->addCompilerPass(new SessionCompilerPass(),PassConfig::TYPE_AFTER_REMOVING, 100);
+
          
          $container->addCompilerPass(new RoutingCompilerPass(),PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
     }

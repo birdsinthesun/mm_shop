@@ -13,12 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Bits\MmShopBundle\Service\ResourceResolver;
+use Doctrine\DBAL\Connection;
 
 #[Route(defaults: ['_scope' => 'frontend'])]
 class ProductDetailController extends AbstractController
 {
-
+    
     public function __construct(
+        private Connection $db,
         private ResourceResolver $resourceResolver,
         private readonly ContaoFramework $framework
     ) {
@@ -28,15 +30,15 @@ class ProductDetailController extends AbstractController
     public function __invoke(Request $request, string $alias, string $category): Response
     {
         $this->framework->initialize();
-        
-        if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category,)) {
+      // var_dump($this->resourceResolver->isProduct($category,$alias));exit;
+        if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category)) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
-
+ 
         global $objPage;
         $objPage = PageModel::findPublishedById('195');
         $request->attributes->set('pageModel', $objPage);
-//var_dump($page);exit;
+
         if (!$objPage) {
             throw new \RuntimeException('Detailseite nicht gefunden.');
         }

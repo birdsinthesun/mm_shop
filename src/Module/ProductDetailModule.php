@@ -32,8 +32,7 @@ use MetaModels\Factory;
 use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-//Cart
-use Bits\MmShopBundle\Session\CartSessionBag;
+
 
 class ProductDetailModule extends Module
 {
@@ -63,7 +62,11 @@ class ProductDetailModule extends Module
         $this->connection = $this->container->get('database_connection');
         $this->twig = $this->container->get('twig');
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
-        $this->sessionCart = $this->session->registerBag(new CartSessionBag);
+        
+        //$this->sessionCart = $this->session->getBag('card');
+            
+        
+       
 
     }
     

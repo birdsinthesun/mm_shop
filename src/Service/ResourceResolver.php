@@ -2,23 +2,26 @@
 
 namespace Bits\MmShopBundle\Service;
 
-use Contao\System;
+use Doctrine\DBAL\Connection;
 
 class ResourceResolver
 {
-    private $connection;
+    private Connection $db;
 
-    public function __construct()
+     public function __construct(Connection $db)
     {
-        $this->connection = System::getContainer()->get('database_connection');
+        $this->db = $db;
     }
 
     public function isProduct(string $category, string $alias): string
     {
-        
-        $productId = $this->connection->fetchAllAssociative(
+        $alias = str_replace('.html','',$alias);
+        $categoryId = $this->db->fetchAllAssociative(
+                'SELECT id FROM mm_category WHERE alias = ? AND published = ?', 
+                [$category,'1']);
+        $productId = $this->db->fetchAllAssociative(
                 'SELECT id FROM mm_product WHERE category = ? AND alias = ? AND published = ?', 
-                [$category,$alias,'1']);
+                [$categoryId[0]['id'],$alias,'1']);
                 
                 
         return (!$productId)?false:true;
@@ -26,18 +29,20 @@ class ResourceResolver
     
     public function hasCategoryProducts(string $category): string
     {
-        
-        $productIds = $this->connection->fetchAllAssociative(
-                'SELECT id FROM mm_product WHERE category = ? AND published = ?', 
+        $categoryId = $this->db->fetchAllAssociative(
+                'SELECT id FROM mm_category WHERE alias = ? AND published = ?', 
                 [$category,'1']);
+        $productIds = $this->db->fetchAllAssociative(
+                'SELECT id FROM mm_product WHERE category = ? AND published = ?', 
+                [$categoryId[0]['id'],'1']);
                 
         return (!$productIds)?false:true;
     }
     
      public function isProductCategory(string $category): string
     {
-        
-        $categoryId = $this->connection->fetchAllAssociative(
+        $category = str_replace('.html','',$category);
+        $categoryId = $this->db->fetchAllAssociative(
                 'SELECT id FROM mm_category WHERE alias = ? AND published = ?', 
                 [$category,'1']);
                 
