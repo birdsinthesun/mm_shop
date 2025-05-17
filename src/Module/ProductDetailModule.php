@@ -51,13 +51,7 @@ class ProductDetailModule extends Module
     
     private $metamodelsFactory;
     
-    private $formFactory;
-    
-    private $tokenManager;
-    
     private $sessionCart;
-    
-    protected $objPage;
    
 
     public function __construct($module, $column = 'main')
@@ -69,20 +63,8 @@ class ProductDetailModule extends Module
         $this->connection = $this->container->get('database_connection');
         $this->twig = $this->container->get('twig');
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
-        $this->tokenManager = $this->container->get('contao.csrf.token_manager');
         $this->sessionCart = $this->session->registerBag(new CartSessionBag);
-        
-        $validator = Validation::createValidator();
-        $this->formFactory = Forms::createFormFactoryBuilder([ 'csrf_protection' => true,
-    'csrf_field_name' => 'REQUEST_TOKEN',
-    'csrf_token_manager' => $this->tokenManager,
-    'csrf_token_id'   => 'cart_form'])
-            ->addExtension(new ValidatorExtension($validator))
-            ->addExtension(new CoreExtension()) // Core Extension für Formulare
-            ->getFormFactory();
-            $module->__set('overviewPage','1');
-       // var_dump($module);exit;
-       // parent::__construct($module, $column);
+
     }
     
     public function generate(){
@@ -98,16 +80,14 @@ class ProductDetailModule extends Module
             
 		}
         
-       
-                 
             //add to card
             $addId = Input::get('add');
-            // remove from session
             if($addId !== Null){
                 
-                $this->sessionCart->set($addId,['count' => $this->sessionCart->get($addId)['count']+1]);
+                $this->sessionCart->set($addId,[$addId.'_count' => $this->sessionCart->get($addId)['count']+1]);
                 return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
             }
+            
             $alias = str_replace('.html','',$this->request->get('alias'));
             $category = $this->request->get('category');
              // Deine Item-IDs:

@@ -31,6 +31,8 @@ use MetaModels\Factory;
 use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+//Cart
+use Bits\MmShopBundle\Session\CartSessionBag;
 
 class ProductListModule extends Module
 {
@@ -47,11 +49,7 @@ class ProductListModule extends Module
     
     private $metamodelsFactory;
     
-    private $formFactory;
-    
-    private $tokenManager;
-    
-    private $arrCart;
+    private $sessionCart;
    
 
     public function __construct($module, $column = 'main')
@@ -63,16 +61,8 @@ class ProductListModule extends Module
         $this->connection = $this->container->get('database_connection');
         $this->twig = $this->container->get('twig');
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
-        $this->tokenManager = $this->container->get('contao.csrf.token_manager');
-        
-        $validator = Validation::createValidator();
-        $this->formFactory = Forms::createFormFactoryBuilder([ 'csrf_protection' => true,
-    'csrf_field_name' => 'REQUEST_TOKEN',
-    'csrf_token_manager' => $this->tokenManager,
-    'csrf_token_id'   => 'cart_form'])
-            ->addExtension(new ValidatorExtension($validator))
-            ->addExtension(new CoreExtension()) // Core Extension für Formulare
-            ->getFormFactory();
+        $this->sessionCart = $this->session->registerBag(new CartSessionBag);
+
             
         
     }
@@ -89,70 +79,62 @@ class ProductListModule extends Module
             ]);
             
 		}
-        //test
-        $this->session->set('cart_items',['1','2']);
+       
         
-        if($this->session->get('cart_items') === Null){
-            $this->session->set('cart_items',[]);
-            }
+        //add to card
+        $addId = Input::get('add');
+        if($addId !== Null){
+            
+            $this->sessionCart->set($addId,[$addId.'_count' => $this->sessionCart->get($addId)['count']+1]);
+            return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+        }
         
-                $data = ($this->session->get('cart_items_data'))??[];
+        $category = str_replace('.html','',$this->request->get('category'));
+         // Deine Item-IDs:
+        $itemIds = [1, 2];
 
-                //add to card
-                $addId = Input::get('add');
-                // remove from session
-                if($addId !== Null){
-                    
-                    
-                    return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
-                }
-                
-                $category = str_replace('.html','',$this->request->get('category'));
-                 // Deine Item-IDs:
-                $itemIds = [1, 2];
+        // MetaModel-ID und RenderSetting-ID
+        $metaModelId = 2;
+        $renderSettingId = 13;
+        
 
-                // MetaModel-ID und RenderSetting-ID
-                $metaModelId = 2;
-                $renderSettingId = 13;
-                
+        // Services laden
+        $factory = $this->container->get('metamodels.factory');
+        $renderFactory = $this->container->get('metamodels.render_setting_factory');
+        $dispatcher = $this->container->get('event_dispatcher');
 
-                // Services laden
-                $factory = $this->container->get('metamodels.factory');
-                $renderFactory = $this->container->get('metamodels.render_setting_factory');
-                $dispatcher = $this->container->get('event_dispatcher');
-
-                // ItemList instanziieren
-                $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-                $itemList->setMetaModel($metaModelId,$renderSettingId);
-                $itemList->setLanguage('de'); // optional
-                $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE category = "'.$category.'"'));
-                $itemList->prepare();
-                
-                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
-                $items = $itemList->getItems()->parseAll('html5',$objView);
-                
-               
-                
-                
-                $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
-                    "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
-                    "items" => $items
-             
-                ]);
-                
-                
-               
-                
-               
+        // ItemList instanziieren
+        $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
+        $itemList->setMetaModel($metaModelId,$renderSettingId);
+        $itemList->setLanguage('de'); // optional
+        $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE category = "'.$category.'"'));
+        $itemList->prepare();
+        
+        $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+        $items = $itemList->getItems()->parseAll('html5',$objView);
+        
+       
+        
+        
+        $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
+            "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
+            "items" => $items
+     
+        ]);
             
             
-                  
-                  
-          return $this->twig->render('@Contao/mod_product_list.html.twig', [
-                "headline" => 'Produkte',
-                "content" => $currentContent
+           
+            
+           
         
-            ]);
+        
+              
+              
+        return $this->twig->render('@Contao/mod_product_list.html.twig', [
+            "headline" => 'Produkte',
+            "content" => $currentContent
+    
+        ]);
         
         
     }

@@ -31,11 +31,11 @@ use MetaModels\Factory;
 use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+//Cart
+use Bits\MmShopBundle\Session\CartSessionBag;
 
 class CartModule extends Module
 {
-   
-    protected $strTemplate = 'mod_cart';
 
     private $container;
     
