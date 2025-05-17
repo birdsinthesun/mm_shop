@@ -8,7 +8,13 @@ services:
     mm_shop_bundle:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
+        
+    Bits\MmShopBundle\Service\ResourceResolver: ~
     
+    Bits\MmShopBundle\Routing\DynamicRouteLoader:
+        autoconfigure: false
+        tags:
+            - { name: routing.loader }
         
     Bits\MmShopBundle\Migration\InstallMmShop:
         arguments:
@@ -22,24 +28,22 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
     
+    Bits\MmShopBundle\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+    
+    
     Bits\MmShopBundle\Controller\ProductListController:
         autoconfigure: false
         tags: ['controller.service_arguments']
         
     Bits\MmShopBundle\Controller\ProductDetailController:
-        autoconfigure: false
+        arguments:
+            $framework: '@contao.framework'
         tags: ['controller.service_arguments']
     
     
-    Bits\MmShopBundle\Service\ResourceResolver: ~
-    
-    Bits\MmShopBundle\Routing\DynamicRouteLoader:
-        autoconfigure: false
-        arguments:
-            $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
-            $db: '@doctrine.dbal.default_connection'
-        tags:
-            - { name: routing.loader }
+   
             
     Contao\CoreBundle\Security\Csrf\ContaoCsrfTokenManager:
         public: true
@@ -50,5 +54,5 @@ services:
         
     Bits\MmShopBundle\:
         resource: '../src/*'
-        exclude: '../src/{Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{Module,Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 

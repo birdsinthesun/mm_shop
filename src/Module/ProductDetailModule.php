@@ -5,6 +5,7 @@ namespace Bits\MmShopBundle\Module;
 use Contao\Module;
 use Contao\System;
 use Contao\Input;
+use Contao\PageModel;
 use Contao\FrontendTemplate;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 //Productlist
-use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Rules\SimpleQuery;
 use MetaModels\Filter\Setting\Collection;
 use MetaModels\Factory;
 use MetaModels\ItemList;
@@ -54,6 +55,8 @@ class ProductDetailModule extends Module
     private $tokenManager;
     
     private $arrCart;
+    
+    protected $objPage;
    
 
     public function __construct($module, $column = 'main')
@@ -77,7 +80,7 @@ class ProductDetailModule extends Module
             ->getFormFactory();
             $module->__set('overviewPage','1');
        // var_dump($module);exit;
-        parent::__construct($module, $column);
+       // parent::__construct($module, $column);
     }
     
     public function generate(){
@@ -93,11 +96,9 @@ class ProductDetailModule extends Module
             
 		}
         
-        $arrAllowedSteps = ['contao-rocks','persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
-        $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
-        $step = Input::get('auto_item', false, $stepIsValid);
-        var_dump($step);exit;
-        return $step;exit;
+       
+       //var_dump();exit;
+        //return $step;exit;
         //test
         $this->session->set('cart_items',['1','2']);
         
@@ -119,8 +120,8 @@ class ProductDetailModule extends Module
                     
                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
                 }
-                
-                
+                $alias = str_replace('.html','',$this->request->get('alias'));
+                $category = $this->request->get('category');
                  // Deine Item-IDs:
                 $itemIds = [1, 2];
 
@@ -139,7 +140,8 @@ class ProductDetailModule extends Module
                 $itemList->setMetaModel($metaModelId,$renderSettingId);
                 $itemList->setLanguage('de'); // optional
                 $itemList->prepare();
-                $itemList->addFilterRule(new StaticIdList('id', $itemIds));
+                
+                $itemList->addFilterRule(new SimpleQuery('SELECT * FROM mm_product WHERE alias = '.$alias));
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
@@ -174,6 +176,8 @@ class ProductDetailModule extends Module
     {
       
     }
+    
+    
     
     
 }

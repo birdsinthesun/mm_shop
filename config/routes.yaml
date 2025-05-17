@@ -1,3 +1,3 @@
-dynamic_routes:
-    resource: dummy
+mm_shop_routes:
+    resource: .
     type: dynamic

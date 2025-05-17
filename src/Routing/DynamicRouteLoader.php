@@ -5,12 +5,12 @@ namespace Bits\MmShopBundle\Routing;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\Loader;
-
+use Bits\MmShopBundle\Controller\ProductDetailController;
 class DynamicRouteLoader extends Loader
 {
     private bool $loaded = false;
 
-    public function load($resource, string $type = null): RouteCollection
+    public function load($resource, string $type = null)
     {
         if ($this->loaded) {
             throw new \RuntimeException('Do not load this loader twice.');
@@ -26,9 +26,9 @@ class DynamicRouteLoader extends Loader
                 '/'.$rootPageAlias.'/' . $category .'.html',
                 [
                     '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
-                    'scheme' => 'https',
+                   
                     'category' => $category,
-                    'type' => 'dynamic'
+                   
                 ],
                 ['alias' => '.+']
             );
@@ -37,13 +37,13 @@ class DynamicRouteLoader extends Loader
             
             
             
-            $routeDetails = new Route(
+            $routeDetail = new Route(
                 '/'.$rootPageAlias.'/' . $category . '/{alias}',
                 [
-                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductDetailController::run',
-                    'scheme' => 'https',
+                    '_controller' => ProductDetailController::class,
+                   
                     'category' => $category,
-                    'type' => 'dynamic'
+                    
                 ],
                 ['alias' => '.+']
             );
@@ -57,6 +57,7 @@ class DynamicRouteLoader extends Loader
 
     public function supports($resource, string $type = Null): bool
     {
+        
         return 'dynamic' === $type;
     }
 }

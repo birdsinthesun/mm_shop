@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Bits\MmShopBundle\DependencyInjection\RoutingCompilerPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 
 
@@ -45,7 +46,13 @@ class MmShopBundle extends Bundle
          
          
          
-         $container->addCompilerPass(new RoutingCompilerPass());
+         $container->addCompilerPass(new RoutingCompilerPass(),PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
+    }
+    
+    protected function addCompilerPass($compilerPass, $type = PassConfig::TYPE_AFTER_REMOVING, $priority = 0)
+    {
+        // Dies stellt sicher, dass der CompilerPass korrekt registriert wird.
+        $this->container->addCompilerPass($compilerPass, $type, $priority);
     }
 
 }

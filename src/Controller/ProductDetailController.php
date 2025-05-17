@@ -2,17 +2,29 @@
 
 namespace Bits\MmShopBundle\Controller;
 
-use Contao\CoreBundle\Controller\FrontendController;
+use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Controller\AbstractController;
 use Contao\PageModel;
 use Contao\PageRegular;
+use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
-class ProductDetailController
+
+class ProductDetailController extends AbstractController
 {
-    public function run(string $alias): Response
+
+    public function __construct(
+        private readonly ContaoFramework $framework
+    ) {}
+    
+    public function __invoke(Request $request, string $alias, string $category): Response
     {
+        $this->framework->initialize();
+        
         // Produkt über Alias finden (z. B. aus MetaModels)
         $product = true; // z. B. über Model oder Repository
 
@@ -21,9 +33,11 @@ class ProductDetailController
         }
 
         // Hole die Contao-Detailseite (z. B. aus JumpTo-Spalte)
-        $page = PageModel::findByPk('195');
-
-        if (!$page) {
+        global $objPage;
+        $objPage = PageModel::findPublishedById('195');
+        $request->attributes->set('pageModel', $objPage);
+//var_dump($page);exit;
+        if (!$objPage) {
             throw new \RuntimeException('Detailseite nicht gefunden.');
         }
 
@@ -32,6 +46,6 @@ class ProductDetailController
 
         // Übergib die Seite an Contao's regulären Renderer
         $controller = new PageRegular();
-        return $controller->getResponse($page, true);
+        return $controller->getResponse($objPage, false);
     }
 }
