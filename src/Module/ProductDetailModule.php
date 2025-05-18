@@ -63,8 +63,16 @@ class ProductDetailModule extends Module
         $this->twig = $this->container->get('twig');
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
         
-        //$this->sessionCart = $this->session->getBag('card');
-            
+        if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
+        { var_dump('test1');
+              $this->session->getBag('contao_frontend')->set('cart',[]);
+            $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+        }else{
+            var_dump(get_class_methods( $this->session),'test2');
+                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
+      
+        }   
         
        
 
@@ -86,11 +94,18 @@ class ProductDetailModule extends Module
             //add to card
             $addId = Input::get('add');
             if($addId !== Null){
-                
-                $this->sessionCart->set($addId,[$addId.'_count' => $this->sessionCart->get($addId)['count']+1]);
+                $count = 0;
+                if(isset($this->sessionCart[$addId][$addId.'_count'])){
+                    $count =  $this->sessionCart[$addId][$addId.'_count']+1;
+                }
+                $this->sessionCart[$addId] = [$addId.'_count' => $count];
+                $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
+            
+                $this->session->save();
+               
                 return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
             }
-            
+            var_dump($this->session->getBag('contao_frontend')->get('cart'));
             $alias = str_replace('.html','',$this->request->get('alias'));
             $category = $this->request->get('category');
              // Deine Item-IDs:

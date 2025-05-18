@@ -21,7 +21,7 @@ class CartSessionBag implements SessionBagInterface
 
     public function getStorageKey(): string
     {
-        return '_cart'; // So heißt der Key im $_SESSION-Array
+        return '_cart'; 
     }
 
     public function clear(): array

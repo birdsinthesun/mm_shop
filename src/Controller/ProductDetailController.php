@@ -30,7 +30,7 @@ class ProductDetailController extends AbstractController
     public function __invoke(Request $request, string $alias, string $category): Response
     {
         $this->framework->initialize();
-      // var_dump($this->resourceResolver->isProduct($category,$alias));exit;
+      
         if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category)) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }

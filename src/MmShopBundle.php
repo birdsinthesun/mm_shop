@@ -45,7 +45,7 @@ class MmShopBundle extends Bundle
        
         
          
-        $container->addCompilerPass(new SessionCompilerPass(),PassConfig::TYPE_AFTER_REMOVING, 100);
+        $container->addCompilerPass(new SessionCompilerPass());
 
          
          $container->addCompilerPass(new RoutingCompilerPass(),PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);

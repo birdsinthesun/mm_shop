@@ -4,21 +4,38 @@ namespace Bits\MmShopBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Bits\MmShopBundle\EventListener\Session\SessionBagListener;
+use Symfony\Component\DependencyInjection\Reference;
+use Bits\MmShopBundle\Session\SessionFactory;
+use Bits\MmShopBundle\Session\CartSessionBag;
 
 class SessionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition(SessionBagListener::class)) {
-            return;
-        }
+        if (!$container->hasDefinition(SessionFactory::class)) {
+         
+        return;}
+             
+            
+            $definition1 = $container->getDefinition(CartSessionBag::class);
+           
+            $definition1
+            ->setPublic(true)
+                 ;
+            $container->setDefinition(CartSessionBag::class, $definition1);
 
-        $definition = $container->getDefinition(SessionBagListener::class);
-        //var_dump(get_class_methods($definition));exit;
-        $definition->addTag('name: kernel.event_listener, event: kernel.request')
-        ->setPublic(true);
-        $container->setDefinition(SessionBagListener::class, $definition);
-        
+
+            $definition = $container->getDefinition(SessionFactory::class);
+      //  var_dump(get_class_methods($definition));exit;
+            $definition
+            ->setClass('Bits\MmShopBundle\Session\SessionFactory', SessionFactory::class)
+            ->setDecoratedService('session.factory')
+            ->setArguments([new Reference('Bits\MmShopBundle\Session\SessionFactory.inner'),
+                new Reference('Bits\MmShopBundle\Session\CartSessionBag')])
+            ->setPublic(true)
+            ;
+            $container->setDefinition(SessionFactory::class, $definition);
+           
+    
     }
 }

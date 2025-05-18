@@ -9,10 +9,19 @@ services:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
         
-    Bits\MmShopBundle\EventListener\Session\SessionBagListener:
+    Bits\MmShopBundle\Session\CartSessionBag:
         public: true
-        tags:
-            - { name: kernel.event_listener, event: kernel.request}
+        
+    
+    Bits\MmShopBundle\Session\SessionFactory:
+        decorates: session.factory
+        arguments:
+            - '@Bits\MmShopBundle\Session\SessionFactory.inner'
+            - '@Bits\MmShopBundle\Session\CartSessionBag'
+            
+    Bits\MmShopBundle\Session\SessionFactory.inner:
+        public: true
+        
       
     Bits\MmShopBundle\Service\ResourceResolver:
         public: true
