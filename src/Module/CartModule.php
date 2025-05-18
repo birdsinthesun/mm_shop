@@ -149,7 +149,7 @@ class CartModule extends Module
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
-                
+                $summary = $this->generateCartSummary($items);
                 $form = $this->generateForm($items,$data);
                 $form->handleRequest(null);
                 
@@ -157,6 +157,7 @@ class CartModule extends Module
                 $currentContent =  $this->twig->render('@Contao/cart/product_list.html.twig', [
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
                     "items" => $items,
+                    "summary" => $summary,
                     "form" => $form->createView()
              
                 ]);
@@ -218,4 +219,27 @@ class CartModule extends Module
         
         
     }
+    
+     private function generateCartSummary($items)
+     {
+         $arrSummary = [];
+         $shopConfigTaxId =  $this->connection->fetchAllAssociative(
+                'SELECT tax FROM mm_shop WHERE id = ?', 
+                ['1']);
+                
+         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
+                'SELECT * FROM mm_tax WHERE id = ?', 
+                [$shopConfigTaxId[0]['tax']]);
+         
+         foreach($items as $key => $item){
+             $arrSummary['total'] += $item['raw']['price'];
+             
+             
+             }
+         $arrSummary['subtotal'] = $arrSummary['total'] *100/81;
+         
+         return $arrSummary;
+        }
+    
+    
 }

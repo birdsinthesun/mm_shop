@@ -79,7 +79,16 @@ class OrderingProcessModule extends Module
             ->addExtension(new CoreExtension()) // Core Extension für Formulare
             ->getFormFactory();
             
-        $this->arrCart = [];
+        if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
+        { 
+              $this->session->getBag('contao_frontend')->set('cart',[]);
+            $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+        }else{
+            
+                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
+      
+        }
         
     }
     
@@ -111,37 +120,6 @@ class OrderingProcessModule extends Module
         
         
         switch ($step) {
-            case 'test':
-                // Deine Item-IDs:
-                $itemIds = [1, 2];
-
-                // MetaModel-ID und RenderSetting-ID
-                $metaModelId = 2;
-                $renderSettingId = 15;
-                
-
-                // Services laden
-                $factory = $this->container->get('metamodels.factory');
-                $renderFactory = $this->container->get('metamodels.render_setting_factory');
-                $dispatcher = $this->container->get('event_dispatcher');
-
-                // ItemList instanziieren
-                $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-                $itemList->setMetaModel($metaModelId,$renderSettingId);
-                $itemList->setLanguage('de'); // optional
-                $itemList->addFilterRule(new StaticIdList($itemIds));
-                $itemList->prepare();
-                
-                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
-                $items = $itemList->getItems()->parseAll('html5',$objView);
-                
-            
-             $currentOutput =  $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
-                    "headline" => 'Produkte Übersicht',
-                    "items" => $items
-            
-                ]);
-                break;
             case 'persoenliche-daten':
                   //   $this->session->clear();
                    $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
@@ -415,10 +393,11 @@ class OrderingProcessModule extends Module
                         'payment' => $this->session->get('order_payment')
                 
                 ];
+                
                 $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => 'Übersicht',
                     "order" => $arrOrder,
-                    "cart" => $this->arrCart,
+                    "cart" => $this->generateCartOverview(),
                     "formular" => $formView,
                     "preview" => 'zahlung',
                     "next" => ''
@@ -442,10 +421,12 @@ class OrderingProcessModule extends Module
                         'overview' => $this->session->get('order_overview')
                 
                 ];
+                
+                
                 $orderOverview = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => 'Bestelldetails',
                     "order" => $arrOrder,
-                    "cart" => $this->arrCart,
+                    "cart" => $this->generateCartOverview(),
                     "formular" => '',
                     "preview" => '',
                     "next" => ''
@@ -455,14 +436,14 @@ class OrderingProcessModule extends Module
                 $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
                     "headline" => 'Rechnung',
                     "order" => $arrOrder,
-                    "cart" => $this->arrCart, //Child-Template!!!
+                    "cart" => $this->generateCartOverview(), //Child-Template!!!
                 ]);
                     // PDF in files speichern unter Rechnungen/RG-Nr.pdf
                     // Als Email versenden
                 $orderConfirmation = $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
                     "headline" => 'Bestellbestätigung',
                     "order" => $arrOrder,
-                    "cart" => $this->arrCart,
+                    "cart" => $this->generateCartOverview()
                   
             
                 ]);
@@ -656,5 +637,59 @@ class OrderingProcessModule extends Module
         
     }
     
+       private function generateCartOverview()
+    {
+          // Deine Item-IDs:
+                $itemIds = array_keys($this->sessionCart);
+
+                // MetaModel-ID und RenderSetting-ID
+                $metaModelId = 2;
+                $renderSettingId = 15;
+                
+
+                // Services laden
+                $factory = $this->container->get('metamodels.factory');
+                $renderFactory = $this->container->get('metamodels.render_setting_factory');
+                $dispatcher = $this->container->get('event_dispatcher');
+
+                // ItemList instanziieren
+                $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
+                $itemList->setMetaModel($metaModelId,$renderSettingId);
+                $itemList->setLanguage('de'); // optional
+                $itemList->addFilterRule(new StaticIdList($itemIds));
+                $itemList->prepare();
+                
+                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+                $items = $itemList->getItems()->parseAll('html5',$objView);
+                $summary = $this->generateCartSummary($items);
+                
+                return $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
+            "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
+            "items" => $items,
+            "summary" => $summary 
+     
+        ]);
+    
+    }
+    
+    private function generateCartSummary($items)
+     {
+         $arrSummary = [];
+         $shopConfigTaxId =  $this->connection->fetchAllAssociative(
+                'SELECT tax FROM mm_shop WHERE id = ?', 
+                ['1']);
+         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
+                'SELECT * FROM mm_tax WHERE id = ?', 
+                [$shopConfigTaxId[0]['tax']]);
+         
+         foreach($items as $key => $item){
+             $arrSummary['total'] += $item['raw']['price'];
+             
+             
+             }
+         $arrSummary['subtotal'] = $arrSummary['total'] *100/81;
+         
+         return $arrSummary;
+        }
     
 }

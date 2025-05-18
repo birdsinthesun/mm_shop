@@ -42,6 +42,11 @@
     <h3>Zahlungsart</h3>
     <p>Zahlungs-ID: {{ order.payment.payment }}</p>
 </section>
+
+<section>
+    <h3>Produkte</h3>
+    {{ cart }}
+</section>
  {% endif %}
 {% set formHtml = form(formular) %}
   {{ formHtml|raw }}
