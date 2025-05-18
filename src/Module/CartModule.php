@@ -75,6 +75,17 @@ class CartModule extends Module
             ->addExtension(new ValidatorExtension($validator))
             ->addExtension(new CoreExtension()) // Core Extension für Formulare
             ->getFormFactory();
+        
+        if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
+        { 
+              $this->session->getBag('contao_frontend')->set('cart',[]);
+            $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+        }else{
+            
+                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
+      
+        }
             
         
     }
@@ -92,30 +103,32 @@ class CartModule extends Module
             
 		}
         //test
-        $this->session->set('cart_items',['1','2']);
         
-        if($this->session->get('cart_items') === Null){
-            $this->session->set('cart_items',[]);
-            }
-         if(empty($this->session->get('cart_items'))){
+         if(empty(array_keys($this->sessionCart))){
              
              $currentContent = 'Der Warenkorb ist leer.';
              
              }else{
-                $data = ($this->session->get('cart_items_data'))??[];
+                $data = $this->sessionCart;
 
  
                 $removeId = Input::get('remove');
                 // remove from session
                 if($removeId !== Null){
                     
-                    
+                   unset($this->sessionCart[$removeId]);
+                }
+                
+                $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
+            
+                $this->session->save();
+               
                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
                 }
                 
                 
                  // Deine Item-IDs:
-                $itemIds = [1, 2];
+                $itemIds = array_keys($this->sessionCart);
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;

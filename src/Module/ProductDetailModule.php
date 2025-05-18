@@ -64,11 +64,11 @@ class ProductDetailModule extends Module
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
         
         if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
-        { var_dump('test1');
+        { 
               $this->session->getBag('contao_frontend')->set('cart',[]);
             $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
         }else{
-            var_dump(get_class_methods( $this->session),'test2');
+            
                 $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
                $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
       
@@ -105,7 +105,7 @@ class ProductDetailModule extends Module
                
                 return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
             }
-            var_dump($this->session->getBag('contao_frontend')->get('cart'));
+           
             $alias = str_replace('.html','',$this->request->get('alias'));
             $category = $this->request->get('category');
              // Deine Item-IDs:

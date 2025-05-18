@@ -61,7 +61,17 @@ class ProductListModule extends Module
         $this->connection = $this->container->get('database_connection');
         $this->twig = $this->container->get('twig');
         $this->metamodelsFactory = $this->container->get('metamodels.factory');
-        $this->sessionCart = $this->session->registerBag(new CartSessionBag);
+        
+        if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
+        { 
+              $this->session->getBag('contao_frontend')->set('cart',[]);
+            $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+        }else{
+            
+                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
+      
+        }
 
             
         
@@ -84,8 +94,15 @@ class ProductListModule extends Module
         //add to card
         $addId = Input::get('add');
         if($addId !== Null){
-            
-            $this->sessionCart->set($addId,[$addId.'_count' => $this->sessionCart->get($addId)['count']+1]);
+            $count = 0;
+            if(isset($this->sessionCart[$addId][$addId.'_count'])){
+                $count =  $this->sessionCart[$addId][$addId.'_count']+1;
+            }
+            $this->sessionCart[$addId] = [$addId.'_count' => $count];
+            $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
+        
+            $this->session->save();
+           
             return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
         }
         
