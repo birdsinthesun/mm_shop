@@ -109,17 +109,21 @@ class CartModule extends Module
              $currentContent = 'Der Warenkorb ist leer.';
              
              }else{
-                $data = $this->sessionCart;
+                $data = [];
+                foreach($this->sessionCart as $id =>$count){
+                        $data[$id.'_count'] = $count[$id.'_count'];
+                    }
+                
 
  
                 $removeId = Input::get('remove');
                 // remove from session
                 if($removeId !== Null){
-                    
-                   unset($this->sessionCart[$removeId]);
+                    $arrCart = $this->sessionCart;
+                   unset($arrCart[$removeId]);
+               // var_dump($this->sessionCart[$removeId]);exit;
                 
-                
-                $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
+                $this->session->getBag('contao_frontend')->set('cart',$arrCart);
             
                 $this->session->save();
                
@@ -195,7 +199,7 @@ class CartModule extends Module
                             'action' => $this->request->getUri(),
                             'method' => 'POST']);
             foreach($items as $i => $item){
-                $builder->add($item['raw']['id'].'count', NumberType::class, [
+                $builder->add($item['raw']['id'].'_count', NumberType::class, [
                         'label' => 'Anzahl',
                         'required' => true,
                             'constraints' => [new NotBlank([
@@ -234,7 +238,9 @@ class CartModule extends Module
             $arrSummary['total'] = 0;
             $arrSummary['taxsubtotal'] = [];
          foreach($items as $key => $item){
-             $arrSummary['total'] += $item['raw']['price'];
+           //  var_dump($item['raw']['price']);exit;
+            $price = str_replace(',','.',$item['raw']['price']);
+             $arrSummary['total'] += $price;
                 foreach($arrSummary['tax'] as $k => $tax){
                         
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
@@ -242,7 +248,7 @@ class CartModule extends Module
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
                                
-                            $arrSummary['taxsubtotal'][$tax['id']] += $item['raw']['price']/100*$tax['tax'];
+                            $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax'];
                         }
                     }
              
@@ -258,6 +264,7 @@ class CartModule extends Module
          
          return $arrSummary;
         }
+        
     // ToDo
      private function generateCartSummaryBToB($items)
      {
@@ -290,9 +297,17 @@ class CartModule extends Module
             }
             
          $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
+         //Format 0,00
+         $arrSummary['total'] = str_replace('.',',',$arrSummary['total']);
+         foreach($arrSummary['taxsubtotal'] as $key =>$tax){
+             $arrSummary['taxsubtotal'][$key] = str_replace('.',',',$tax);
+             }
+         $arrSummary['taxtotal'] = str_replace('.',',',$arrSummary['taxtotal']);
+         $arrSummary['subtotal'] = str_replace('.',',',$arrSummary['subtotal']);
          
          return $arrSummary;
         }
+        
     
     
 }

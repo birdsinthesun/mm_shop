@@ -147,15 +147,10 @@ class ProductListModule extends Module
         
         $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
             "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
-            "items" => $items
+            "items" => $items,
+            "item_urls" => $this->generateProductUrls($items,$category)
      
         ]);
-            
-            
-           
-            
-           
-        
         
               
               
@@ -171,6 +166,22 @@ class ProductListModule extends Module
     protected function compile(): void
     {
       
+    }
+    
+      
+     private function generateProductUrls($items,$category)
+     {
+         $arrUrls = [];
+         $requestUrl =  str_replace('.html','',$this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+         foreach($items as $key => $item){
+             if(!$category){
+             $arrUrls[$item['raw']['id']] = $requestUrl.'/'.$item['raw']['category']["__SELECT_RAW__"]['alias'].'/'.$item['raw']['alias'];
+             }else{
+                 $arrUrls[$item['raw']['id']] = $requestUrl.'/'.$item['raw']['alias'];
+                 
+                 }
+         }  
+         return $arrUrls;    
     }
     
     
