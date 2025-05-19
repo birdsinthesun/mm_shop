@@ -256,13 +256,21 @@ class CartModule extends Module
              }
              
              $arrSummary['taxtotal'] = 0;
-        foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
-            $arrSummary['taxtotal'] += $taxtotal;
-            }
+            foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+                $arrSummary['taxtotal'] += $taxtotal;
+                }
+                
+             $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
+               //Format 0,00
+             $arrSummary['total'] = str_replace('.',',',number_format(round($arrSummary['total'],2),2));
+             foreach($arrSummary['taxsubtotal'] as $key =>$tax){
+                 $arrSummary['taxsubtotal'][$key] = str_replace('.',',',number_format(round($tax,2),2));
+                 }
+             $arrSummary['taxtotal'] = str_replace('.',',',number_format(round($arrSummary['taxtotal'],2),2));
+             $arrSummary['subtotal'] = str_replace('.',',',number_format(round($arrSummary['subtotal'],2,PHP_ROUND_HALF_UP),2));
+             
             
-         $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
-         
-         return $arrSummary;
+             return $arrSummary;
         }
         
     // ToDo
@@ -298,12 +306,12 @@ class CartModule extends Module
             
          $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
          //Format 0,00
-         $arrSummary['total'] = str_replace('.',',',$arrSummary['total']);
+         $arrSummary['total'] = str_replace('.',',',round($arrSummary['total'],2));
          foreach($arrSummary['taxsubtotal'] as $key =>$tax){
-             $arrSummary['taxsubtotal'][$key] = str_replace('.',',',$tax);
+             $arrSummary['taxsubtotal'][$key] = str_replace('.',',',round($tax,2));
              }
-         $arrSummary['taxtotal'] = str_replace('.',',',$arrSummary['taxtotal']);
-         $arrSummary['subtotal'] = str_replace('.',',',$arrSummary['subtotal']);
+         $arrSummary['taxtotal'] = str_replace('.',',',round($arrSummary['taxtotal'],2));
+         $arrSummary['subtotal'] = str_replace('.',',',round($arrSummary['subtotal'],2,PHP_ROUND_HALF_UP));
          
          return $arrSummary;
         }
