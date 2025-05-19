@@ -54,7 +54,7 @@ class ProductListModule extends Module
 
     public function __construct($module, $column = 'main')
     {
-        parent::__construct($module, $column);
+        
         $this->container = System::getContainer();
         $this->request = $this->container->get('request_stack')->getCurrentRequest();
         $this->session = $this->request->getSession();
@@ -78,12 +78,11 @@ class ProductListModule extends Module
     }
     
     public function generate(){
-        
-        
+       
         if ($this->request && $this->container->get('contao.routing.scope_matcher')->isBackendRequest($this->request))
 		{
 			 return $this->twig->render('@Contao/backend/be_wildcard.html.twig', [
-                'wildcard' => '### ' . $GLOBALS['TL_LANG']['FMD']['cart'][0] . ' ###',
+                'wildcard' => '### ' . $GLOBALS['TL_LANG']['FMD']['product_list'][0] . ' ###',
                 'title' => $this->name,
                 'id' => $this->id
             ]);
@@ -94,7 +93,7 @@ class ProductListModule extends Module
         //add to card
         $addId = Input::get('add');
         if($addId !== Null){
-            $count = 0;
+            $count = 1;
             if(isset($this->sessionCart[$addId][$addId.'_count'])){
                 $count =  $this->sessionCart[$addId][$addId.'_count']+1;
             }
@@ -107,8 +106,12 @@ class ProductListModule extends Module
         }
         
         $category = str_replace('.html','',$this->request->get('category'));
-         // Deine Item-IDs:
-        $itemIds = [1, 2];
+        //var_dump($category);exit;
+        
+        
+         $categoryId = $this->connection->fetchAllAssociative(
+                'SELECT id FROM mm_category WHERE alias = ? AND published = ?', 
+                [$category,'1']);
 
         // MetaModel-ID und RenderSetting-ID
         $metaModelId = 2;
@@ -124,7 +127,16 @@ class ProductListModule extends Module
         $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
         $itemList->setMetaModel($metaModelId,$renderSettingId);
         $itemList->setLanguage('de'); // optional
-        $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE category = "'.$category.'"'));
+        
+        if(!$category){
+             $sql = 'SELECT id FROM mm_product WHERE published = "1"';
+       
+        }else{
+            $sql = 'SELECT id FROM mm_product WHERE category = "'.$categoryId[0]['id'].'" AND published = "1"';
+            
+        }
+        
+        $itemList->addFilterRule(new SimpleQuery($sql));
         $itemList->prepare();
         
         $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);

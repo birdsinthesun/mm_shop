@@ -117,7 +117,7 @@ class CartModule extends Module
                 if($removeId !== Null){
                     
                    unset($this->sessionCart[$removeId]);
-                }
+                
                 
                 $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
             
@@ -149,12 +149,22 @@ class CartModule extends Module
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
-                $summary = $this->generateCartSummary($items);
+                
+                $isBToB = $this->connection->fetchAllAssociative(
+                'SELECT shop_b2b FROM mm_shop WHERE id=?',
+                ['1']);
+                if($isBToB[0]['shop_b2b'] === '1'){
+                    // ToDo
+                    $summary = $this->generateCartSummaryBToB($items);
+                }else{
+                    $summary = $this->generateCartSummary($items);
+                }
+                
                 $form = $this->generateForm($items,$data);
                 $form->handleRequest(null);
                 
                 
-                $currentContent =  $this->twig->render('@Contao/cart/product_list.html.twig', [
+                $currentContent = $this->twig->render('@Contao/cart/product_list.html.twig', [
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
                     "items" => $items,
                     "summary" => $summary,
@@ -162,18 +172,12 @@ class CartModule extends Module
              
                 ]);
                 
-                
-               
-                
-               
-            }
-            
-                  
+
+             }
                   
           return $this->twig->render('@Contao/mod_cart.html.twig', [
                 "headline" => 'Warenkorb',
                 "content" => $currentContent
-        
             ]);
         
         
@@ -223,20 +227,69 @@ class CartModule extends Module
      private function generateCartSummary($items)
      {
          $arrSummary = [];
-         $shopConfigTaxId =  $this->connection->fetchAllAssociative(
-                'SELECT tax FROM mm_shop WHERE id = ?', 
-                ['1']);
+         
                 
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
-                'SELECT * FROM mm_tax WHERE id = ?', 
-                [$shopConfigTaxId[0]['tax']]);
-         
+                'SELECT * FROM mm_tax');
+            $arrSummary['total'] = 0;
+            $arrSummary['taxsubtotal'] = [];
          foreach($items as $key => $item){
              $arrSummary['total'] += $item['raw']['price'];
+                foreach($arrSummary['tax'] as $k => $tax){
+                        
+                        if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
+                            if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
+                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
+                                }
+                               
+                            $arrSummary['taxsubtotal'][$tax['id']] += $item['raw']['price']/100*$tax['tax'];
+                        }
+                    }
              
              
              }
-         $arrSummary['subtotal'] = $arrSummary['total'] *100/81;
+             
+             $arrSummary['taxtotal'] = 0;
+        foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+            $arrSummary['taxtotal'] += $taxtotal;
+            }
+            
+         $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
+         
+         return $arrSummary;
+        }
+    // ToDo
+     private function generateCartSummaryBToB($items)
+     {
+         $arrSummary = [];
+         
+                
+         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
+                'SELECT * FROM mm_tax');
+            $arrSummary['total'] = 0;
+            $arrSummary['taxsubtotal'] = [];
+         foreach($items as $key => $item){
+             $arrSummary['total'] += $item['raw']['price'];
+                foreach($arrSummary['tax'] as $k => $tax){
+                        
+                        if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
+                            if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
+                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
+                                }
+                               
+                            $arrSummary['taxsubtotal'][$tax['id']] += $item['raw']['price']/100*$tax['tax'];
+                        }
+                    }
+             
+             
+             }
+             
+             $arrSummary['taxtotal'] = 0;
+        foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+            $arrSummary['taxtotal'] += $taxtotal;
+            }
+            
+         $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
          
          return $arrSummary;
         }

@@ -30,15 +30,16 @@ class ProductListController extends AbstractController
     public function __invoke(Request $request, string $category): Response
     {
         $this->framework->initialize();
-        
-         if (!$this->resourceResolver->hasCategoryProducts($category) || !$this->resourceResolver->isProductCategory($category,)) {
+     //   var_dump($this->resourceResolver->hasCategoryProducts($category));exit;
+         if (!$this->resourceResolver->hasCategoryProducts($category) || !$this->resourceResolver->isProductCategory($category)) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
 
         global $objPage;
         $objPage = PageModel::findPublishedById('192');
         $request->attributes->set('pageModel', $objPage);
-//var_dump($page);exit;
+        $objPage->__set('layout','27');
+//var_dump($objPage);exit;
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
         }

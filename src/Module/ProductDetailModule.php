@@ -84,7 +84,7 @@ class ProductDetailModule extends Module
         if ($this->request && $this->container->get('contao.routing.scope_matcher')->isBackendRequest($this->request))
 		{
 			 return $this->twig->render('@Contao/backend/be_wildcard.html.twig', [
-                'wildcard' => '### ' . $GLOBALS['TL_LANG']['FMD']['cart'][0] . ' ###',
+                'wildcard' => '### ' . $GLOBALS['TL_LANG']['FMD']['product_detail'][0] . ' ###',
                 'title' => $this->name,
                 'id' => $this->id
             ]);
@@ -94,7 +94,7 @@ class ProductDetailModule extends Module
             //add to card
             $addId = Input::get('add');
             if($addId !== Null){
-                $count = 0;
+                $count = 1;
                 if(isset($this->sessionCart[$addId][$addId.'_count'])){
                     $count =  $this->sessionCart[$addId][$addId.'_count']+1;
                 }
@@ -108,8 +108,6 @@ class ProductDetailModule extends Module
            
             $alias = str_replace('.html','',$this->request->get('alias'));
             $category = $this->request->get('category');
-             // Deine Item-IDs:
-            $itemIds = [1, 2];
 
             // MetaModel-ID und RenderSetting-ID
             $metaModelId = 2;

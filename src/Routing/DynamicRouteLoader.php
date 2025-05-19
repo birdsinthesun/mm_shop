@@ -32,8 +32,19 @@ class DynamicRouteLoader extends Loader
 
         foreach ($categories as $key => $category) {
             
+            
             $routeList = new Route(
-                '/'.$rootPageAlias.'/' . $category,
+                '/'.$rootPageAlias,
+                [
+                    '_controller' => ProductListController::class,
+                    'category' => $category,
+                ]
+            );
+            
+            $routes->add('mm_product_root', $routeList);
+            
+            $routeList = new Route(
+                '/'.$rootPageAlias.'/' . $category.'.html',
                 [
                     '_controller' => ProductListController::class,
                     'category' => $category,

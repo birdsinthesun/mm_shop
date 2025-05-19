@@ -25,7 +25,7 @@
             {% if attribute(items, i) is defined %}
                
                     {% set product_id = items.(i).raw.id %}
-                    <a href='{{ url }}?remove=product_id' title='Produkt aus den Warenkorb entfernen'>Entfernen</a>
+                    <a href='{{ url }}?remove={{ product_id }}' title='Produkt aus den Warenkorb entfernen'>Entfernen</a>
                        
                 {% endif %}
         </div>
