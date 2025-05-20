@@ -6,6 +6,7 @@ use Contao\Module;
 use Contao\System;
 use Contao\Input;
 use Contao\FrontendTemplate;
+use Contao\PageModel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -136,7 +137,10 @@ class CartModule extends Module
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
-                $renderSettingId = 15;
+                $renderSettingId = $this->connection->fetchFirstColumn(
+                'SELECT cart_rendering FROM mm_shop WHERE id = ?', 
+                ['1']);
+               
                 
 
                 // Services laden
@@ -146,7 +150,7 @@ class CartModule extends Module
 
                 // ItemList instanziieren
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-                $itemList->setMetaModel($metaModelId,$renderSettingId);
+                $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
                 $itemList->setLanguage('de'); // optional
                 $itemList->addFilterRule(new StaticIdList($itemIds));
                 $itemList->prepare();
@@ -172,18 +176,22 @@ class CartModule extends Module
                             $arrCart[$id] = [$id.'_count' => $form->getData()[$id.'_count']];  
                               
                     }
-                   // var_dump($form->getData(), $arrCart);exit;
                     $this->session->getBag('contao_frontend')->set('cart',$arrCart);
                     
                     $this->session->save();
-                //     var_dump($this->session->getBag('contao_frontend')->get('cart'));exit;       
-                    return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
                    
                          
                          
                 }
+                //Checkout Url
+                $checkoutId = $this->connection->fetchFirstColumn(
+                'SELECT checkout_page FROM mm_shop WHERE id = ?', 
+                ['1']);
                 
+                $checkoutPage = PageModel::findPublishedById($checkoutId[0]);
                 $currentContent = $this->twig->render('@Contao/cart/product_list.html.twig', [
+                    "checkout_url" => $checkoutPage->getFrontendUrl(),
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
                     "items" => $items,
                     "summary" => $summary,

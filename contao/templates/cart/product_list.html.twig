@@ -80,6 +80,11 @@
         <td class="form-input">
                 {{ form_widget(field) }}
             </td>
+        {% if field.vars.name == 'aktualisieren' %}
+        <td class="checkout-link">
+           <a href="{{ checkout_url}}" title="Zur Kasse" >Zur Kasse</td>
+        </td>
+         {% endif %}
         </tr>
         {% endif %}
     {% endfor %}

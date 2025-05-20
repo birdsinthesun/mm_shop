@@ -106,7 +106,7 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
-        $arrAllowedSteps = ['test','persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
+        $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         if($this->session->get('order_steps') === Null){
@@ -385,14 +385,20 @@ class OrderingProcessModule extends Module
                     }
                     //var_dump($this->session->get('order_shipment'));exit;
                 $formView = $form->createView();
+                $salutation = $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_salutation WHERE id = ?', 
+                            [$this->session->get('order_personal_data')['salutation']]);
                 $shipment =  $this->connection->fetchAllAssociative(
                             'SELECT name FROM mm_shipment WHERE id = ?', 
                             [$this->session->get('order_shipment')['shipment']]);
                 $payment =  $this->connection->fetchAllAssociative(
                             'SELECT name FROM mm_payment WHERE id = ?', 
                             [$this->session->get('order_payment')['payment']]);
+                
+                $arrPersonalData = $this->session->get('order_personal_data');
+                $arrPersonalData['salutation'] = $salutation;
                 $arrOrder = [
-                        'personal_data' => $this->session->get('order_personal_data'),
+                        'personal_data' => $arrPersonalData,
                         'shipment' => $shipment[0]['name'],
                         'payment' => $payment[0]['name']
                 
@@ -430,7 +436,11 @@ class OrderingProcessModule extends Module
                 
                     // Rechnung in mm_order_invoice speichern und PDF generieren
                 $this->saveOrder($arrOrder);
-                
+                $salutation = $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_salutation WHERE id = ?', 
+                            [$this->session->get('order_personal_data')['salutation']]);
+               
+                $arrOrder['personal_data']['salutation'] = $salutation;
                 $shipment =  $this->connection->fetchAllAssociative(
                             'SELECT name FROM mm_shipment WHERE id = ?', 
                             [$this->session->get('order_shipment')['shipment']]);
@@ -661,7 +671,9 @@ class OrderingProcessModule extends Module
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
-                $renderSettingId = 15;
+                $renderSettingId = $this->connection->fetchFirstColumn(
+                'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
+                ['1']);
                 
 
                 // Services laden
@@ -671,7 +683,7 @@ class OrderingProcessModule extends Module
 
                 // ItemList instanziieren
                 $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-                $itemList->setMetaModel($metaModelId,$renderSettingId);
+                $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
                 $itemList->setLanguage('de'); // optional
                 $itemList->addFilterRule(new StaticIdList($itemIds));
                 $itemList->prepare();
@@ -772,7 +784,6 @@ class OrderingProcessModule extends Module
                 ARRAY_FILTER_USE_KEY
             );
             unset($arrPersonalData['finished']);
-            $arrPersonalData['salutation'] = '2';
             $this->connection->insert('mm_personaldata',$arrPersonalData);
             $personalDataId = $this->connection->lastInsertId();
             

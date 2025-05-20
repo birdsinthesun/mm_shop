@@ -115,7 +115,9 @@ class ProductListModule extends Module
 
         // MetaModel-ID und RenderSetting-ID
         $metaModelId = 2;
-        $renderSettingId = 13;
+         $renderSettingId = $this->connection->fetchFirstColumn(
+                'SELECT product_list_rendering FROM mm_shop WHERE id = ?', 
+                ['1']);
         
 
         // Services laden
@@ -125,7 +127,7 @@ class ProductListModule extends Module
 
         // ItemList instanziieren
         $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-        $itemList->setMetaModel($metaModelId,$renderSettingId);
+        $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
         $itemList->setLanguage('de'); // optional
         
         if(!$category){
