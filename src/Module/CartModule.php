@@ -166,7 +166,22 @@ class CartModule extends Module
                 
                 $form = $this->generateForm($items,$data);
                 $form->handleRequest(null);
-                
+                if($form->isSubmitted() && $form->isValid()){
+                    $arrCart = [];
+                    foreach($this->sessionCart as $id => $arrCount){
+                            $arrCart[$id] = [$id.'_count' => $form->getData()[$id.'_count']];  
+                              
+                    }
+                   // var_dump($form->getData(), $arrCart);exit;
+                    $this->session->getBag('contao_frontend')->set('cart',$arrCart);
+                    
+                    $this->session->save();
+                //     var_dump($this->session->getBag('contao_frontend')->get('cart'));exit;       
+                    return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                   
+                         
+                         
+                }
                 
                 $currentContent = $this->twig->render('@Contao/cart/product_list.html.twig', [
                     "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
@@ -238,17 +253,17 @@ class CartModule extends Module
             $arrSummary['total'] = 0;
             $arrSummary['taxsubtotal'] = [];
          foreach($items as $key => $item){
-           //  var_dump($item['raw']['price']);exit;
+       
             $price = str_replace(',','.',$item['raw']['price']);
-             $arrSummary['total'] += $price;
+             $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                 foreach($arrSummary['tax'] as $k => $tax){
                         
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
+                                $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
-                            $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax'];
                         }
                     }
              
@@ -257,6 +272,7 @@ class CartModule extends Module
              
              $arrSummary['taxtotal'] = 0;
             foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+                
                 $arrSummary['taxtotal'] += $taxtotal;
                 }
                 
@@ -276,44 +292,7 @@ class CartModule extends Module
     // ToDo
      private function generateCartSummaryBToB($items)
      {
-         $arrSummary = [];
          
-                
-         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
-                'SELECT * FROM mm_tax');
-            $arrSummary['total'] = 0;
-            $arrSummary['taxsubtotal'] = [];
-         foreach($items as $key => $item){
-             $arrSummary['total'] += $item['raw']['price'];
-                foreach($arrSummary['tax'] as $k => $tax){
-                        
-                        if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
-                            if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
-                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
-                                }
-                               
-                            $arrSummary['taxsubtotal'][$tax['id']] += $item['raw']['price']/100*$tax['tax'];
-                        }
-                    }
-             
-             
-             }
-             
-             $arrSummary['taxtotal'] = 0;
-        foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
-            $arrSummary['taxtotal'] += $taxtotal;
-            }
-            
-         $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
-         //Format 0,00
-         $arrSummary['total'] = str_replace('.',',',round($arrSummary['total'],2));
-         foreach($arrSummary['taxsubtotal'] as $key =>$tax){
-             $arrSummary['taxsubtotal'][$key] = str_replace('.',',',round($tax,2));
-             }
-         $arrSummary['taxtotal'] = str_replace('.',',',round($arrSummary['taxtotal'],2));
-         $arrSummary['subtotal'] = str_replace('.',',',round($arrSummary['subtotal'],2,PHP_ROUND_HALF_UP));
-         
-         return $arrSummary;
         }
         
     

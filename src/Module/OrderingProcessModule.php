@@ -138,11 +138,7 @@ class OrderingProcessModule extends Module
                          
                          }
                      
-                     if($form->isSubmitted() && !$form->isValid()){
-                         
-                         
-                         
-                         }
+                     
                    // var_dump($_POST,Input::post('personal_data'));exit;
                     if(!empty($data)&&Input::post('personal_data')&&!isset(Input::post('personal_data')['use_for_shipment'])){
                             
