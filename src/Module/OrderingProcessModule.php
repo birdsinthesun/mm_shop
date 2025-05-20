@@ -700,17 +700,17 @@ class OrderingProcessModule extends Module
             $arrSummary['total'] = 0;
             $arrSummary['taxsubtotal'] = [];
          foreach($items as $key => $item){
-           //  var_dump($item['raw']['price']);exit;
+       
             $price = str_replace(',','.',$item['raw']['price']);
-             $arrSummary['total'] += $price;
+             $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                 foreach($arrSummary['tax'] as $k => $tax){
                         
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
+                                $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
-                            $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax'];
                         }
                     }
              
@@ -719,6 +719,7 @@ class OrderingProcessModule extends Module
              
              $arrSummary['taxtotal'] = 0;
             foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+                
                 $arrSummary['taxtotal'] += $taxtotal;
                 }
                 
