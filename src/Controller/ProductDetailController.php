@@ -36,6 +36,9 @@ class ProductDetailController extends AbstractController
         }
  
         global $objPage;
+        $pageId = $this->db->fetchAllAssociative(
+                'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
+                ['1']);
         $objPage = PageModel::findPublishedById('195');
         $request->attributes->set('pageModel', $objPage);
 

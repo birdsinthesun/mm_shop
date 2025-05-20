@@ -38,8 +38,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class OrderingProcessModule extends Module
 {
    
-    protected $strTemplate = 'mod_ordering_process';
-
     private $container;
     
     private $request;
@@ -666,6 +664,7 @@ class OrderingProcessModule extends Module
                 return $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
             "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
             "items" => $items,
+            "cart_count" => $this->sessionCart,
             "summary" => $summary 
      
         ]);
@@ -675,21 +674,46 @@ class OrderingProcessModule extends Module
     private function generateCartSummary($items)
      {
          $arrSummary = [];
-         $shopConfigTaxId =  $this->connection->fetchAllAssociative(
-                'SELECT tax FROM mm_shop WHERE id = ?', 
-                ['1']);
-         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
-                'SELECT * FROM mm_tax WHERE id = ?', 
-                [$shopConfigTaxId[0]['tax']]);
          
+                
+         $arrSummary['tax'] = $this->connection->fetchAllAssociative(
+                'SELECT * FROM mm_tax');
+            $arrSummary['total'] = 0;
+            $arrSummary['taxsubtotal'] = [];
          foreach($items as $key => $item){
-             $arrSummary['total'] += $item['raw']['price'];
+           //  var_dump($item['raw']['price']);exit;
+            $price = str_replace(',','.',$item['raw']['price']);
+             $arrSummary['total'] += $price;
+                foreach($arrSummary['tax'] as $k => $tax){
+                        
+                        if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
+                            if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
+                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
+                                }
+                               
+                            $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax'];
+                        }
+                    }
              
              
              }
-         $arrSummary['subtotal'] = $arrSummary['total'] *100/81;
-         
-         return $arrSummary;
+             
+             $arrSummary['taxtotal'] = 0;
+            foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
+                $arrSummary['taxtotal'] += $taxtotal;
+                }
+                
+             $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
+               //Format 0,00
+             $arrSummary['total'] = str_replace('.',',',number_format(round($arrSummary['total'],2),2));
+             foreach($arrSummary['taxsubtotal'] as $key =>$tax){
+                 $arrSummary['taxsubtotal'][$key] = str_replace('.',',',number_format(round($tax,2),2));
+                 }
+             $arrSummary['taxtotal'] = str_replace('.',',',number_format(round($arrSummary['taxtotal'],2),2));
+             $arrSummary['subtotal'] = str_replace('.',',',number_format(round($arrSummary['subtotal'],2,PHP_ROUND_HALF_UP),2));
+             
+            
+             return $arrSummary;
         }
     
 }

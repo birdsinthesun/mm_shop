@@ -36,6 +36,9 @@ class ProductListController extends AbstractController
         }
 
         global $objPage;
+         $pageId = $this->db->fetchAllAssociative(
+                'SELECT product_list_page FROM mm_shop WHERE id = ?', 
+                ['1']);
         $objPage = PageModel::findPublishedById('192');
         $request->attributes->set('pageModel', $objPage);
         $objPage->__set('layout','27');

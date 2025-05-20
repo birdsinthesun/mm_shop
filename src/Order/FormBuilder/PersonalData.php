@@ -33,7 +33,7 @@ class PersonalData
     {
         
         $dcaViewId = $this->connection->fetchAllAssociative(
-                'SELECT personal_data_dca FROM mm_shop WHERE id = ?', 
+                'SELECT checkout_personal_data_dca FROM mm_shop WHERE id = ?', 
                 ['1']);
                // var_dump($dcaViewId[0]['personal_data_dca']);exit;
         $properties = $this->connection->fetchAllAssociative(
