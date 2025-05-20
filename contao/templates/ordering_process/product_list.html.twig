@@ -14,7 +14,7 @@
                         {% if currentAttribut == 'alias' %}
                             <td class="product-count">
                             {% set product_id = cart_item.raw.id %}
-                              {{ cart_count.(product_id).((product_id)._count) }}
+                              {{ cart_count.(product_id).(product_id~'_count') }}
                             </td>
                         {% else %}
                         <td class="product-{{ currentAttribut }}">

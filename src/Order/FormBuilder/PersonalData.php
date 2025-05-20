@@ -38,7 +38,7 @@ class PersonalData
                // var_dump($dcaViewId[0]['personal_data_dca']);exit;
         $properties = $this->connection->fetchAllAssociative(
             'SELECT * FROM tl_metamodel_dcasetting WHERE pid = ? AND published = "1" ORDER BY sorting ASC',
-            [$dcaViewId[0]['personal_data_dca']]
+           ['13'] //[$dcaViewId[0]['personal_data_dca']]
         );
         
         $attributeIDs = array_column($properties, 'attr_id');
@@ -92,7 +92,7 @@ class PersonalData
                  
                 $tags = $this->connection->fetchAllAssociative('SELECT * FROM '. $attr["select_table"]);
                 foreach ($tags as $tag) {
-                        $choices[$tag['name']] = $tag['alias']; 
+                        $choices[$tag['name']] = $tag['id']; 
                     }
                      $builder->add($prefix.$attr['colname'], $arrFormTypes[$attr['type']], array_merge([
                          'choices' => $choices,

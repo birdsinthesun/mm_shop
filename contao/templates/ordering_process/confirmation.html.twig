@@ -1,7 +1,5 @@
 <h2>{{ headline }}</h2>
 
-
-
 <section>
     <h3>Persönliche Daten</h3>
     <ul>
@@ -16,7 +14,8 @@
     </ul>
 </section>
 
-{% if order.personal_data.use_for_shipment %}
+{% if order.personal_data.use_for_shipment is not true %}
+
     <section>
         <h3>Lieferadresse</h3>
         <ul>
@@ -30,19 +29,15 @@
 
 <section>
     <h3>Versandart</h3>
-    <p>Versand-ID: {{ order.shipment.shipment }}</p>
+    <p>{{ order.shipment }}</p>
 </section>
 
 <section>
     <h3>Zahlungsart</h3>
-    <p>Zahlungs-ID: {{ order.payment.payment }}</p>
+    <p>{{ order.payment }}</p>
 </section>
 
 <section>
-    <h3>Rechtliches</h3>
-    <ul>
-        <li><strong>Datenschutzerklärung akzeptiert:</strong> {{ order.overview.datenschutzerklarung ? 'Ja' : 'Nein' }}</li>
-        <li><strong>AGBs akzeptiert:</strong> {{ order.overview.agbs ? 'Ja' : 'Nein' }}</li>
-        <li><strong>Newsletter abonniert:</strong> {{ order.overview.newsletter ? 'Ja' : 'Nein' }}</li>
-    </ul>
+    <h3>Produkte</h3>
+    {{ cart|raw }}
 </section>

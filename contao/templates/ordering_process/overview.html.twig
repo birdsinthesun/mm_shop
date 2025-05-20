@@ -1,10 +1,7 @@
 <h2>{{ headline }}</h2>
 
 {% if formular is not iterable %}
-
-{% else %}
-{% if formular is not iterable %}
-
+    {{ order|raw }}
 {% else %}
 <section>
     <h3>Persönliche Daten</h3>
@@ -35,19 +32,19 @@
 
 <section>
     <h3>Versandart</h3>
-    <p>Versand-ID: {{ order.shipment.shipment }}</p>
+    <p>{{ order.shipment }}</p>
 </section>
 
 <section>
     <h3>Zahlungsart</h3>
-    <p>Zahlungs-ID: {{ order.payment.payment }}</p>
+    <p>{{ order.payment }}</p>
 </section>
 
 <section>
     <h3>Produkte</h3>
-    {{ cart }}
+    {{ cart|raw }}
 </section>
- {% endif %}
+
 {% set formHtml = form(formular) %}
   {{ formHtml|raw }}
   {{ form_errors(formular) }}

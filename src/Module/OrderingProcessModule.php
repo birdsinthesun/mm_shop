@@ -90,6 +90,7 @@ class OrderingProcessModule extends Module
                $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
       
         }
+        $this->mailer = $this->container->get('mailer');
         
     }
     
@@ -122,7 +123,7 @@ class OrderingProcessModule extends Module
         
         switch ($step) {
             case 'persoenliche-daten':
-                  //   $this->session->clear();
+                 
                    $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                     $data = ($this->session->get('order_personal_data'))??[];
                   
@@ -386,12 +387,18 @@ class OrderingProcessModule extends Module
                             
                           
                     }
-                    
+                    //var_dump($this->session->get('order_shipment'));exit;
                 $formView = $form->createView();
+                $shipment =  $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_shipment WHERE id = ?', 
+                            [$this->session->get('order_shipment')['shipment']]);
+                $payment =  $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_payment WHERE id = ?', 
+                            [$this->session->get('order_payment')['payment']]);
                 $arrOrder = [
                         'personal_data' => $this->session->get('order_personal_data'),
-                        'shipment' => $this->session->get('order_shipment'),
-                        'payment' => $this->session->get('order_payment')
+                        'shipment' => $shipment[0]['name'],
+                        'payment' => $payment[0]['name']
                 
                 ];
                 
@@ -415,26 +422,29 @@ class OrderingProcessModule extends Module
                   
                     // mm_order befüllen
                     // Übersicht als Html in mm_order.overview speichern
+              
                 $arrOrder = [
                         'personal_data' => $this->session->get('order_personal_data'),
                         'shipment' => $this->session->get('order_shipment'),
                         'payment' => $this->session->get('order_payment'),
-                        'overview' => $this->session->get('order_overview'),
-                        'cart' => $this->sessionCart
+                        'overview' => $this->session->get('order_overview')
                 
                 ];
+               
                 
-                
-                $orderOverview = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
-                    "headline" => 'Bestelldetails',
-                    "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview(),
-                    "formular" => '',
-                    "preview" => '',
-                    "next" => ''
-            
-                ]); 
                     // Rechnung in mm_order_invoice speichern und PDF generieren
+                $this->saveOrder($arrOrder);
+                
+                $shipment =  $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_shipment WHERE id = ?', 
+                            [$this->session->get('order_shipment')['shipment']]);
+                $payment =  $this->connection->fetchAllAssociative(
+                            'SELECT name FROM mm_payment WHERE id = ?', 
+                            [$this->session->get('order_payment')['payment']]);
+                            
+                $arrOrder['shipment'] = $shipment[0]['name'];
+                $arrOrder['payment'] = $payment[0]['name'];
+                
                 $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
                     "headline" => 'Rechnung',
                     "order" => $arrOrder,
@@ -442,13 +452,21 @@ class OrderingProcessModule extends Module
                 ]);
                     // PDF in files speichern unter Rechnungen/RG-Nr.pdf
                     // Als Email versenden
-                $orderConfirmation = $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
-                    "headline" => 'Bestellbestätigung',
-                    "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview()
-                  
-            
-                ]);
+                $arrMail = [
+                    'from' => 'info@monique-hahnefeld.de' ,// Shop-Mail
+                    'to' => $this->session->get('order_personal_data')['email'],
+                    'subject' => 'Bestellbestätigung', //+Shop-Name
+                    'html' => $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
+                        "headline" => 'Bestellbestätigung',
+                        "order" => $arrOrder,
+                        "cart" => $this->generateCartOverview()
+                      
+                
+                    ])
+                ];
+                $this->sendConfirmation($arrMail);
+                $this->session->getBag('contao_frontend')->remove('cart');
+                $this->session->clear();
                // var_dump($arrOrder);exit;
                     //Session löschen
                    // Vielen Dank Nachricht
@@ -470,7 +488,8 @@ class OrderingProcessModule extends Module
        // var_dump('test',$currentOutput);exit;
         return $this->twig->render('@Contao/mod_ordering_process.html.twig', [
                 'navigation' => $parsedNavigation,
-                "currentOutput" => $currentOutput
+                "currentOutput" => $currentOutput,
+                'formular' => ''
             
         ]);
         
@@ -641,7 +660,7 @@ class OrderingProcessModule extends Module
     
        private function generateCartOverview()
     {
-          // Deine Item-IDs:
+                // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
 
                 // MetaModel-ID und RenderSetting-ID
@@ -723,11 +742,100 @@ class OrderingProcessModule extends Module
         
           private function saveOrder($arrOrder)
         {
+            //prepare cart data
+            // Deine Item-IDs:
+            $itemIds = array_keys($this->sessionCart);
+
+            // MetaModel-ID und RenderSetting-ID
+            $metaModelId = 2;
+            $renderSettingId = 15;
+            
+
+            // Services laden
+            $factory = $this->container->get('metamodels.factory');
+            $renderFactory = $this->container->get('metamodels.render_setting_factory');
+            $dispatcher = $this->container->get('event_dispatcher');
+
+            // ItemList instanziieren
+            $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
+            $itemList->setMetaModel($metaModelId,$renderSettingId);
+            $itemList->setLanguage('de'); // optional
+            $itemList->addFilterRule(new StaticIdList($itemIds));
+            $itemList->prepare();
+            
+            $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+            $items = $itemList->getItems()->parseAll('html5',$objView);
+            $summary = $this->generateCartSummary($items);
+            
+            
             // mm_personal_data
-            // mm_adress_shipment
+            $arrPersonalData = array_filter(
+                $arrOrder['personal_data'],
+                fn($key) => stripos($key, 'invoice') === false,
+                ARRAY_FILTER_USE_KEY
+            );
+            unset($arrPersonalData['finished']);
+            $arrPersonalData['salutation'] = '2';
+            $this->connection->insert('mm_personaldata',$arrPersonalData);
+            $personalDataId = $this->connection->lastInsertId();
+            
+            
+            
             // mm_order
-            //get Products with price
+            // get status id
+             $statusId = $this->connection->fetchAllAssociative(
+                'SELECT id FROM mm_order_status WHERE alias = ?', 
+                ['not_paid']);
+           // $orderId == fortlaufende Nr für Steuer
+            
+            //  var_dump($statusId,$summary['total'],'');exit;
+         
+            $arrOrder1 = [
+                'customer_id' => $personalDataId,
+                'order_datetime' => time(),
+                'updated_datetime' => time(),
+                'status' => $statusId[0]['id'],
+                'payment' => $arrOrder['payment']['payment'],
+                'shipment' => $arrOrder['shipment']['shipment'],
+                'order_total' => $summary['total'],
+                'sended_invoice' => ''
+            ];
+            $this->connection->insert('mm_order',$arrOrder1);
+            $orderId = $this->connection->lastInsertId();
+            // $orderId == fortlaufende Nr für Steuer
+             $arrOrder2 = [
+                'order_number' => 'BE_'.$orderId.'_'.date("dmY"),
+                 'invoice_name' => 'RG_'.$orderId.'_'.date("dmY"),
+                
+            ];
+            $this->connection->update(
+                    'mm_order',             
+                    $arrOrder2,            
+                    ['id' => $orderId]      
+                );
+            // mm_adress_shipment
+            $arrAdressShipment = array_filter(
+                array_merge(['pid' => $orderId],$arrOrder['personal_data']),
+                fn($key) => stripos($key, 'invoice') !== false,
+                ARRAY_FILTER_USE_KEY
+            );
+            $this->connection->insert('mm_address_shipment',$arrAdressShipment);
+            
+            
             // mm_order_product
+            foreach($items as $key => $item){
+                $arrProduct = [
+                    'pid' => $orderId,
+                    'product_id' => $item['raw']['id'],
+                    'name' => $item['raw']['name'],
+                    'count' => $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'],
+                    'tax' => $item['raw']['tax']["__SELECT_RAW__"]['id'],
+                    'price' => $item['raw']['price']
+                
+                ];
+                $this->connection->insert('mm_order_product',$arrProduct);
+                
+            }
             
         }
         
@@ -738,8 +846,8 @@ class OrderingProcessModule extends Module
                 ->to($arrData['to'])
                 ->subject($arrData['subject'])
                 ->html($arrData['html']); // Oder ->text('...');
-
-            $mailer->send($email);
+            
+            $this->mailer->send($email);
         }
     
 }
