@@ -34,6 +34,9 @@ use MetaModels\Factory;
 use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+//Mail
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class OrderingProcessModule extends Module
 {
@@ -416,7 +419,8 @@ class OrderingProcessModule extends Module
                         'personal_data' => $this->session->get('order_personal_data'),
                         'shipment' => $this->session->get('order_shipment'),
                         'payment' => $this->session->get('order_payment'),
-                        'overview' => $this->session->get('order_overview')
+                        'overview' => $this->session->get('order_overview'),
+                        'cart' => $this->sessionCart
                 
                 ];
                 
@@ -714,6 +718,28 @@ class OrderingProcessModule extends Module
              
             
              return $arrSummary;
+        }
+        
+        
+          private function saveOrder($arrOrder)
+        {
+            // mm_personal_data
+            // mm_adress_shipment
+            // mm_order
+            //get Products with price
+            // mm_order_product
+            
+        }
+        
+          private function sendConfirmation(array $arrData)
+        {   //.ENV MAILER_DSN=native://default
+            $email = (new Email())
+                ->from($arrData['from'])
+                ->to($arrData['to'])
+                ->subject($arrData['subject'])
+                ->html($arrData['html']); // Oder ->text('...');
+
+            $mailer->send($email);
         }
     
 }
