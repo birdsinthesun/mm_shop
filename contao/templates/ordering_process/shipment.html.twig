@@ -1,0 +1,4 @@
+<h2>{{ headline }}</h2>
+{% set formHtml = form(formular) %}
+  {{ formHtml|raw }}
+  {{ form_errors(formular) }}
