@@ -388,7 +388,7 @@ class OrderingProcessModule extends Module
                     }
                     //var_dump($this->session->get('order_shipment'));exit;
                 $formView = $form->createView();
-                $salutation = $this->connection->fetchAllAssociative(
+                $salutation = $this->connection->fetchFirstColumn(
                             'SELECT name FROM mm_salutation WHERE id = ?', 
                             [$this->session->get('order_personal_data')['salutation']]);
                 $shipment =  $this->connection->fetchAllAssociative(
@@ -399,7 +399,7 @@ class OrderingProcessModule extends Module
                             [$this->session->get('order_payment')['payment']]);
                 
                 $arrPersonalData = $this->session->get('order_personal_data');
-                $arrPersonalData['salutation'] = $salutation;
+                $arrPersonalData['salutation'] = $salutation[0];
                 $arrOrder = [
                         'personal_data' => $arrPersonalData,
                         'shipment' => $shipment[0]['name'],
@@ -439,11 +439,11 @@ class OrderingProcessModule extends Module
                 
                     // Rechnung in mm_order_invoice speichern und PDF generieren
                 $this->saveOrder($arrOrder);
-                $salutation = $this->connection->fetchAllAssociative(
+                $salutation = $this->connection->fetchFirstColumn(
                             'SELECT name FROM mm_salutation WHERE id = ?', 
                             [$this->session->get('order_personal_data')['salutation']]);
                
-                $arrOrder['personal_data']['salutation'] = $salutation;
+                $arrOrder['personal_data']['salutation'] = $salutation[0];
                 $shipment =  $this->connection->fetchAllAssociative(
                             'SELECT name FROM mm_shipment WHERE id = ?', 
                             [$this->session->get('order_shipment')['shipment']]);
@@ -464,20 +464,22 @@ class OrderingProcessModule extends Module
                             'SELECT * FROM mm_shop WHERE id = ?', 
                             ['1']);
                 $shopLogo = $this->connection->fetchAllAssociative(
-                            'SELECT * FROM tl_files WHERE id = ?', 
+                            'SELECT * FROM tl_files WHERE uuid = ?', 
                             [$shopConfig[0]['shop_logo']]);
-                    var_dump($shopLogo);exit;
+                   // var_dump($shopConfig[0]['shop_logo'],$shopLogo);exit;
                 $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
-                    "headline" => 'Rechnung',
+                    "headline" => 'Bestellung',
                     "shop_config" => $shopConfig[0],
-                    "shop_logo" => $shopLogo,
+                    "shop_logo" => $shopLogo[0]['path'],
                     "order_number" => 'BE_'.$orderId[0].'_'.date("dmY"),
+                    "invoice_number" => 'RG_'.$orderId[0].'_'.date("dmY"),
                     "order_date"=> date("dmY"),
                     "order" => $arrOrder,
                     "cart" => $this->generateCartOverview(), //Child-Template!!!
                 ]);
                 $mpdf->WriteHTML($orderInvoice);
-                $pdfPath = '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
+                $pdfPath = $this->container->get('kernel')->getProjectDir(). '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
+               // fopen($pdfPath, 'w');
                 $mpdf->Output($pdfPath, Destination::FILE);
               
                     

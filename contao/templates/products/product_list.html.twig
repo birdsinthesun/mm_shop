@@ -10,7 +10,7 @@
            <div class="product-buttons">
                
                      {% set product_id = item.raw.id %}
-                    <a href='{{ item_urls.(product_id) }}.html' title='Produkt Details ansehen'>Ansehen</a>
+                    <a href='{{ item_urls.(product_id) }}' title='Produkt Details ansehen'>Ansehen</a>
                    
                     <a href='{{ url }}?add={{ product_id }}' title='Produkt in den Warenkorb legen'>In den Warenkorb</a>
                       

@@ -30,10 +30,10 @@ class ProductDetailController extends AbstractController
     public function run(Request $request, string $alias, string $category): Response
     {
         $this->framework->initialize();
-      
-        if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category)) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-        }
+      var_dump($alias,$category);
+//        if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category)) {
+//            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+//        }
  
         global $objPage;
         $pageId = $this->db->fetchFirstColumn(

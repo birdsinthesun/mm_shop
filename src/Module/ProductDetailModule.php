@@ -105,8 +105,8 @@ class ProductDetailModule extends Module
                
                 return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
             }
-           
-            $alias = str_replace('.html','',$this->request->get('alias'));
+           //ToDo warum htm und nicht html? (Kommt von Contao)
+            $alias = str_replace('.htm','',$this->request->get('alias'));
             $category = $this->request->get('category');
 
             // MetaModel-ID und RenderSetting-ID

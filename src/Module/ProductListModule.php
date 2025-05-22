@@ -107,7 +107,7 @@ class ProductListModule extends Module
             }
            
            // $alias = str_replace('.html','',$this->request->get('alias'));
-            //$category = $this->request->get('category');
+            $category = str_replace('.html','',$this->request->get('category'));
 
             // MetaModel-ID und RenderSetting-ID
             $metaModelId = 2;
@@ -125,7 +125,16 @@ class ProductListModule extends Module
             $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
             $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
             $itemList->setLanguage('de'); // optional
-            $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE published = "1"'));
+            if($category === ''){
+                $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE published = "1"'));
+            }else{
+                $categoryId = $this->connection->fetchFirstColumn(
+                'SELECT id FROM mm_category WHERE alias = ?', 
+                [$category]);
+                $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE category = "'.$categoryId[0].'" AND published = "1"'));
+          
+                }
+            
             $itemList->prepare();
             
             $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
@@ -150,7 +159,7 @@ class ProductListModule extends Module
                   
                   
           return $this->twig->render('@Contao/mod_product_detail.html.twig', [
-                "headline" => 'Produkt-Details',
+                "headline" => 'Produkte',
                 "content" => $currentContent
         
             ]);
@@ -167,7 +176,9 @@ class ProductListModule extends Module
     {
         $arrUrls = [];
             foreach($items as $key => $item){
-               $arrUrls[$item['raw']['id']] = '';
+                
+                
+               $arrUrls[$item['raw']['id']] = '/produkte/'.$item['raw']['category']["__SELECT_RAW__"]['alias'].'/'.$item['raw']['alias'].'.html';
                 
                 
                 
