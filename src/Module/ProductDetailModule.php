@@ -128,7 +128,7 @@ class ProductDetailModule extends Module
             $itemList->addFilterRule(new SimpleQuery('SELECT id FROM mm_product WHERE alias = "'.$alias.'"'));
             $itemList->prepare();
             
-            $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+            $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
             $items = $itemList->getItems()->parseAll('html5',$objView);
             
            

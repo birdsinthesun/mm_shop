@@ -9,18 +9,6 @@ services:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
         
-    Bits\MmShopBundle\Service\ResourceResolver:
-        public: true
-        arguments:
-            $db: '@doctrine.dbal.default_connection'
-    
-    Bits\MmShopBundle\Routing\DynamicRouteLoader:
-        autoconfigure: false
-        arguments:
-            $db: '@doctrine.dbal.default_connection'
-        tags:
-            - { name: routing.loader }
-        
     Bits\MmShopBundle\Migration\InstallMmShop:
         arguments:
             $connection: '@database_connection'
@@ -48,6 +36,18 @@ services:
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']
     
+    Bits\MmShopBundle\Service\ResourceResolver:
+        public: true
+        arguments:
+            $db: '@doctrine.dbal.default_connection'
+    
+    Bits\MmShopBundle\Routing\DynamicRouteLoader:
+        autoconfigure: false
+        arguments:
+            $db: '@doctrine.dbal.default_connection'
+        tags:
+            - { name: routing.loader }
+    
     Bits\MmShopBundle\EventListener\Backend\MailSubmitListener:
         public: true
         tags:
@@ -63,5 +63,5 @@ services:
         
     Bits\MmShopBundle\:
         resource: '../../../src/*'
-        exclude: '../../../src/{Modules,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../../../src/{Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 

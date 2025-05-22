@@ -24,10 +24,11 @@ class ProductListController extends AbstractController
         private ResourceResolver $resourceResolver,
         private readonly ContaoFramework $framework
     ) {
+        var_dump('test');exit;
         $this->resourceResolver = $resourceResolver;
         }
     
-    public function __invoke(Request $request, string $category): Response
+    public function run(Request $request, string $category): Response
     {
         var_dump('test');exit;
         $this->framework->initialize();

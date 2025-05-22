@@ -26,7 +26,7 @@ class MmShopBundle extends Bundle
         parent::build($container);
 
         // CompilerPasses 
-        $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
+        $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 200);
         $container->addCompilerPass(new MailCompilerPass());
     }
     

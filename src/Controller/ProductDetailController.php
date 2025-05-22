@@ -27,7 +27,7 @@ class ProductDetailController extends AbstractController
         $this->resourceResolver = $resourceResolver;
         }
     
-    public function __invoke(Request $request, string $alias, string $category): Response
+    public function run(Request $request, string $alias, string $category): Response
     {
         $this->framework->initialize();
       

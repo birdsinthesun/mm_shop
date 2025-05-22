@@ -21,7 +21,7 @@ class MailSubmitListener
         $sendedInvoice = $model->getProperty('sended_invoice');
         $status = $model->getProperty('status');
         
-    if ($sendedInvoice === '' && $status === 'paid')  {
+        if ($sendedInvoice === '' && $status === 'paid')  {
         
            
             $container = System::getContainer();

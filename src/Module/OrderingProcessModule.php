@@ -712,7 +712,7 @@ class OrderingProcessModule extends Module
                 $itemList->addFilterRule(new StaticIdList($itemIds));
                 $itemList->prepare();
                 
-                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
                 $summary = $this->generateCartSummary($items);
                 

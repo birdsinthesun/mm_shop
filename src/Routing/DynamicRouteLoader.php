@@ -29,26 +29,29 @@ class DynamicRouteLoader extends Loader
         $sql = "SELECT alias FROM mm_category WHERE published = '1'";
         $categories = $this->db->fetchFirstColumn($sql);
         
+        $routeRoot = new Route(
+                '/'.$rootPageAlias,
+                
+                [
+                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
+                ],
+               
+                
+            );
+            $routeRoot->setSchemes('https');
+            $routes->add('mm_product_root', $routeRoot);
+        
         foreach ($categories as $key => $category) {
             
             
             $routeList = new Route(
-                '/'.$rootPageAlias,
-                [
-                    '_controller' => ProductListController::class,
-                    'category' => $category,
-                ]
-            );
-            
-            $routes->add('mm_product_root', $routeList);
-            
-            $routeList = new Route(
                 '/'.$rootPageAlias.'/' . $category.'.html',
                 [
-                    '_controller' => ProductListController::class,
+                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
                     'category' => $category,
                 ]
             );
+            $routeList->setSchemes('https');
             $routes->add('mm_product_list_' . $category, $routeList);
             
             
@@ -57,11 +60,12 @@ class DynamicRouteLoader extends Loader
             $routeDetail = new Route(
                 '/'.$rootPageAlias.'/' . $category . '/{alias}',
                 [
-                    '_controller' => ProductDetailController::class,
+                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductDetailController::run',
                     'category' => $category,
                 ],
                 ['alias' => '.+']
             );
+            $routeDetail->setSchemes('https');
             $routes->add('mm_product_detail_' . $category, $routeDetail);
         }
 
