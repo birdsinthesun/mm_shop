@@ -1,0 +1,19 @@
+  {% for item in items %}
+        <div class="product">
+           <div class="product-info">
+            {% set i = loop.index0 %}
+                    {% for property in item.html5 %}
+                        {{ property|raw }}
+                     {% endfor %}
+              
+            </div>
+           <div class="product-buttons">
+               
+                     {% set product_id = item.raw.id %}
+                    <a href='{{ item_urls.(product_id) }}.html' title='Produkt Details ansehen'>Ansehen</a>
+                   
+                    <a href='{{ url }}?add={{ product_id }}' title='Produkt in den Warenkorb legen'>In den Warenkorb</a>
+                      
+           </div> 
+        </div>
+    {% endfor %}

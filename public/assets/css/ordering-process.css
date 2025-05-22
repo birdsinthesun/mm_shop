@@ -1,0 +1,26 @@
+/* Navigation */
+
+.order-navigation {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 1rem;
+}
+.order-navigation li {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background: #eee;
+}
+.order-navigation li.active {
+    background: #007bff;
+    color: white;
+}
+.order-navigation li.done {
+    background: #28a745;
+    color: white;
+}
+.order-navigation li.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+}
