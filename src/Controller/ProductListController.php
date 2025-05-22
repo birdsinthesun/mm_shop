@@ -46,8 +46,8 @@ class ProductListController extends AbstractController
 
         // Übergib die Seite an Contao's regulären Renderer
         $controller = new PageRegular();
-        //var_dump($pageId,'test');exit;
-        return $controller->getResponse($objPage, false);
+      //  var_dump( $objPage,'test');exit;
+        return $controller->getResponse($objPage, true);
     }
     
     public function runCategory(Request $request, string $category): Response

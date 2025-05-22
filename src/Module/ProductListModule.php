@@ -55,7 +55,7 @@ class ProductListModule extends Module
 
     public function __construct($module, $column = 'main')
     {
-        
+        parent::__construct($module);
         $this->container = System::getContainer();
         $this->request = $this->container->get('request_stack')->getCurrentRequest();
         $this->session = $this->request->getSession();
@@ -79,7 +79,7 @@ class ProductListModule extends Module
     }
     
     public function generate(){
-        
+      
       
         if ($this->request && $this->container->get('contao.routing.scope_matcher')->isBackendRequest($this->request))
 		{
@@ -90,7 +90,7 @@ class ProductListModule extends Module
             ]);
             
 		}
-        var_dump('test');exit;
+        
             //add to card
             $addId = Input::get('add');
             if($addId !== Null){
@@ -112,7 +112,7 @@ class ProductListModule extends Module
             // MetaModel-ID und RenderSetting-ID
             $metaModelId = 2;
             $renderSettingId = $this->connection->fetchFirstColumn(
-                'SELECT product_detail_rendering FROM mm_shop WHERE id = ?', 
+                'SELECT product_list_rendering FROM mm_shop WHERE id = ?', 
                 ['1']);
             
 
@@ -136,7 +136,8 @@ class ProductListModule extends Module
             
             $currentContent =  $this->twig->render('@Contao/products/product_list.html.twig', [
                 "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
-                "items" => $items
+                "items" => $items,
+                "item_urls" => $this->getProductUrls($items)
          
             ]);
                 
@@ -161,6 +162,20 @@ class ProductListModule extends Module
     {
       
     }
+    
+    private function getProductUrls($items)
+    {
+        $arrUrls = [];
+            foreach($items as $key => $item){
+               $arrUrls[$item['raw']['id']] = '';
+                
+                
+                
+                }
+        
+        return $arrUrls;
+        
+        }
     
     
     
