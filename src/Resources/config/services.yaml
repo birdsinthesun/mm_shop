@@ -35,6 +35,13 @@ services:
             $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']
+        
+    Bits\MmShopBundle\EventListener\KernelRequestListener:
+        arguments:
+            $controller: '@Bits\MmShopBundle\Controller\ProductListController'
+            $connection: '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 255 }
     
     Bits\MmShopBundle\Service\ResourceResolver:
         public: true

@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Bits\MmShopBundle\Service\ResourceResolver;
 use Doctrine\DBAL\Connection;
 
-#[Route(defaults: ['_scope' => 'frontend'])]
+
 class ProductDetailController extends AbstractController
 {
     

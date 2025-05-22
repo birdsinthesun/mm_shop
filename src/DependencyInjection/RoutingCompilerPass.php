@@ -16,7 +16,7 @@ class RoutingCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition(DynamicRouteLoader::class);
         //var_dump(get_class_methods($definition));exit;
-        $definition->addTag('routing.loader',['priority'=>200])
+        $definition->addTag('routing.loader',['priority'=>-11])
         ->setAutoconfigured(false)
         ->setPublic(true);
         $container->setDefinition(DynamicRouteLoader::class, $definition);

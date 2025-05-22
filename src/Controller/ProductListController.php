@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Bits\MmShopBundle\Service\ResourceResolver;
 use Doctrine\DBAL\Connection;
 
-#[Route(defaults: ['_scope' => 'frontend'])]
+
 class ProductListController extends AbstractController
 {
 
@@ -24,16 +24,37 @@ class ProductListController extends AbstractController
         private ResourceResolver $resourceResolver,
         private readonly ContaoFramework $framework
     ) {
-        var_dump('test');exit;
+       
         $this->resourceResolver = $resourceResolver;
         }
-    
-    public function run(Request $request, string $category): Response
+    public function runRoot(Request $request): Response
     {
-        var_dump('test');exit;
         $this->framework->initialize();
-       var_dump($this->resourceResolver->hasCategoryProducts($category));exit;
-         if (!$this->resourceResolver->hasCategoryProducts($category) || !$this->resourceResolver->isProductCategory($category)) {
+         
+
+        global $objPage;
+        $pageId = $this->db->fetchFirstColumn(
+                'SELECT product_list_page FROM mm_shop WHERE id = ?', 
+                ['1']);
+        $objPage = PageModel::findPublishedById($pageId[0]);
+        $request->attributes->set('pageModel', $objPage);
+        $objPage->__set('layout','27');
+
+        if (!$objPage) {
+            throw new \RuntimeException('Produktseite nicht gefunden.');
+        }
+
+        // Übergib die Seite an Contao's regulären Renderer
+        $controller = new PageRegular();
+        //var_dump($pageId,'test');exit;
+        return $controller->getResponse($objPage, false);
+    }
+    
+    public function runCategory(Request $request, string $category): Response
+    {
+        $this->framework->initialize();
+        
+        if (!$this->resourceResolver->hasCategoryProducts($category)|| !$this->resourceResolver->isProductCategory($category)){
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
 
@@ -44,7 +65,7 @@ class ProductListController extends AbstractController
         $objPage = PageModel::findPublishedById($pageId[0]);
         $request->attributes->set('pageModel', $objPage);
         $objPage->__set('layout','27');
-var_dump($objPage);exit;
+
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
         }

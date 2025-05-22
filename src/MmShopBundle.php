@@ -9,7 +9,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Bits\MmShopBundle\DependencyInjection\MailCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\RoutingCompilerPass;
-
+use Bits\MmShopBundle\DependencyInjection\KernelCompilerPass;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -26,7 +26,8 @@ class MmShopBundle extends Bundle
         parent::build($container);
 
         // CompilerPasses 
-        $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 200);
+      //   $container->addCompilerPass(new KernelCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
+        $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
         $container->addCompilerPass(new MailCompilerPass());
     }
     

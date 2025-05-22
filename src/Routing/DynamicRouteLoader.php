@@ -8,15 +8,27 @@ use Symfony\Component\Config\Loader\Loader;
 use Bits\MmShopBundle\Controller\ProductDetailController;
 use Bits\MmShopBundle\Controller\ProductListController;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Routing\RequestContextAwareInterface;
+use Symfony\Component\Routing\RequestContext;
 
-class DynamicRouteLoader extends Loader
+class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
 {
     private bool $loaded = false;
-    private Connection $db; // Doctrine DBAL Connection
+    private Connection $db; 
+    private $context;
 
     public function __construct(Connection $db)
     {
         $this->db = $db;
+    }
+    
+    public function getContext():RequestContext
+    {
+        return $this->context;
+    }
+    public function setContext(RequestContext $context)
+    {
+        $this->context = $context;
     }
     public function load($resource, string $type = null)
     {
@@ -30,42 +42,53 @@ class DynamicRouteLoader extends Loader
         $categories = $this->db->fetchFirstColumn($sql);
         
         $routeRoot = new Route(
-                '/'.$rootPageAlias,
+                '/'.$rootPageAlias.'{!parameters}',
                 
                 [
-                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductListController::runRoot',
                 ],
+                [],
+                [
+                    '_scope' => 'frontend'
+                ]
                
                 
             );
-            $routeRoot->setSchemes('https');
+           // $routeRoot->setSchemes('https');
             $routes->add('mm_product_root', $routeRoot);
         
         foreach ($categories as $key => $category) {
             
             
             $routeList = new Route(
-                '/'.$rootPageAlias.'/' . $category.'.html',
+                '/'.$rootPageAlias.'/' . $category.'{!parameters}.html',
                 [
-                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductListController::run',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductListController::runCategory',
                     'category' => $category,
+                ],
+                [],
+                [
+                    '_scope' => 'frontend'
                 ]
             );
-            $routeList->setSchemes('https');
+            //$routeList->setSchemes('https');
             $routes->add('mm_product_list_' . $category, $routeList);
             
             
             
             
             $routeDetail = new Route(
-                '/'.$rootPageAlias.'/' . $category . '/{alias}',
+                '/'.$rootPageAlias.'/' . $category . '/{alias}{!parameters}.html',
                 [
-                    '_controller' => 'Bits\\MmShopBundle\\Controller\\ProductDetailController::run',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductDetailController::run',
                     'category' => $category,
                 ],
-                ['alias' => '.+']
+                ['alias' => '.+'],
+                [
+                    '_scope' => 'frontend'
+                ]
             );
-            $routeDetail->setSchemes('https');
+           // $routeDetail->setSchemes('https');
             $routes->add('mm_product_detail_' . $category, $routeDetail);
         }
 
