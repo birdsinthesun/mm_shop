@@ -19,7 +19,16 @@
         "php": ">=7.4",
         "symfony/routing":"^6.4",
         "symfony/form": "^6.4",
-        "contao/core-bundle": "5.3.*"
+        "contao/core-bundle": "5.3.*",
+        "symfony/form": "^6.4",
+        "twig/extra-bundle": "^3.21",
+        "twig/twig": "^3.21",
+        "symfony/twig-bridge": "^6.4",
+        "symfony/security-csrf": "^6.4",
+        "symfony/validator": "^6.4",
+        "symfony/routing": "*",
+        "symfony/mailer": "*",
+        "mpdf/mpdf": "*"
    
     },
     "autoload": {

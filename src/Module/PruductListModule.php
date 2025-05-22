@@ -31,8 +31,7 @@ use MetaModels\Factory;
 use MetaModels\ItemList;
 use MetaModels\Render\Setting\IRenderSettingFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-//Cart
-use Bits\MmShopBundle\Session\CartSessionBag;
+
 
 class ProductListModule extends Module
 {

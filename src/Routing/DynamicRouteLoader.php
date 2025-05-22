@@ -28,8 +28,7 @@ class DynamicRouteLoader extends Loader
         $rootPageAlias = 'produkte';
         $sql = "SELECT alias FROM mm_category WHERE published = '1'";
         $categories = $this->db->fetchFirstColumn($sql);
-       // $categories = ['kategorie-1', 'kategorie-2']; // z. B. aus DB oder Config
-
+        
         foreach ($categories as $key => $category) {
             
             

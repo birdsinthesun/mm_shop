@@ -62,6 +62,6 @@ services:
         public: true
         
     Bits\MmShopBundle\:
-        resource: '../src/*'
-        exclude: '../src/{Module,Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        resource: '../../../src/*'
+        exclude: '../../../src/{Modules,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 

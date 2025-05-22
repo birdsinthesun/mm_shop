@@ -29,6 +29,7 @@ class ProductListController extends AbstractController
     
     public function __invoke(Request $request, string $category): Response
     {
+        var_dump('test');exit;
         $this->framework->initialize();
        var_dump($this->resourceResolver->hasCategoryProducts($category));exit;
          if (!$this->resourceResolver->hasCategoryProducts($category) || !$this->resourceResolver->isProductCategory($category)) {
