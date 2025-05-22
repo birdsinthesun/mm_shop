@@ -37,6 +37,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 //Mail
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+//PDF
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 
 class OrderingProcessModule extends Module
 {
@@ -451,13 +454,34 @@ class OrderingProcessModule extends Module
                 $arrOrder['shipment'] = $shipment[0]['name'];
                 $arrOrder['payment'] = $payment[0]['name'];
                 
+                // PDF in files speichern unter Rechnungen/RG-Nr.pdf
+                $orderId = $this->connection->fetchfirstColumn(
+                        'SELECT id FROM mm_order ORDER BY id DESC LIMIT 1'
+                    );
+                    
+                $mpdf = new Mpdf();
+                $shopConfig =  $this->connection->fetchAllAssociative(
+                            'SELECT * FROM mm_shop WHERE id = ?', 
+                            ['1']);
+                $shopLogo = $this->connection->fetchAllAssociative(
+                            'SELECT * FROM tl_files WHERE id = ?', 
+                            [$shopConfig[0]['shop_logo']]);
+                    var_dump($shopLogo);exit;
                 $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
                     "headline" => 'Rechnung',
+                    "shop_config" => $shopConfig[0],
+                    "shop_logo" => $shopLogo,
+                    "order_number" => 'BE_'.$orderId[0].'_'.date("dmY"),
+                    "order_date"=> date("dmY"),
                     "order" => $arrOrder,
                     "cart" => $this->generateCartOverview(), //Child-Template!!!
                 ]);
-                    // PDF in files speichern unter Rechnungen/RG-Nr.pdf
-                    // Als Email versenden
+                $mpdf->WriteHTML($orderInvoice);
+                $pdfPath = '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
+                $mpdf->Output($pdfPath, Destination::FILE);
+              
+                    
+                //  Email versenden
                 $arrMail = [
                     'from' => 'info@monique-hahnefeld.de' ,// Shop-Mail
                     'to' => $this->session->get('order_personal_data')['email'],

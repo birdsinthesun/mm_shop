@@ -119,7 +119,7 @@ class ProductListModule extends Module
                 'SELECT product_list_rendering FROM mm_shop WHERE id = ?', 
                 ['1']);
         
-
+//var_dump($renderSettingId[0]);exit;
         // Services laden
         $factory = $this->container->get('metamodels.factory');
         $renderFactory = $this->container->get('metamodels.render_setting_factory');

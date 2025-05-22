@@ -9,20 +9,6 @@ services:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
         
-    Bits\MmShopBundle\Session\CartSessionBag:
-        public: true
-        
-    
-    Bits\MmShopBundle\Session\SessionFactory:
-        decorates: session.factory
-        arguments:
-            - '@Bits\MmShopBundle\Session\SessionFactory.inner'
-            - '@Bits\MmShopBundle\Session\CartSessionBag'
-            
-    Bits\MmShopBundle\Session\SessionFactory.inner:
-        public: true
-        
-      
     Bits\MmShopBundle\Service\ResourceResolver:
         public: true
         arguments:
@@ -47,10 +33,6 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
     
-    Bits\MmShopBundle\Controller\:
-        resource: '../src/Controller'
-        tags: ['controller.service_arguments']
-    
     
     Bits\MmShopBundle\Controller\ProductListController:
         arguments:
@@ -66,7 +48,10 @@ services:
             $framework: '@contao.framework'
         tags: ['controller.service_arguments']
     
-    
+    Bits\MmShopBundle\EventListener\Backend\MailSubmitListener:
+        public: true
+        tags:
+            - { name: kernel.event_listener, event: dc-general.model.pre-persist }
    
             
     Contao\CoreBundle\Security\Csrf\ContaoCsrfTokenManager:
@@ -78,5 +63,5 @@ services:
         
     Bits\MmShopBundle\:
         resource: '../src/*'
-        exclude: '../src/{Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{Module,Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 

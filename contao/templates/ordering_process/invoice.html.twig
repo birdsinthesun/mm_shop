@@ -1,0 +1,36 @@
+<div style="float:left;width:90%;padding:10%;">
+<section style="float:left;width:100%">
+   <div style="float:left;width:40%"> <h3>Von:</h3>
+   <p>  {{ shop_config.owner_surname }} {{ shop_config.owner_lastname }}<br>
+            {{ shop_config.owner_street }} {{ shop_config.owner_street_number }}<br>
+            {{ shop_config.owner_plz }} {{ shop_config.owner_city }}<br>
+            {{ shop_config.owner_country }}
+      </p>
+    </div>
+    <div style="float:right;width:40%"><img src="{{ shop_logo }}" alt="Logo"> </div>
+</section>
+
+<section style="float:left;width:100%">
+    <h3>An:</h3>
+   <p>  {{ order.personal_data.surname }} {{ order.personal_data.lastname }}<br>
+            {{ order.personal_data.street }} {{ order.personal_data.street_number }}<br>
+            {{ order.personal_data.plz }} {{ order.personal_data.city }}<br>
+            {{ order.personal_data.country }}
+      </p>
+</section>
+<section style="float:left;width:100%">
+<div style="float:right;width:auto">
+<p>
+    <strong>RG-Nr.: {{ order_number }}</strong> <br>
+    <strong>Datum: {{ order_date }}</strong> 
+</p>
+</div>
+</section>
+<h2>{{ headline }} {{ order_number }}</h2>
+
+
+<section style="float:left;width:100%">
+    <h3>Produkte</h3>
+    {{ cart|raw }}
+</section>
+</div>

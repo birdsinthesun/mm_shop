@@ -5,6 +5,7 @@ namespace Bits\MmShopBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Bits\MmShopBundle\Routing\DynamicRouteLoader;
+
 class RoutingCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
