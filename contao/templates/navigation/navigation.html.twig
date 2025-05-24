@@ -1,0 +1,44 @@
+{% macro render_navigation(items, currentPageId, level) %}
+  <ul class="nav-menu level-{{ level }}" role="menubar">
+    {% for item in items %}
+      {% set page = item.page ?? {} %}
+      {% if page.hide is not defined or page.hide == 0 %}
+        {% set hasChildren = item.children is defined and item.children|length > 0 %}
+        <li role="none" class="nav-item {{ page.cssClass|default('') }}">
+          {% if page.url is defined %}
+            <a
+              href="{{ page.url }}"
+              class="nav-link"
+              role="menuitem"
+              {% if currentPageId is defined and currentPageId == page.id %}aria-current="page"{% endif %}
+              {% if hasChildren %}aria-haspopup="true" aria-expanded="false"{% endif %}
+              tabindex="0"
+              title="{{ page.title|default(page.name)|e }}"
+            >
+              {{ page.title|default(page.name) }}
+            </a>
+            {% if level == 1 %}
+            <span class="submenu-toggler" data-toggle="submenu">+</span>
+            {% endif %}
+          {% else %}
+            <span class="nav-link">{{ page.title|default(page.name) }}</span>
+          {% endif %}
+
+          {% if hasChildren %}
+            <div class="dropdown">
+              {{ _self.render_navigation(item.children, currentPageId, level + 1) }}
+            </div>
+          {% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
+
+<nav class="main-nav" aria-label="Hauptnavigation">
+  <button class="menu-toggle" aria-controls="main-menu" aria-expanded="false">Menü</button>
+  <div id="main-dropdown-menu" class="menu-container">
+    {{ _self.render_navigation(navigationItems, currentPageId, 1) }}
+  </div>
+</nav>

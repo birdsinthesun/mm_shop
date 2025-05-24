@@ -15,8 +15,8 @@ use Symfony\Component\DependencyInjection\Container;
 use Bits\MmShopBundle\Service\ResourceResolver;
 use Doctrine\DBAL\Connection;
 
-
-class ProductListController extends AbstractController
+#[Route(defaults: ['_scope' => 'frontend'])]
+class ProductController extends AbstractController
 {
 
     public function __construct(
@@ -55,8 +55,12 @@ class ProductListController extends AbstractController
         $this->framework->initialize();
         
         if (!$this->resourceResolver->hasCategoryProducts($category)|| !$this->resourceResolver->isProductCategory($category)){
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-        }
+           
+            return $this->run404();
+          
+          //Contao do not handle that at this point
+          throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+       }
 
         global $objPage;
          $pageId = $this->db->fetchFirstColumn(
@@ -74,4 +78,50 @@ class ProductListController extends AbstractController
         $controller = new PageRegular();
         return $controller->getResponse($objPage, false);
     }
+    
+    public function runDetail(Request $request, string $alias, string $category): Response
+    {
+        $this->framework->initialize();
+      if (!$this->resourceResolver->isProduct($category,$alias) || !$this->resourceResolver->isProductCategory($category)) {
+            
+          return $this->run404();
+          
+          //Contao do not handle that at this point
+          throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+ //var_dump(!$this->resourceResolver->isProduct($category,$alias));exit;
+  
+        global $objPage;
+        $pageId = $this->db->fetchFirstColumn(
+                'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
+                ['1']);
+        $objPage = PageModel::findPublishedById($pageId[0]);
+        $request->attributes->set('pageModel', $objPage);
+
+        if (!$objPage) {
+            throw new \RuntimeException('Detailseite nicht gefunden.');
+        }
+
+        // Übergib die Seite an Contao's regulären Renderer
+        $controller = new PageRegular();
+        return $controller->getResponse($objPage, false);
+    }
+    
+    private function run404()
+    {
+        $obj404 = PageModel::findOneBy(['type=?', 'published=?'], ['error_404', 1]);
+
+            if ($obj404 instanceof PageModel) {
+                global $objPage;
+                $objPage = $obj404;
+
+                $controller = new \Contao\PageRegular();
+                return $controller->getResponse($objPage, true);
+            }
+        
+        
+        
+        
+        }
+    
 }

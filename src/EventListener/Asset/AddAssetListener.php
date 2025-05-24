@@ -32,7 +32,9 @@ class AddAssetListener
                     $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/personal-data.css';
                 }
         }else{
-           
+           //Navigation
+           $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/navigation.css';
+           $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/mmshop/assets/js/navigation.js';
             //ToDo: $page = PageModel::findOneBy('id',$event->getRequest()->get('id'));
             if(str_contains($event->getRequest()->getPathInfo(),'bestellprozess')){
           
