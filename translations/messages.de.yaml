@@ -24,9 +24,6 @@ mm_shop:
             headline: 'Bestellbestätigung'
         invoice:
             subject: 'Bestellung'
-    prefixes:
-        order: 'BE'
-        invoice: 'RG'
     product_list:
         headline: 'Produkte'
     product_detail:
