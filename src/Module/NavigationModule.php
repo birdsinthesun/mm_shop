@@ -38,6 +38,8 @@ class NavigationModule extends Module
     private $currentPage;
     
     private $rootPage;
+    
+    private $urlSegments;
    
 
     public function __construct($module, $column = 'main')
@@ -73,7 +75,7 @@ class NavigationModule extends Module
         $levelStart = 0;
         $levelEnd = 0;
         
-        $urlPieces = explode('/',$this->request->getPathInfo());
+        $this->urlSegments = explode('/',$this->request->getPathInfo());
         $this->currentPage = $this->request->attributes->get('pageModel');
         // return if 404
         if(!$this->currentPage){
@@ -204,7 +206,7 @@ class NavigationModule extends Module
 
         while ($page && $page['type'] !== 'root') {
             $page = $this->getPageById((int) $page['pid']);
-            $arrTrailPages[$page['pid']] = $page;
+            $arrTrailPages[$page['id']] = $page;
             $currentLevel++;
         }
 
@@ -252,6 +254,7 @@ class NavigationModule extends Module
         
         foreach($arrProducts as $key => $product){
             $product['type'] = 'product';
+            $arrProductsFinal[$key]['page']['cssClass'] = $this->getCssClass($product);
             $arrProductsFinal[$key]['page']['url'] = $this->getUrl($product);
             $arrProductsFinal[$key]['page']['title'] = $product['name'];
             $arrProductsFinal[$key]['page']['type'] = 'product';
@@ -310,12 +313,29 @@ class NavigationModule extends Module
         //set trail and active 
         //$this->arrTrailPages , $this->currentPage
           $cssClass = (isset($page['cssClass']))?$page['cssClass']:'';
-           if(in_array($page['id'],array_keys($this->arrTrailPages))){
-               $cssClass .= ' trail';
-                }
-        if($page['id'] === $this->currentPage->__get('id')){
-               $cssClass .= ' active';
-                }
+          switch($page['type']){
+              case'category':
+                if(($this->request->attributes->get('alias'))&&$page['alias'] === str_replace('.html','',$this->request->attributes->get('category'))){
+                        $cssClass .= ' trail';
+                    }
+                if((!$this->request->attributes->get('alias'))&&$page['alias'] === str_replace('.html','',$this->request->attributes->get('category'))){
+                       $cssClass .= ' active';
+                        }
+                break;
+              case'product':
+                    if(($this->request->attributes->get('alias'))&&$page['alias'] === str_replace('.html','',$this->request->attributes->get('alias'))){
+                       $cssClass .= ' active';
+                        }
+                break;
+              default:
+                  if(in_array($page['id'],array_keys($this->arrTrailPages))){
+                       $cssClass .= ' trail';
+                        }
+                if($page['id'] === $this->currentPage->__get('id')){
+                       $cssClass .= ' active';
+                        }
+              }
+         
             
             return $cssClass;
         

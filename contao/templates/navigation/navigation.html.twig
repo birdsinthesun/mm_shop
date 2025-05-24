@@ -6,20 +6,35 @@
         {% set hasChildren = item.children is defined and item.children|length > 0 %}
         <li role="none" class="nav-item {{ page.cssClass|default('') }}">
           {% if page.url is defined %}
-            <a
-              href="{{ page.url }}"
-              class="nav-link"
-              role="menuitem"
-              {% if currentPageId is defined and currentPageId == page.id %}aria-current="page"{% endif %}
-              {% if hasChildren %}aria-haspopup="true" aria-expanded="false"{% endif %}
-              tabindex="0"
-              title="{{ page.title|default(page.name)|e }}"
-            >
-              {{ page.title|default(page.name) }}
-            </a>
+            {% if page.cssClass matches '/active/' %}
+                <strong
+                  class="nav-link"
+                  role="menuitem"
+                  {% if currentPageId is defined and currentPageId == page.id %}aria-current="page"{% endif %}
+                  {% if hasChildren %}aria-haspopup="true" aria-expanded="false"{% endif %}
+                  tabindex="0"
+                >
+                  {{ page.title|default(page.name) }}
+                </strong>
+            {% else %}
+                <a
+                  href="{{ page.url }}"
+                  class="nav-link"
+                  role="menuitem"
+                  {% if currentPageId is defined and currentPageId == page.id %}aria-current="page"{% endif %}
+                  {% if hasChildren %}aria-haspopup="true" aria-expanded="false"{% endif %}
+                  tabindex="0"
+                  title="{{ page.title|default(page.name)|e }}"
+                >
+                  {{ page.title|default(page.name) }}
+                </a>
+            {% endif %}
+                
             {% if hasChildren %}
                 <span class="submenu-toggler-{{level}}" data-toggle="submenu-{{level}}">+</span>
             {% endif %}
+            
+            
           {% else %}
             <span class="nav-link">{{ page.title|default(page.name) }}</span>
           {% endif %}
