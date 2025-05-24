@@ -30,4 +30,4 @@ mm_shop:
     product_list:
         headline: 'Produkte'
     product_detail:
-        headline: 'Produkt Details'
+        headline: 'Produkt-Details'

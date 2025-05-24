@@ -11,6 +11,8 @@ class Navigation
     
     protected $twig;
     
+    protected $translator;
+    
     
     public function __construct($container)
     {
@@ -18,6 +20,7 @@ class Navigation
         $this->request = $this->container->get('request_stack')->getCurrentRequest();
         $this->session = $this->request->getSession();
         $this->twig = $this->container->get('twig');
+        $this->translator = $this->container->get('translator');
     }
     
     public function generate(string $currentStep)
@@ -26,31 +29,31 @@ class Navigation
         $arrSteps = [
         
             'personal_data' => [
-                'alias' => 'persoenliche-daten',
+                'alias' => $this->translator->trans('mm_shop.checkout.steps.0'),
                 'name' => 'Persönliche Daten',
-                'url' => $this->generateStepUrl('persoenliche-daten','/'.$currentStep)
+                'url' => $this->generateStepUrl($this->translator->trans('mm_shop.checkout.steps.0'),'/'.$currentStep)
             ],
              'shipment' => [
-                'alias' => 'versand',
-                'name' => 'Versand',
-                'url' => $this->generateStepUrl('versand','/'.$currentStep)
+                'alias' => $this->translator->trans('mm_shop.checkout.steps.2'),
+                'name' => $this->translator->trans('mm_shop.checkout.headlines.2'),
+                'url' => $this->generateStepUrl($this->translator->trans('mm_shop.checkout.steps.2'),'/'.$currentStep)
             ],
             'payment' => [
-                'alias' => 'zahlung',
-                'name' => 'Zahlung',
-                'url' => $this->generateStepUrl('zahlung','/'.$currentStep)
+                'alias' => $this->translator->trans('mm_shop.checkout.steps.3'),
+                'name' => $this->translator->trans('mm_shop.checkout.headlines.3'),
+                'url' => $this->generateStepUrl($this->translator->trans('mm_shop.checkout.steps.3'),'/'.$currentStep)
             ],
             'overview' => [
-                'alias' => 'uebersicht',
-                'name' => 'Übersicht',
-                'url' => $this->generateStepUrl('uebersicht','/'.$currentStep)
+                'alias' => $this->translator->trans('mm_shop.checkout.steps.4'),
+                'name' => $this->translator->trans('mm_shop.checkout.headlines.4'),
+                'url' => $this->generateStepUrl($this->translator->trans('mm_shop.checkout.steps.4'),'/'.$currentStep)
             ]
         ];
-        if($currentStep == 'persoenliche-daten-lg'){
+        if($currentStep == $this->translator->trans('mm_shop.checkout.steps.1')){
             $arrSteps['personal_data'] = [
-                'alias' => 'persoenliche-daten-lg',
-                'name' => 'Persönliche Daten',
-                'url' => $this->generateStepUrl('persoenliche-daten-lg','/'.$currentStep)
+                'alias' => $this->translator->trans('mm_shop.checkout.steps.1'),
+                'name' => $this->translator->trans('mm_shop.checkout.headlines.1'),
+                'url' => $this->generateStepUrl($this->translator->trans('mm_shop.checkout.steps.1'),'/'.$currentStep)
             ];
             
             }

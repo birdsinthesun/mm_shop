@@ -51,7 +51,8 @@ class ProductListModule extends Module
     private $metamodelsFactory;
     
     private $sessionCart;
-   
+    
+    private $translator;
 
     public function __construct($module, $column = 'main')
     {
@@ -72,7 +73,9 @@ class ProductListModule extends Module
                 $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
                $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
       
-        }   
+        } 
+        
+        $this->translator = $this->container->get('translator');
         
        
 
@@ -159,7 +162,7 @@ class ProductListModule extends Module
                   
                   
           return $this->twig->render('@Contao/mod_product_detail.html.twig', [
-                "headline" => 'Produkte',
+                "headline" => $this->translator->trans('mm_shop.product_list.headline'),
                 "content" => $currentContent
         
             ]);

@@ -9,7 +9,7 @@
             {{ isDone ? 'done' : '' }}
             {{ isDisabled ? 'disabled' : '' }}
         ">
-            <span class="step-number">{{ loop.index }}</span>
+            <span class="step-number">{{ loop.index }}.</span>
             {% if step == isDone and step != isActive %}
                 <a href="{{ step.url }}" title="{{ step.name }}" class="step-label">
                     {{ step.name }}

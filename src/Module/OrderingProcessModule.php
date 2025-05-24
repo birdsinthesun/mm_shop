@@ -61,6 +61,8 @@ class OrderingProcessModule extends Module
     private $tokenManager;
     
     private $arrCart;
+    
+    private $translator;
    
 
     public function __construct($module, $column = 'main')
@@ -95,6 +97,8 @@ class OrderingProcessModule extends Module
         }
         $this->mailer = $this->container->get('mailer');
         
+        $this->translator = $this->container->get('translator');
+        
     }
     
     public function generate(){
@@ -109,7 +113,14 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
-        $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht','bestaetigung'];
+        $arrAllowedSteps = [
+                $this->translator->trans('mm_shop.checkout.steps.0'),
+                $this->translator->trans('mm_shop.checkout.steps.1'),
+                $this->translator->trans('mm_shop.checkout.steps.2'),
+                $this->translator->trans('mm_shop.checkout.steps.3'),
+                $this->translator->trans('mm_shop.checkout.steps.4'),
+                $this->translator->trans('mm_shop.checkout.steps.5')
+        ];
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         if($this->session->get('order_steps') === Null){
@@ -125,7 +136,7 @@ class OrderingProcessModule extends Module
         
         
         switch ($step) {
-            case 'persoenliche-daten':
+            case $arrAllowedSteps[0]:
                  
                    $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                     $data = ($this->session->get('order_personal_data'))??[];
@@ -136,7 +147,7 @@ class OrderingProcessModule extends Module
                      
                      if(!Input::post('personal_data')&&!isset($data['use_for_shipment'])&&!empty($data)){
                         
-                            return $this->redirectToStep('persoenliche-daten-lg','/persoenliche-daten')->send();
+                            return $this->redirectToStep($arrAllowedSteps[1],'/'.$arrAllowedSteps[0])->send();
                        
                          
                          }
@@ -147,7 +158,7 @@ class OrderingProcessModule extends Module
                             
                         $this->session->set('order_personal_data', Input::post('personal_data'));
                             $this->session->save();
-                        return $this->redirectToStep('persoenliche-daten-lg','/persoenliche-daten')->send();
+                        return $this->redirectToStep($arrAllowedSteps[1],'/'.$arrAllowedSteps[0])->send();
                        
                         }
 
@@ -162,13 +173,13 @@ class OrderingProcessModule extends Module
                             $this->session->save();
                            
                             //redirect
-                           return $this->redirectToStep('versand','/persoenliche-daten')->send();
+                           return $this->redirectToStep($arrAllowedSteps[2],'/'.$arrAllowedSteps[0])->send();
                             
                           }else{
                               
                               $this->session->set('order_personal_data', $data);
                             $this->session->save();
-                            return $this->redirectToStep('persoenliche-daten-lg','/persoenliche-daten')->send();
+                            return $this->redirectToStep($arrAllowedSteps[1],'/'.$arrAllowedSteps[0])->send();
                        
                               }
                         
@@ -183,15 +194,13 @@ class OrderingProcessModule extends Module
            //var_dump($formView);exit;
            
                  $currentOutput =  $this->twig->render('@Contao/ordering_process/personal_data.html.twig', [
-                    "headline" => 'Persönliche Daten',
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.0'),
                     "formular" => $formView,
-                    "preview" => '',
-                    "next" => 'versand'
             
                 ]);
                
                break;
-            case 'persoenliche-daten-lg':
+            case $arrAllowedSteps[1]:
                    $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                    
                     $data = ($this->session->get('order_personal_data'))??[];
@@ -204,7 +213,7 @@ class OrderingProcessModule extends Module
                    if(!Input::post('personal_data_shipment')&&isset($data['use_for_shipment'])
                         || !Input::post('personal_data_shipment')&&empty($data)){
                         
-                            return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
+                            return $this->redirectToStep($arrAllowedSteps[0],'/'.$arrAllowedSteps[1])->send();
                        
                          
                          }
@@ -213,7 +222,7 @@ class OrderingProcessModule extends Module
                             $data['use_for_shipment'] = true;
                         $this->session->set('order_personal_data', $data);
                             $this->session->save();
-                        return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
+                        return $this->redirectToStep($arrAllowedSteps[0],'/'.$arrAllowedSteps[1])->send();
                        
                         }
                    if (Input::post('personal_data_shipment')&&$form->isSubmitted() && $form->isValid()) {
@@ -225,7 +234,7 @@ class OrderingProcessModule extends Module
                             $this->session->set('order_personal_data', $data);
                             $this->session->save();
                             //redirect
-                            return $this->redirectToStep('versand','/persoenliche-daten-lg')->send();
+                            return $this->redirectToStep($arrAllowedSteps[2],'/'.$arrAllowedSteps[1])->send();
                             
                           }else{
                               
@@ -233,7 +242,7 @@ class OrderingProcessModule extends Module
                               
                             $this->session->save();
                             //redirect
-                            return $this->redirectToStep('persoenliche-daten','/persoenliche-daten-lg')->send();
+                            return $this->redirectToStep($arrAllowedSteps[0],'/'.$arrAllowedSteps[1])->send();
                            
                               
                               
@@ -244,15 +253,13 @@ class OrderingProcessModule extends Module
                     
                  $formView = $form->createView();
                  $currentOutput =  $this->twig->render('@Contao/ordering_process/personal_data.html.twig', [
-                    "headline" => 'Persönliche Daten',
-                    "formular" => $formView,
-                    "preview" => '',
-                    "next" => 'versand'
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.1'),
+                    "formular" => $formView
             
                 ]);
             
                 break;
-            case 'versand':
+            case $arrAllowedSteps[2]:
                $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                 
                 $data = ($this->session->get('order_shipment'))??[];
@@ -261,11 +268,11 @@ class OrderingProcessModule extends Module
                           
                 $form->handleRequest(null);
                 
-                if(!$this->session->get('order_personal_data')&&!in_array('uebersicht',$this->session->get('order_steps'))
+                if(!$this->session->get('order_personal_data')&&!in_array($arrAllowedSteps[4],$this->session->get('order_steps'))
                 ||!array_key_exists('finished',$this->session->get('order_personal_data'))
-                &&!in_array('uebersicht',$this->session->get('order_steps'))){
+                &&!in_array($arrAllowedSteps[4],$this->session->get('order_steps'))){
                  //  var_dump('test',in_array('overview',$this->session->get('order_steps')));exit; 
-            return $this->redirectToStep('persoenliche-daten','/versand')->send();
+            return $this->redirectToStep($arrAllowedSteps[0],'/'.$arrAllowedSteps[2])->send();
                            
                     }
                     
@@ -279,22 +286,20 @@ class OrderingProcessModule extends Module
                             $this->session->set('order_shipment', $data);
                             $this->session->save();
                             //redirect
-                            return $this->redirectToStep('zahlung','/versand')->send();
+                            return $this->redirectToStep($arrAllowedSteps[3],'/'.$arrAllowedSteps[2])->send();
                             
                           
                     }
                     
                 $formView = $form->createView();
                 $currentOutput = $this->twig->render('@Contao/ordering_process/shipment.html.twig', [
-                    "headline" => 'Versand',
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.2'),
                     "formular" => $formView,
-                    "preview" => 'persoenliche-daten',
-                    "next" => 'zahlung'
             
                 ]);
                break;
 
-            case 'zahlung':
+            case $arrAllowedSteps[3]:
                $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                    
                 $data = ($this->session->get('order_payment'))??[];
@@ -303,7 +308,7 @@ class OrderingProcessModule extends Module
                           
                 $form->handleRequest(null);
                 if(!$this->session->get('order_shipment')||!array_key_exists('finished',$this->session->get('order_shipment'))){
-                     return $this->redirectToStep('versand','/zahlung')->send();
+                     return $this->redirectToStep($arrAllowedSteps[2],'/'.$arrAllowedSteps[3])->send();
                            
                     }
                     
@@ -317,22 +322,20 @@ class OrderingProcessModule extends Module
                             $this->session->set('order_payment', $data);
                             $this->session->save();
                             //redirect
-                            return $this->redirectToStep('uebersicht','/zahlung')->send();
+                            return $this->redirectToStep($arrAllowedSteps[4],'/'.$arrAllowedSteps[3])->send();
                             
                           
                     }
                     
                 $formView = $form->createView();
                 $currentOutput = $this->twig->render('@Contao/ordering_process/payment.html.twig', [
-                    "headline" => 'Zahlung',
-                    "formular" => $formView,
-                    "preview" => 'versand',
-                    "next" => 'uebersicht'
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.3'),
+                    "formular" => $formView
             
                 ]);
                break;
 
-            case 'uebersicht':
+            case $arrAllowedSteps[4]:
                 $this->session->set('order_steps',array_merge([$step],$this->session->get('order_steps')));
                   
                 $data = ($this->session->get('order_overview'))??[];
@@ -341,7 +344,7 @@ class OrderingProcessModule extends Module
                           
                 $form->handleRequest(null);
                 if(!$this->session->get('order_payment')||!array_key_exists('finished',$this->session->get('order_payment'))){
-                     return $this->redirectToStep('zahlung','/uebersicht')->send();
+                     return $this->redirectToStep($arrAllowedSteps[3],'/'.$arrAllowedSteps[4])->send();
                            
                     }
                     
@@ -374,7 +377,7 @@ class OrderingProcessModule extends Module
                             $paymentFeedback = ($this->session->get('order_payment_feedback'))?? false;
                             if($paymentFeedback === false){
                                 //redirect
-                                return $this->redirectToStep('bestaetigung','/uebersicht')->send();
+                                return $this->redirectToStep($arrAllowedSteps[5],'/'.$arrAllowedSteps[4])->send();
                                 }
                             elseif(isset($paymentFeedback['errors'])){
                                   //handle Error  
@@ -408,19 +411,17 @@ class OrderingProcessModule extends Module
                 ];
                 
                 $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
-                    "headline" => 'Übersicht',
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.4'),
                     "order" => $arrOrder,
                     "cart" => $this->generateCartOverview(),
-                    "formular" => $formView,
-                    "preview" => 'zahlung',
-                    "next" => ''
+                    "formular" => $formView
             
                 ]);
                break;
-            case 'bestaetigung':
+            case $arrAllowedSteps[5]:
             
                 if(!$this->session->get('order_overview')||!array_key_exists('finished',$this->session->get('order_payment'))){
-                     return $this->redirectToStep('uebersicht','/bestaetigung')->send();
+                     return $this->redirectToStep($arrAllowedSteps[4],'/'.$arrAllowedSteps[5])->send();
                            
                     }
                 $parsedNavigation = '';
@@ -468,7 +469,7 @@ class OrderingProcessModule extends Module
                             [$shopConfig[0]['shop_logo']]);
                    // var_dump($shopConfig[0]['shop_logo'],$shopLogo);exit;
                 $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
-                    "headline" => 'Bestellung',
+                    "headline" => $this->translator->trans('mm_shop.mail.invoice.subject'),
                     "shop_config" => $shopConfig[0],
                     "shop_logo" => $shopLogo[0]['path'],
                     "order_number" => 'BE_'.$orderId[0].'_'.date("dmY"),
@@ -487,9 +488,9 @@ class OrderingProcessModule extends Module
                 $arrMail = [
                     'from' => 'info@monique-hahnefeld.de' ,// Shop-Mail
                     'to' => $this->session->get('order_personal_data')['email'],
-                    'subject' => 'Bestellbestätigung', //+Shop-Name
+                    'subject' => $this->translator->trans('mm_shop.mail.confirmation.subject'), //+Shop-Name
                     'html' => $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
-                        "headline" => 'Bestellbestätigung',
+                        "headline" => $this->translator->trans('mm_shop.mail.confirmation.headline'),
                         "order" => $arrOrder,
                         "cart" => $this->generateCartOverview()
                       
@@ -503,8 +504,8 @@ class OrderingProcessModule extends Module
                     //Session löschen
                    // Vielen Dank Nachricht
                  $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
-                    "headline" => 'Vielen Dank',
-                    "order" => '<div class="confirmation">Sie erhalten in Kürze eine Bestellbestätigung per Email.</div>',
+                    "headline" => $this->translator->trans('mm_shop.checkout.headlines.5'),
+                    "order" => '<div class="confirmation">'.$this->translator->trans('mm_shop.checkout.confirmation').'</div>',
                     "formular" => '',
                     "preview" => '',
                     "next" => ''
@@ -512,7 +513,7 @@ class OrderingProcessModule extends Module
                 ]);  
                 break;
             default:
-            $this->redirectToStep('persoenliche-daten')->send();
+            $this->redirectToStep($arrAllowedSteps[0])->send();
             
             
         }
