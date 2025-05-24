@@ -109,7 +109,7 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
-        $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht'];
+        $arrAllowedSteps = ['persoenliche-daten','persoenliche-daten-lg','versand','zahlung','uebersicht','bestaetigung'];
         $stepIsValid = (!in_array(Input::get('auto_item',true),$arrAllowedSteps));
         $step = Input::get('auto_item', false, $stepIsValid);///($this->request->attributes->get('auto_item'))??Null;
         if($this->session->get('order_steps') === Null){

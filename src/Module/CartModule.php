@@ -53,6 +53,8 @@ class CartModule extends Module
     private $tokenManager;
     
     private $arrCart;
+    
+    private $translator;
    
 
     public function __construct($module, $column = 'main')
@@ -85,6 +87,8 @@ class CartModule extends Module
                $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
       
         }
+        
+        $this->translator = $this->container->get('translator');
             
         
     }
@@ -105,7 +109,7 @@ class CartModule extends Module
         
          if(empty(array_keys($this->sessionCart))){
              
-             $currentContent = 'Der Warenkorb ist leer.';
+             $currentContent = $this->translator->trans('mm_shop.cart.is_empty');
              
              }else{
                 $data = [];
@@ -201,7 +205,7 @@ class CartModule extends Module
              }
                   
           return $this->twig->render('@Contao/mod_cart.html.twig', [
-                "headline" => 'Warenkorb',
+                "headline" => $this->translator->trans('mm_shop.cart.headline'),
                 "content" => $currentContent
             ]);
         
