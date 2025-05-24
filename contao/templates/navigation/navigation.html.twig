@@ -2,7 +2,7 @@
   <ul class="nav-menu level-{{ level }}" role="menubar">
     {% for item in items %}
       {% set page = item.page ?? {} %}
-      {% if page.hide is not defined or page.hide == 0 %}
+    
         {% set hasChildren = item.children is defined and item.children|length > 0 %}
         <li role="none" class="nav-item {{ page.cssClass|default('') }}">
           {% if page.url is defined %}
@@ -17,20 +17,20 @@
             >
               {{ page.title|default(page.name) }}
             </a>
-            {% if level == 1 %}
-            <span class="submenu-toggler" data-toggle="submenu">+</span>
+            {% if hasChildren %}
+                <span class="submenu-toggler-{{level}}" data-toggle="submenu-{{level}}">+</span>
             {% endif %}
           {% else %}
             <span class="nav-link">{{ page.title|default(page.name) }}</span>
           {% endif %}
 
           {% if hasChildren %}
-            <div class="dropdown">
+            <div class="dropdown-{{level}}">
               {{ _self.render_navigation(item.children, currentPageId, level + 1) }}
             </div>
           {% endif %}
         </li>
-      {% endif %}
+  
     {% endfor %}
   </ul>
 {% endmacro %}

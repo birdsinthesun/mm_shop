@@ -1,8 +1,10 @@
 (function($) {
   $.fn.mmShopDropdown = function(options) {
     const settings = $.extend({
-      submenuSelector: 'ul',
-      toggleSelector: '[data-toggle="submenu"]',
+      submenuSelector: '.dropdown-1',
+      submenuSelector2: '.dropdown-2',
+      toggleSelector: '[data-toggle="submenu-1"]',
+      toggleSelector2: '[data-toggle="submenu-2"]',
       animationSpeed: 200,
       focusClass: 'focus'
     }, options);
@@ -24,7 +26,7 @@
         const $submenu = $toggle.next(settings.submenuSelector);
 
         const isVisible = $submenu.is(':visible');
-
+       
         $nav.find(settings.submenuSelector).slideUp(settings.animationSpeed).attr('aria-hidden', 'true');
         $nav.find(settings.toggleSelector).attr('aria-expanded', 'false');
 
@@ -33,14 +35,23 @@
           $toggle.attr('aria-expanded', 'true');
         }
       });
-      $nav.find('li').has('ul').hover(
-          function() {
-            $(this).children('ul').first().stop(true, true).fadeIn(200).attr('aria-hidden', 'false');
-          },
-          function() {
-            $(this).children('ul').first().stop(true, true).fadeOut(200).attr('aria-hidden', 'true');
-          }
-        );
+      // Dropdown öffnen/schließen 2
+      $nav.find(settings.toggleSelector2).on('click', function(e) {
+        e.preventDefault();
+        const $toggle = $(this);
+        const $submenu = $toggle.next(settings.submenuSelector2);
+
+        const isVisible = $submenu.is(':visible');
+        
+        $nav.find(settings.submenuSelector2).fadeOut(settings.animationSpeed).hide().attr('aria-hidden', 'true');
+        $nav.find(settings.toggleSelector2).attr('aria-expanded', 'false');
+
+        if (!isVisible) {
+          $submenu.fadeIn(settings.animationSpeed).show().attr('aria-hidden', 'false');
+          $toggle.attr('aria-expanded', 'true');
+        }
+      });
+      
 
       // Schließen beim Klick außerhalb
       $(document).on('click', function(e) {
@@ -53,5 +64,5 @@
   };
 })(jQuery);
  $(function() {
-    $('#main-dropdown-nav').mmShopDropdown();
+    $('#main-dropdown-menu').mmShopDropdown();
   });

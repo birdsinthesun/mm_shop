@@ -348,7 +348,7 @@ class NavigationModule extends Module
 
         foreach ($subPages as $page) {
             
-            if(isset($page['hide'])&&$page['hide']==='1'
+            if(isset($page['hide'])&&$page['hide']=='1'
             ||str_contains($page['type'],'error')){
                 continue;
             }
@@ -369,6 +369,7 @@ class NavigationModule extends Module
                 ];
             
             }
+           
         }
 
         return $tree;
