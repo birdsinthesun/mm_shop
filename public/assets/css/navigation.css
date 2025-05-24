@@ -1,4 +1,11 @@
 /* Navigation Basis */
+#main-dropdown-nav{
+    position:relative;
+    display:block;
+    width:auto;
+    max-width:1280px;
+    margin:240px auto 0 auto;
+    }
 .main-nav {
   position: relative;
 }

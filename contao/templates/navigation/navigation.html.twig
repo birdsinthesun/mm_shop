@@ -36,7 +36,7 @@
 {% endmacro %}
 
 
-<nav class="main-nav" aria-label="Hauptnavigation">
+<nav id="main-dropdown-nav" aria-label="Hauptnavigation">
   <button class="menu-toggle" aria-controls="main-menu" aria-expanded="false">Menü</button>
   <div id="main-dropdown-menu" class="menu-container">
     {{ _self.render_navigation(navigationItems, currentPageId, 1) }}

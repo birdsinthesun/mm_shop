@@ -32,6 +32,8 @@ class AddAssetListener
                     $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/personal-data.css';
                 }
         }else{
+            //Style
+            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/shop.css';
            //Navigation
            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/navigation.css';
            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/mmshop/assets/js/navigation.js';
