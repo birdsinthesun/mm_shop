@@ -1,0 +1,33 @@
+mm_shop:
+    cart:
+        headline: "Warenkorb"
+        is_empty: "Der Warenkorb ist leer."
+    checkout:
+        steps:
+            - 'persoenliche-daten'
+            - 'persoenliche-daten-lg'
+            - 'versand'
+            - 'zahlung'
+            - 'uebersicht'
+            - 'bestaetigung'
+        headlines: 
+            - 'Persönliche Daten'
+            - 'Persönliche Daten'
+            - 'Versand'
+            - 'Zahlung'
+            - 'Übersicht'
+            - 'Vielen Dank'
+        confirmation: 'Sie erhalten in Kürze eine Bestellbestätigung per Email.'
+    mail: 
+        confirmation:
+            subject: 'Bestellbestätigung'
+            headline: 'Bestellbestätigung'
+        invoice:
+            subject: 'Bestellung'
+    prefixes:
+        order: 'BE'
+        invoice: 'RG'
+    product_list:
+        headline: 'Produkte'
+    product_detail:
+        headline: 'Produkt Details'

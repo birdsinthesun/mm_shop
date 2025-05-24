@@ -1,5 +1,6 @@
 /* Navigation Basis */
 #main-dropdown-nav{
+    z-index:999;
     box-sizing:border-box;
     position:absolute;
     display:block;
