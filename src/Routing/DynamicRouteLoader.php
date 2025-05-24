@@ -45,7 +45,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
                 '/'.$rootPageAlias.'{!parameters}',
                 
                 [
-                    '_controller' => 'Bits\MmShopBundle\Controller\ProductListController::runRoot',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runRoot',
                 ],
                 [],
                 [
@@ -63,7 +63,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
             $routeList = new Route(
                 '/'.$rootPageAlias.'/' . $category.'{!parameters}',
                 [
-                    '_controller' => 'Bits\MmShopBundle\Controller\ProductListController::runCategory',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runCategory',
                     'category' => $category,
                 ],
                 [],
@@ -80,10 +80,13 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
             $routeDetail = new Route(
                 '/'.$rootPageAlias.'/' . $category . '/{alias}{!parameters}',
                 [
-                    '_controller' => 'Bits\MmShopBundle\Controller\ProductDetailController::run',
+                    '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runDetail',
                     'category' => $category,
                 ],
-                ['alias' => '.+'],
+                [
+                'alias' => '[^/]+\\.html',
+                'parameters' => '.*'
+                ],
                 [
                     '_scope' => 'frontend'
                 ]

@@ -20,7 +20,7 @@ class MailSubmitListener
         $model = $event->getModel(); 
         $sendedInvoice = $model->getProperty('sended_invoice');
         $status = $model->getProperty('status');
-        
+        $event->getModel()->setProperty('updated_datetime',time());
         if ($sendedInvoice === '' && $status === 'paid')  {
         
            
@@ -29,6 +29,7 @@ class MailSubmitListener
             $twig = $container->get('twig');
             $metamodelsFactory = $container->get('metamodels.factory');
             $mailer = $container->get('mailer');
+            $kernel = $container->get('kernel');
             
             $orderProducts = $connection->fetchAllAssociative(
                         'SELECT * FROM mm_order_product WHERE pid = ?',
@@ -42,13 +43,15 @@ class MailSubmitListener
                     'html' => $twig->render('@Contao/mail/paid.html.twig', [
                         "headline" => 'Rechnung',
                         "content" => 'Wir haben Ihre Zahlung erhalten. Im Anhang finden Sie die Rechnung.'
-                      
+                        ]),
+                    'attach' => [$kernel->getProjectDir().'/files/Rechnungen/RG_'.$model->getId().'_'.date('dmY',$model->getProperty('order_datetime')).'.pdf', 'RG_'.$model->getId().'_'.date('dmY',$model->getProperty('order_datetime')).'.pdf', 'application/pdf']
                 
-                    ])
+                    
                 ];
-           // var_dump(get_class_methods($event->getOriginalModel()));exit;
+           
             $this->sendConfirmation($mailer,$arrMail);
             $event->getModel()->setProperty('sended_invoice','1');
+           
             
             
             
@@ -62,8 +65,8 @@ class MailSubmitListener
                 ->from($arrData['from'])
                 ->to($arrData['to'])
                 ->subject($arrData['subject'])
-                ->html($arrData['html']); // Oder ->text('...');
-            
+                ->html($arrData['html']) // Oder ->text('...');
+                ->attachFromPath($arrData['attach'][0],$arrData['attach'][1],$arrData['attach'][2]);
             $mailer->send($email);
         }
 }

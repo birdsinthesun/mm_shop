@@ -22,14 +22,7 @@ services:
             - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
     
     
-    Bits\MmShopBundle\Controller\ProductListController:
-        arguments:
-            $db: '@doctrine.dbal.default_connection'
-            $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
-            $framework: '@contao.framework'
-        tags: ['controller.service_arguments']
-        
-    Bits\MmShopBundle\Controller\ProductDetailController:
+    Bits\MmShopBundle\Controller\ProductController:
         arguments:
             $db: '@doctrine.dbal.default_connection'
             $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
