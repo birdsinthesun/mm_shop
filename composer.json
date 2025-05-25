@@ -50,7 +50,7 @@
     "repositories": [
           {
             "type": "path",
-            "url": "../birdsinthesun/mm_shop",  
+            "url": "/vendor/birdsinthesun/mm_shop",  
             "options": {
               "symlink": true
             }
