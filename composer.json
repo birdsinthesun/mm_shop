@@ -47,15 +47,6 @@
             "symfony/runtime": true
         }
     },
-    "repositories": [
-          {
-            "type": "path",
-            "url": "/vendor/birdsinthesun/mm_shop",  
-            "options": {
-              "symlink": true
-            }
-          }
-        ],
     "extra": {
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao-component-dir": "assets",
