@@ -54,7 +54,7 @@ https://packagist.org/packages/birdsinthesun/mm_shop
 ## ⚠️ MetaModels 2.4 – Lizenzpflichtig
 
 MM_Shop setzt auf **MetaModels 2.4**, das separat erworben werden muss.  
-Das Komplettpaket inkl. aller Attribute, Filter und Mehrsprachigkeit kostet einmalig **350 €** (netto).
+Das Komplettpaket inkl. aller Attribute, Filter und Mehrsprachigkeit kostet einmalig **350 €**.
 
 ➡️ Mehr Informationen: https://now.metamodel.me
 
