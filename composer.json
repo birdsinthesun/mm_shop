@@ -2,23 +2,29 @@
     "name": "birdsinthesun/mm_shop",
     "type": "contao-bundle",
     "description": "Ein kleiner Shop für MetaModels. Theme: https://packagist.org/packages/birdsinthesun/contao-theme-ara",
-    "keywords":["contao","metamodels","mm","shop","ecommerce","mm_shop"],
-    "homepage":"https://github.com/birdsinthesun/mm_shop",
+    "keywords": [
+        "contao",
+        "metamodels",
+        "mm",
+        "shop",
+        "ecommerce",
+        "mm_shop"
+    ],
+    "homepage": "https://github.com/birdsinthesun/mm_shop",
     "license": "MIT",
-    "version":"main",
+    "version": "main",
     "prefer-stable": true,
     "authors": [
         {
             "name": "Monique Hahnefeld",
             "email": "info@birdsinthesun.de",
-            "homepage":"https://birdsinthesun.de",
-            "role":"Developer"
+            "homepage": "https://birdsinthesun.de",
+            "role": "Developer"
         }
     ],
     "require": {
         "php": ">=7.4",
-        "symfony/routing":"^6.4",
-        "symfony/form": "^6.4",
+        "symfony/routing": "^6.4",
         "contao/core-bundle": "5.3.*",
         "symfony/form": "^6.4",
         "twig/extra-bundle": "^3.21",
@@ -26,10 +32,8 @@
         "symfony/twig-bridge": "^6.4",
         "symfony/security-csrf": "^6.4",
         "symfony/validator": "^6.4",
-        "symfony/routing": "*",
         "symfony/mailer": "*",
         "mpdf/mpdf": "*"
-   
     },
     "autoload": {
         "psr-4": {
@@ -54,17 +58,13 @@
         }
     },
     "scripts": {
-    "post-install-cmd": [
-        
-        "@php bin/console asset:install --relative",
-        "@php vendor/bin/contao-setup"
-    ],
-    "post-update-cmd": [
-        
-        "@php bin/console asset:install --relative",
-        "@php vendor/bin/contao-setup"
-    ]
-  }
-    
-    
+        "post-install-cmd": [
+            "@php bin/console asset:install --relative",
+            "@php vendor/bin/contao-setup"
+        ],
+        "post-update-cmd": [
+            "@php bin/console asset:install --relative",
+            "@php vendor/bin/contao-setup"
+        ]
+    }
 }
