@@ -10,3 +10,74 @@ Installiere MM_Shop über Composer:
 
 ```bash
 composer require birdsinthesun/mm_shop
+```
+
+➡️ Alle Anforderungen findest du auf Packagist:  
+https://packagist.org/packages/birdsinthesun/mm_shop
+
+💡 Du hast wenig Erfahrung mit Composer, Contao oder MetaModels?  
+**Ich biete einen kostenfreien Installationsservice an** (professionelles Hosting vorausgesetzt) – inklusive Beratung.
+
+---
+
+## ✨ Features
+
+- 🧩 **5 Frontend-Module**
+  - Produktliste
+  - Produktdetails
+  - Warenkorb
+  - Kasse (Checkout)
+  - Hauptnavigation für Shop & Kategorien
+
+- 🧾 **Produktverwaltung mit MetaModels**
+  - Flexible Eingabeformulare
+  - Filterbare Produktlisten
+  - Individuelle Templates
+  - Unterstützung für Mehrsprachigkeit
+  - Kategorie-Zuweisung pro Produkt
+
+- 💳 **Zahlungsarten in der freien Version**
+  - Banküberweisung / Vorkasse
+  - PayPal (Standard)
+
+- 📧 **E-Mail-Automatisierung**
+  - Bestellbestätigung
+  - Zahlungseingangsbestätigung mit PDF-Rechnung
+
+- 🔐 **Rechtssicherer Checkout**
+  - Bestätigungs-Checkboxen
+  - Klar strukturierter Drei-Schritte-Kassenprozess
+  - Button: „Zahlungspflichtig bestellen“
+
+---
+
+## ⚠️ MetaModels 2.4 – Lizenzpflichtig
+
+MM_Shop setzt auf **MetaModels 2.4**, das separat erworben werden muss.  
+Das Komplettpaket inkl. aller Attribute, Filter und Mehrsprachigkeit kostet einmalig **350 €** (netto).
+
+➡️ Mehr Informationen: https://now.metamodel.me
+
+---
+
+## 📞 Support & Kontakt
+
+Du brauchst Hilfe bei der Einrichtung oder hast Fragen?  
+Ich unterstütze dich gern!
+
+📧 E-Mail: [info@birdsinthesun.de](mailto:info@birdsinthesun.de)  
+🌐 Website: https://birdsinthesun.de
+
+---
+
+## 📝 Lizenz
+
+MM_Shop steht unter der **MIT-Lizenz**.  
+Nutze, erweitere und passe die Erweiterung an deine Bedürfnisse an.
+
+---
+
+## 🚀 Jetzt starten
+
+> MM_Shop ist der ideale Einstieg für kleine, aber professionelle Shops mit Contao 5.3.  
+> **Einfach, sicher und vollständig integriert.**
