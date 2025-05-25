@@ -1,3 +1,4 @@
-# config/packages/twig.yaml
 twig:
-    form_themes: ['bootstrap_5_layout.html.twig']
+    form_themes:
+        - 'form/fields.html.twig'
+        - 'bootstrap_5_layout.html.twig'

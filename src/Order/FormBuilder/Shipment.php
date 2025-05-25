@@ -3,7 +3,7 @@
 namespace Bits\MmShopBundle\Order\FormBuilder;
 
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Bits\MmShopBundle\Form\DescriptedChoiceType;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Contao\Input;
@@ -27,8 +27,9 @@ class Shipment
             $tags = $this->connection->fetchAllAssociative('SELECT * FROM mm_shipment');
             foreach ($tags as $tag) {
                     $choices[$tag['name']] = $tag['id']; 
+                    $descriptions[$tag['id']] = $tag['description'];
                 }
-                 $builder->add('shipment', ChoiceType::class, [
+                 $builder->add('shipment', DescriptedChoiceType::class, [
                     'choices' => $choices,
                     'label' => 'Versandart',
                     'required' => true,
@@ -37,8 +38,8 @@ class Shipment
                     'constraints' => [new NotNull([
                     'message' => 'Bitte wählen Sie eine Versandart aus.'
                     ])],
-                    'help_html' => true,
-                    'help' => $tag['description']
+                    'descriptions' => $descriptions
+                    
                 ]);
             
             

@@ -53,6 +53,11 @@ services:
     security.csrf.token_manager:
         class: Symfony\Component\Security\Csrf\CsrfTokenManager
         public: true
+    
+    Bits\MmShopBundle\EventSubscriber\FormThemeSubscriber:
+        public: true
+        tags:
+            - { name: kernel.event_subscriber }
         
     Bits\MmShopBundle\:
         resource: '../src/*'
