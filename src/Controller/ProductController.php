@@ -10,10 +10,12 @@ use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Bits\MmShopBundle\Service\ResourceResolver;
 use Doctrine\DBAL\Connection;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+
 
 #[Route(defaults: ['_scope' => 'frontend'])]
 class ProductController extends AbstractController
@@ -39,6 +41,7 @@ class ProductController extends AbstractController
         $objPage = PageModel::findPublishedById($pageId[0]);
         $request->attributes->set('pageModel', $objPage);
         $objPage->__set('layout','27');
+        $objPage->__set('language','de');
 
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
@@ -69,6 +72,7 @@ class ProductController extends AbstractController
         $objPage = PageModel::findPublishedById($pageId[0]);
         $request->attributes->set('pageModel', $objPage);
         $objPage->__set('layout','27');
+        $objPage->__set('language','de');
 
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
@@ -96,7 +100,9 @@ class ProductController extends AbstractController
                 'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
                 ['1']);
         $objPage = PageModel::findPublishedById($pageId[0]);
+         $objPage->__set('language','de');
         $request->attributes->set('pageModel', $objPage);
+        
 
         if (!$objPage) {
             throw new \RuntimeException('Detailseite nicht gefunden.');
@@ -123,5 +129,11 @@ class ProductController extends AbstractController
         
         
         }
-    
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        
+        return $services;
+    }
+
 }

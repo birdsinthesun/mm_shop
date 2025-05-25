@@ -159,7 +159,7 @@ class ProductListModule extends Module
                
             
             
-                  
+                 // var_dump($this->translator->getLocale(),$this->translator->trans('product_list.headline', [], 'mm_shop'));exit;
                   
           return $this->twig->render('@Contao/mod_product_detail.html.twig', [
                 "headline" => $this->translator->trans('mm_shop.product_list.headline'),
