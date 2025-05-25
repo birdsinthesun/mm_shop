@@ -46,7 +46,11 @@
     "extra": {
         "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
         "contao-component-dir": "assets",
-        "public-dir": "public"
+        "public-dir": "public",
+        "twig": {
+            "paths": {
+                "views": "MmShop"
+        }
     },
     "scripts": {
     "post-install-cmd": [

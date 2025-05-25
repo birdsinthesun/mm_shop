@@ -1,0 +1,14 @@
+{# templates/form/fields.html.twig #}
+{% block descripted_method_widget %}
+    {% for child in form %}
+        <div class="descripted-option">
+            {{ form_widget(child) }}
+            <label for="{{ child.vars.id }}">{{ child.vars.label }}</label>
+            {% if child.vars.description %}
+                <div class="choice-description">
+                    {{ child.vars.description|raw }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
