@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=7.4",
-         "contao-community-alliance/contao-multicolumnwizard-frontend-bundle": "^2.4",
+        "contao-community-alliance/contao-multicolumnwizard-frontend-bundle": "^2.4",
         "contao-community-alliance/contao-textfield-multiple-bundle": "^2.4",
         "contao/manager-bundle": "5.3.*",
         "contao/core-bundle": "5.3.*",
@@ -78,7 +78,7 @@
         "metamodels/filter_register": "^2.4@dev",
         "metamodels/filter_select": "^2.4@dev",
         "metamodels/filter_tags": "^2.4@dev",
-        "metamodels/filter_text": "^2.4@dev",
+        "metamodels/filter_text": "^2.4@dev"
     },
     "autoload": {
         "psr-4": {
