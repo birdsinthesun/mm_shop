@@ -53,6 +53,10 @@ services:
     security.csrf.token_manager:
         class: Symfony\Component\Security\Csrf\CsrfTokenManager
         public: true
+        
+    Bits\MmShopBundle\Form\DescriptedChoiceType:
+        public: true
+        tags: ['form.type']
     
     Bits\MmShopBundle\EventSubscriber\FormThemeSubscriber:
         public: true

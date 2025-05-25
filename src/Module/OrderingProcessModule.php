@@ -292,6 +292,7 @@ class OrderingProcessModule extends Module
                     }
                     
                 $formView = $form->createView();
+              // var_dump(array_keys($formView ->children['shipment']->children[0]->vars));exit;
                 $currentOutput = $this->twig->render('@Contao/ordering_process/shipment.html.twig', [
                     "headline" => $this->translator->trans('mm_shop.checkout.headlines.2'),
                     "formular" => $formView,

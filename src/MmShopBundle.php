@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Bits\MmShopBundle\DependencyInjection\MailCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\RoutingCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\FormCompilerPass;
+use Bits\MmShopBundle\DependencyInjection\FieldCompilerPass;
+use Bits\MmShopBundle\DependencyInjection\TwigCompilerPass;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -25,7 +27,8 @@ class MmShopBundle extends Bundle
     {
         parent::build($container);
 
-        // CompilerPasses 
+        $container->addCompilerPass(new TwigCompilerPass());
+        $container->addCompilerPass(new FieldCompilerPass());
         $container->addCompilerPass(new FormCompilerPass());
         $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
         $container->addCompilerPass(new MailCompilerPass());

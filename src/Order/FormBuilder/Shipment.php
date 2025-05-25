@@ -29,16 +29,17 @@ class Shipment
                     $choices[$tag['name']] = $tag['id']; 
                     $descriptions[$tag['id']] = $tag['description'];
                 }
+               
                  $builder->add('shipment', DescriptedChoiceType::class, [
                     'choices' => $choices,
+                    'descriptions' => $descriptions,
                     'label' => 'Versandart',
                     'required' => true,
                     'expanded' => true,
                     'multiple' => false,
                     'constraints' => [new NotNull([
                     'message' => 'Bitte wählen Sie eine Versandart aus.'
-                    ])],
-                    'descriptions' => $descriptions
+                    ])]
                     
                 ]);
             

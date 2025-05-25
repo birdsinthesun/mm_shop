@@ -1,4 +1,5 @@
 <h2>{{ headline }}</h2>
+{% form_theme formular '@MmShop/form/fields.html.twig' %}
 {% set formHtml = form(formular) %}
   {{ formHtml|raw }}
   {{ form_errors(formular) }}

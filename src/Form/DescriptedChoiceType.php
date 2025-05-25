@@ -22,16 +22,17 @@ class DescriptedChoiceType extends AbstractType
         ]);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        // Übertrage Beschreibungen in die View
-        $descriptions = $options['descriptions'];
-
-        foreach ($view->children as $choiceView) {
-            $value = $choiceView->vars['value'];
-            $choiceView->vars['description'] = $descriptions[$value] ?? null;
+        
+       // var_dump($view->children);exit;
+       
+        foreach ($view->children as $child) {
+            $value = $child->vars['value'];
+            $child->vars['description'] = $options['descriptions'][$value] ?? null;
         }
     }
+   
 
     public function getParent(): string
     {
@@ -40,6 +41,6 @@ class DescriptedChoiceType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'descripted_method';
+        return 'descripted_choice';
     }
 }
