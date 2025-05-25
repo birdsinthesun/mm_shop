@@ -3,8 +3,7 @@
 namespace Bits\MmShopBundle\Order\FormBuilder;
 
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use Bits\MmShopBundle\Form\DescriptedChoiceType;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Contao\Input;
 
@@ -26,19 +25,21 @@ class Payment
     {
             $tags = $this->connection->fetchAllAssociative('SELECT * FROM mm_payment');
             foreach ($tags as $tag) {
-                    $choices[$tag['name']] = $tag['id']; 
+                    $choices[$tag['name']] = $tag['id'];
+                    $descriptions[$tag['id']] = $tag['description'];
                 }
-                 $builder->add('payment', ChoiceType::class, [
+              
+                 $builder->add('payment', DescriptedChoiceType::class, [
                     'choices' => $choices,
+                    'descriptions' => $descriptions,
                     'label' => 'Zahlungsart',
                     'required' => true,
                     'expanded' => true,
                     'multiple' => false,
                     'constraints' => [new NotNull([
-                    'message' => 'Bitte wählen Sie eine Versandart aus.'
-                    ])],
-                    'help_html' => true,
-                    'help' => $tag['description']
+                    'message' => 'Bitte wählen Sie eine Zahlungsart aus.'
+                    ])]
+                    
                 ]);
             
             

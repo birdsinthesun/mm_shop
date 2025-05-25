@@ -4,7 +4,6 @@ namespace Bits\MmShopBundle\Order\FormBuilder;
 
 
 use Bits\MmShopBundle\Form\DescriptedChoiceType;
-
 use Symfony\Component\Validator\Constraints\NotNull;
 use Contao\Input;
 

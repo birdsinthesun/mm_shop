@@ -24,9 +24,7 @@ class DescriptedChoiceType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        
-       // var_dump($view->children);exit;
-       
+
         foreach ($view->children as $child) {
             $value = $child->vars['value'];
             $child->vars['description'] = $options['descriptions'][$value] ?? null;
