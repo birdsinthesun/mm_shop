@@ -37,6 +37,7 @@ class AddAssetListener
             $useCustomCss = $this->db->fetchAllAssociative(
                 'SELECT use_custom_css FROM mm_shop WHERE id = ?', 
                 ['1']);
+            if($useCustomCss[0]['use_custom_css'] === ''){
             //Style
             $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/shop.css';
            //Navigation
@@ -44,12 +45,6 @@ class AddAssetListener
            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/mmshop/assets/js/navigation.js';
             //ToDo: $page = PageModel::findOneBy('id',$event->getRequest()->get('id'));
             if(str_contains($event->getRequest()->getPathInfo(),'kasse')){
-          
-                 
-                
-                  
-                if($useCustomCss[0]['use_custom_css'] === ''){
-                
                     $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/ordering-process.css';
                 }
                 
