@@ -51,12 +51,13 @@ https://packagist.org/packages/birdsinthesun/mm_shop
 
 ---
 
-## ⚠️ MetaModels 2.4 – Lizenzpflichtig
+## ⚠️ MetaModels 2.4 – Fundraisingphase
 
-MM_Shop setzt auf **MetaModels 2.4**, das separat erworben werden muss.  
-Das Komplettpaket inkl. aller Attribute, Filter und Mehrsprachigkeit kostet einmalig **350 €**.
+MM_Shop setzt auf **MetaModels 2.4**, das separat erworben werden muss, während der Fundraisingphase.  
+Mehr Informationen zum Fundraising: https://now.metamodel.me/en/supporters/fundraising
 
-➡️ Mehr Informationen: https://now.metamodel.me
+
+➡️ Mehr Informationen zu MetaModels: https://now.metamodel.me
 
 ---
 
