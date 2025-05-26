@@ -1,3 +1,5 @@
+Ist fast fertig. Noch Migration und PayPal fehlen.
+(Vorschau)
 # MM_Shop
 
 **MM_Shop** ist eine schlanke, sichere und flexible Open-Source-Shop-Erweiterung für **Contao 5.3**, entwickelt für den deutschsprachigen Raum und kleinere Shops, die ihre Produkte in **Euro (€)** anbieten möchten.
