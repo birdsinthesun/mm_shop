@@ -48,7 +48,6 @@
         "metamodels/attribute_tags": "^2.4@dev",
         "metamodels/attribute_text": "^2.4@dev",
         "metamodels/attribute_timestamp": "^2.4@dev",
-        "metamodels/attribute_url": "^2.4@dev",
         "metamodels/core": "^2.4",
         "metamodels/filter_checkbox": "^2.4@dev",
         "metamodels/filter_select": "^2.4@dev",
