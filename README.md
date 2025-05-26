@@ -60,13 +60,11 @@ MM_Shop setzt auf **MetaModels 2.4**, das separat erworben werden muss, während
 Mehr Informationen zum Fundraising: https://now.metamodel.me/en/supporters/fundraising
 
 Hier könnt Ihr **MetaModels 2.4** erwerben:
+
 **Ingolf Steinhardt**
 > aka zonky
-
 > e-spin Berlin
-
 > info@e-spin.de
-
 > https://www.e-spin.de 
 
 ➡️ Mehr Informationen zu MetaModels: https://now.metamodel.me
