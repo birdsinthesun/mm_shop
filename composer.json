@@ -1,84 +1,82 @@
 {
-    "name": "birdsinthesun/mm_shop",
-    "type": "contao-bundle",
-    "description": "MM_Shop ist eine schlanke, sichere und flexible Open-Source-Shop-Erweiterung für Contao 5.3, entwickelt für den deutschsprachigen Raum und kleinere Shops, die ihre Produkte in Euro (€) anbieten möchten. MM_Shop basiert auf Symfony 6.4 und nutzt die leistungsfähige Erweiterung MetaModels 2.4 für eine individuelle und flexible Datenmodellierung.",
-    "keywords": [
-        "contao",
-        "metamodels",
-        "mm",
-        "shop",
-        "ecommerce",
-        "mm_shop"
-    ],
-    "homepage": "https://ara.birdsinthesun.de",
-    "license": "MIT",
-    "version": "main",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "Monique Hahnefeld",
-            "email": "info@birdsinthesun.de",
-            "homepage": "https://birdsinthesun.de",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": ">=7.4",
-        "contao-community-alliance/contao-multicolumnwizard-frontend-bundle": "^2.4",
-        "contao-community-alliance/contao-textfield-multiple-bundle": "^2.4",
-        "contao/manager-bundle": "5.3.*",
-        "contao/core-bundle": "5.3.*",
-        "symfony/routing": "^6.4",
-        "symfony/form": "^6.4",
-        "twig/extra-bundle": "^3.21",
-        "twig/twig": "^3.21",
-        "symfony/twig-bridge": "^6.4",
-        "symfony/security-csrf": "^6.4",
-        "symfony/validator": "^6.4",
-        "symfony/mailer": "*",
-        "mpdf/mpdf": "*",
-        "metamodels/attribute_alias": "^2.4@dev",
-        "metamodels/attribute_checkbox": "^2.4@dev",
-        "metamodels/attribute_country": "^2.4@dev",
-        "metamodels/attribute_decimal": "^2.4@dev",
-        "metamodels/attribute_file": "^2.4@dev",
-        "metamodels/attribute_longtext": "^2.4@dev",
-        "metamodels/attribute_numeric": "^2.4@dev",
-        "metamodels/attribute_select": "^2.4@dev",
-        "metamodels/attribute_tags": "^2.4@dev",
-        "metamodels/attribute_text": "^2.4@dev",
-        "metamodels/attribute_timestamp": "^2.4@dev",
-        "metamodels/core": "^2.4",
-        "metamodels/filter_checkbox": "^2.4@dev",
-        "metamodels/filter_select": "^2.4@dev",
-        "metamodels/filter_tags": "^2.4@dev",
-        "metamodels/filter_text": "^2.4@dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Bits\\MmShopBundle\\": "src/"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true,
-            "symfony/flex": true,
-            "symfony/runtime": true
-        }
-    },
-    "extra": {
-        "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
-        "contao-component-dir": "assets",
-        "public-dir": "public"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "@php bin/console asset:install --relative",
-            "@php vendor/bin/contao-setup"
-        ],
-        "post-update-cmd": [
-            "@php bin/console asset:install --relative",
-            "@php vendor/bin/contao-setup"
-        ]
+  "name": "birdsinthesun/mm_shop",
+  "type": "contao-bundle",
+  "description": "MM_Shop ist eine schlanke, sichere und flexible Open-Source-Shop-Erweiterung für Contao 5.3, entwickelt für den deutschsprachigen Raum und kleinere Shops, die ihre Produkte in Euro (€) anbieten möchten. MM_Shop basiert auf Symfony 6.4 und nutzt die leistungsfähige Erweiterung MetaModels 2.4 für eine individuelle und flexible Datenmodellierung.",
+  "keywords": [
+    "contao",
+    "metamodels",
+    "mm",
+    "shop",
+    "ecommerce",
+    "mm_shop"
+  ],
+  "homepage": "https://ara.birdsinthesun.de",
+  "license": "MIT",
+  "version": "main",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Monique Hahnefeld",
+      "email": "info@birdsinthesun.de",
+      "homepage": "https://birdsinthesun.de",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": "^8.2",
+    "contao/core-bundle": "5.3.*",
+    "contao/manager-bundle": "5.3.*",
+    "metamodels/attribute_alias": "^2.4@dev",
+    "metamodels/attribute_checkbox": "^2.4@dev",
+    "metamodels/attribute_country": "^2.4@dev",
+    "metamodels/attribute_decimal": "^2.4@dev",
+    "metamodels/attribute_file": "^2.4@dev",
+    "metamodels/attribute_longtext": "^2.4@dev",
+    "metamodels/attribute_numeric": "^2.4@dev",
+    "metamodels/attribute_select": "^2.4@dev",
+    "metamodels/attribute_tags": "^2.4@dev",
+    "metamodels/attribute_text": "^2.4@dev",
+    "metamodels/attribute_timestamp": "^2.4@dev",
+    "metamodels/core": "^2.4",
+    "metamodels/filter_checkbox": "^2.4@dev",
+    "metamodels/filter_select": "^2.4@dev",
+    "metamodels/filter_tags": "^2.4@dev",
+    "metamodels/filter_text": "^2.4@dev",
+    "mpdf/mpdf": "*",
+    "symfony/form": "^6.4",
+    "symfony/mailer": "*",
+    "symfony/routing": "^6.4",
+    "symfony/security-csrf": "^6.4",
+    "symfony/twig-bridge": "^6.4",
+    "symfony/validator": "^6.4",
+    "twig/extra-bundle": "^3.21",
+    "twig/twig": "^3.21"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bits\\MmShopBundle\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true,
+      "symfony/flex": true,
+      "symfony/runtime": true
+    }
+  },
+  "extra": {
+    "contao-manager-plugin": "Bits\\MmShopBundle\\ContaoManager\\Plugin",
+    "contao-component-dir": "assets",
+    "public-dir": "public"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@php bin/console asset:install --relative",
+      "@php vendor/bin/contao-setup"
+    ],
+    "post-update-cmd": [
+      "@php bin/console asset:install --relative",
+      "@php vendor/bin/contao-setup"
+    ]
+  }
 }
