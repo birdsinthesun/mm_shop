@@ -33,10 +33,9 @@ https://packagist.org/packages/birdsinthesun/mm_shop
   - Hauptnavigation für Shop & Kategorien
 
 - 🧾 **Produktverwaltung mit MetaModels**
-  - Flexible Eingabeformulare
-  - Filterbare Produktlisten
+  - individuelle Datenmodellierung
+  - individuelles Rendering 
   - Individuelle Templates
-  - Unterstützung für Mehrsprachigkeit
   - Kategorie-Zuweisung pro Produkt
 
 - 💳 **Zahlungsarten in der freien Version**
