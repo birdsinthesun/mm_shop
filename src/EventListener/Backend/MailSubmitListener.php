@@ -6,9 +6,17 @@ use ContaoCommunityAlliance\DcGeneral\Event\PrePersistModelEvent;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Contao\System;
+use Doctrine\DBAL\Connection;
 
 class MailSubmitListener
 {
+    
+   private Connection $db;
+
+     public function __construct(Connection $db)
+    {
+        $this->db = $db;
+    }
   
     public function __invoke(PrePersistModelEvent $event): void
     {
@@ -25,20 +33,31 @@ class MailSubmitListener
         
            
             $container = System::getContainer();
-            $connection = $container->get('database_connection');
             $twig = $container->get('twig');
             $metamodelsFactory = $container->get('metamodels.factory');
             $mailer = $container->get('mailer');
             $kernel = $container->get('kernel');
             
-            $orderProducts = $connection->fetchAllAssociative(
+            $orderProducts = $this->db->fetchAllAssociative(
                         'SELECT * FROM mm_order_product WHERE pid = ?',
                         [$model->getId()]
             
             );
+            $shopEmail = $this->db->fetchFirstColumn(
+                        'SELECT owner_email FROM mm_shop WHERE id = ?',
+                        ['1']
+            
+            );
+            $customerEmail = $this->db->fetchFirstColumn(
+                        'SELECT email FROM mm_personaldata WHERE id = ?',
+                        [$model->getProperty('customer_id')]
+            
+            );
+            
+            
             $arrMail = [
-                    'from' => 'info@monique-hahnefeld.de' ,// Shop-Mail
-                    'to' => 'hello@bits-design.de',
+                    'from' => $shopEmail[0],// Shop-Mail
+                    'to' => $customerEmail[0],
                     'subject' => 'Rechnung', //+Shop-Name
                     'html' => $twig->render('@Contao/mail/paid.html.twig', [
                         "headline" => 'Rechnung',
@@ -54,6 +73,10 @@ class MailSubmitListener
            
             
             
+            
+        }
+        if ($status === 'canceled')  {
+            //ToDo
             
         }
     }

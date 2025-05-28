@@ -43,6 +43,8 @@ services:
             - { name: routing.loader }
     
     Bits\MmShopBundle\EventListener\Backend\MailSubmitListener:
+        arguments:
+            $db: '@doctrine.dbal.default_connection'
         public: true
         tags:
             - { name: kernel.event_listener, event: dc-general.model.pre-persist }

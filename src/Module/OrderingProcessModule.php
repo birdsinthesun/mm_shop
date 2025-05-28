@@ -479,7 +479,7 @@ class OrderingProcessModule extends Module
                             'SELECT * FROM tl_files WHERE uuid = ?', 
                             [$shopConfig[0]['shop_logo']]);
                    // var_dump($shopConfig[0]['shop_logo'],$shopLogo);exit;
-                $orderInvoice = $this->twig->render('@Contao/ordering_process/invoice.html.twig', [
+                $orderInvoice = $this->twig->render('@Contao/document/invoice.html.twig', [
                     "headline" => $this->translator->trans('mm_shop.mail.invoice.subject'),
                     "shop_config" => $shopConfig[0],
                     "shop_logo" => $shopLogo[0]['path'],

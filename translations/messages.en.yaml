@@ -1,0 +1,30 @@
+mm_shop:
+    cart:
+        headline: "Cart"
+        is_empty: "The Cart is Empty."
+    checkout:
+        steps:
+            - 'personal-data'
+            - 'personal-data-sh'
+            - 'shipment'
+            - 'payment'
+            - 'overview'
+            - 'confirmation'
+        headlines: 
+            - 'Personal Data'
+            - 'Personal Data'
+            - 'Shipment'
+            - 'Payment'
+            - 'Overview'
+            - 'Thank you'
+        confirmation: 'You'll get a confirmation via email.'
+    mail: 
+        confirmation:
+            subject: 'Order Confirmation'
+            headline: 'Order Confirmation'
+        invoice:
+            subject: 'Order'
+    product_list:
+        headline: 'Products'
+    product_detail:
+        headline: 'Product-Details'
