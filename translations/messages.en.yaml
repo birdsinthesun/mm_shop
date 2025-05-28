@@ -17,7 +17,7 @@ mm_shop:
             - 'Payment'
             - 'Overview'
             - 'Thank you'
-        confirmation: 'You\'ll get a confirmation via email.'
+        confirmation: "You will get a confirmation via email."
     mail: 
         confirmation:
             subject: 'Order Confirmation'
