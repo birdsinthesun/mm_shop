@@ -28,18 +28,19 @@ class AddAssetListener
         
         if ($this->scopeMatcher->isBackendMainRequest($event)) {
            
+            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/backend/shop.css';
              if ($event->getRequest()->getPathInfo() === 'contao/metamodel/mm_product') {
             
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/products.css';
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/personal-data.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/backend/css/products.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/backend/css/personal-data.css';
                 }
         }else{
             $useCustomCss = $this->db->fetchAllAssociative(
                 'SELECT use_custom_css FROM mm_shop WHERE id = ?', 
                 ['1']);
             if($useCustomCss[0]['use_custom_css'] === ''){
-            //Style
-            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/shop.css';
+            
+            
            //Navigation
            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/navigation.css';
            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/mmshop/assets/js/navigation.js';

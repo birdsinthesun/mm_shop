@@ -33,7 +33,6 @@ class MenuListener
                 ->setLinkAttribute('contao--toggle-navigation#toggle:prevent','shop')
                 ->setLinkAttribute('aria-controls','shop')
                ->setLinkAttribute('aria-expanded','true')
-                 ->setLinkAttribute('icon', 'bundles/mmshop/img/mm-shop.svg')
                 ->setLinkAttribute('class', 'group-shop')
                  ->setLinkAttribute('title', 'Bereich schließen')
         ;
