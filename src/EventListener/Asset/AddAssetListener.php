@@ -29,10 +29,11 @@ class AddAssetListener
         if ($this->scopeMatcher->isBackendMainRequest($event)) {
            
             $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/backend/shop.css';
-             if ($event->getRequest()->getPathInfo() === 'contao/metamodel/mm_product') {
+           
+             if ($event->getRequest()->getPathInfo() === '/contao/metamodel/mm_product') {
             
                     $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/backend/css/products.css';
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/backend/css/personal-data.css';
+            
                 }
         }else{
             $useCustomCss = $this->db->fetchAllAssociative(

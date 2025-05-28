@@ -1,0 +1,16 @@
+#table_mm_product .layout_full{
+    width:100%;
+    float:left;
+    }
+#table_mm_product .layout_full .item{
+    width:100%;
+    clear:both;
+    float:left;
+    }
+#table_mm_product .layout_full .item .field{
+    width:auto;
+    float:left;
+    }
+#table_mm_product .layout_full .item .field.name span{
+    font-size:16px;
+    }
