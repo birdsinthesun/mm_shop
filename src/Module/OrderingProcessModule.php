@@ -362,22 +362,16 @@ class OrderingProcessModule extends Module
                             //Store Data in Session
                             $this->session->set('order_overview', $data);
                             $this->session->save();
-                            //Callback for Payment API
+                            //Class for Payment API
                             $paymentType = $this->session->get('order_payment')['payment'];
-                            if (\is_array($GLOBALS['MM_SHOP']['ordering_process']['payment_callback']['api'] ?? null))
-                            {
-                                foreach ($GLOBALS['MM_SHOP']['ordering_process']['payment_callback']['api'] as $callback)
-                                {
-                                    if (\is_array($callback))
-                                    {
-                                        $this->session = System::importStatic($callback[0])->{$callback[1]}($paymentType,$this->session);
-                                    }
-                                    elseif (\is_callable($callback))
-                                    {
-                                        $this->session = $callback($paymentType,$this-session);
-                                    }
+                           
+                            switch($paymentType){
+                                case'1'://paypal
+                                
+                                    break;
+                                default:
+                                
                                 }
-                            }
                             
                             $paymentFeedback = ($this->session->get('order_payment_feedback'))?? false;
                             if($paymentFeedback === false){
