@@ -12,9 +12,12 @@
         <li><strong>E-Mail:</strong> {{ order.personal_data.email }}</li>
         <li><strong>Adresse:</strong> 
             {{ order.personal_data.street }} {{ order.personal_data.street_number }}, 
-            {{ order.personal_data.city }}, {{ order.personal_data.state }}, {{ order.personal_data.country }}
+            {{ order.personal_data.plz }}, {{ order.personal_data.city }}, 
+            {{ order.personal_data.state }}, 
+            {{ order.personal_data.country }}
         </li>
     </ul>
+    <a href="{{ order.edit.personal_data }}" title="bearbeiten">bearbeiten</a>
 </section>
 
 {% if order.personal_data.use_for_shipment is not true %}
@@ -22,22 +25,48 @@
     <section>
         <h3>Lieferadresse</h3>
         <ul>
-            <li><strong>Straße:</strong> {{ order.personal_data.shipment_street }} {{ order.personal_data.shipment_street_number }}</li>
-            <li><strong>Stadt:</strong> {{ order.personal_data.shipment_city }}</li>
-            <li><strong>Bundesland:</strong> {{ order.personal_data.shipment_state }}</li>
-            <li><strong>Land:</strong> {{ order.personal_data.shipment_country }}</li>
+            
+            <li><strong>Straße:</strong>
+            {% if order.personal_data.shipment_street %}
+                {{ order.personal_data.shipment_street }} 
+            {% endif %}
+             {% if order.personal_data.shipment_street_number %}
+                {{ order.personal_data.shipment_street_number }}
+             {% endif %}</li>
+            <li><strong>Stadt:</strong> 
+            {% if order.personal_data.shipment_plz %}
+                {{ order.personal_data.shipment_plz }}
+             {% endif %}
+             {% if order.personal_data.shipment_city %}
+                {{ order.personal_data.shipment_city }}
+            {% endif %}
+            </li>
+            <li><strong>Bundesland:</strong> 
+            {% if order.personal_data.shipment_state %}
+                {{ order.personal_data.shipment_state }}
+            {% endif %}
+            </li>
+            <li><strong>Land:</strong> 
+            {% if order.personal_data.shipment_country %}
+                {{ order.personal_data.shipment_country }}
+             {% endif %}
+            </li>
         </ul>
+        <a href="{{ order.edit.personal_data }}" title="bearbeiten">bearbeiten</a>
     </section>
+    
 {% endif %}
 
 <section>
     <h3>Versandart</h3>
     <p>{{ order.shipment }}</p>
+    <a href="{{ order.edit.shipment }}" title="bearbeiten">bearbeiten</a>
 </section>
 
 <section>
     <h3>Zahlungsart</h3>
     <p>{{ order.payment }}</p>
+    <a href="{{ order.edit.payment }}" title="bearbeiten">bearbeiten</a>
 </section>
 
 <section>

@@ -87,12 +87,16 @@ class OrderingProcessModule extends Module
             
         if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
         { 
-              $this->session->getBag('contao_frontend')->set('cart',[]);
-            $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+            //Redirect to Start 
+            
+             return $this->generateStepUrl('index', '/'.$objPage->__get('alias'));
+            //$this->session->getBag('contao_frontend')->set('cart',[]);
+            //$this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
         }else{
             
                 $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
-               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');//$this->session->getBag('card');
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+               
       
         }
         $this->mailer = $this->container->get('mailer');
@@ -407,9 +411,15 @@ class OrderingProcessModule extends Module
                 $arrOrder = [
                         'personal_data' => $arrPersonalData,
                         'shipment' => $shipment[0]['name'],
-                        'payment' => $payment[0]['name']
+                        'payment' => $payment[0]['name'],
+                        'edit' => [
+                            'personal_data' => $this->generateStepUrl($arrAllowedSteps[0],'/'.$arrAllowedSteps[4]),
+                            'shipment' => $this->generateStepUrl($arrAllowedSteps[2],'/'.$arrAllowedSteps[4]),
+                            'payment' => $this->generateStepUrl($arrAllowedSteps[3],'/'.$arrAllowedSteps[4])
+                            ]
                 
                 ];
+                
                 
                 $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => $this->translator->trans('mm_shop.checkout.headlines.4'),
