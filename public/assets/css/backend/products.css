@@ -8,9 +8,21 @@
     float:left;
     }
 #table_mm_product .layout_full .item .field{
+    box-sizing:border-box;
+    display:inline-block;
+    position:relative;
     width:auto;
+    height:100%;
     float:left;
     }
+
 #table_mm_product .layout_full .item .field.name span{
+       box-sizing:border-box;
+    display:inline-block;
+    position:relative;
+    height:100%;
+    float:left;
+    padding:40% 16px 0 32px;
     font-size:16px;
+    font-weight:500;
     }

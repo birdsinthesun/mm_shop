@@ -32,7 +32,7 @@ class AddAssetListener
            
              if ($event->getRequest()->getPathInfo() === '/contao/metamodel/mm_product') {
             
-                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/backend/css/products.css';
+                    $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/backend/products.css';
             
                 }
         }else{
