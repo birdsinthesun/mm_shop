@@ -64,6 +64,7 @@
   };
 })(jQuery);
  $(function() {
+     
      if ($(window).width() < 961) {
         $('#menu-toggler').click(function(){
             $('#main-dropdown-nav').toggle();

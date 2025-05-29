@@ -77,11 +77,11 @@
             </td>        </tr>
         {% endif %}
         <tr class="form-submit">
-        <td colspan="5" class="form-input">
+        <td colspan="4" class="form-input">
                 {{ form_widget(field) }}
             </td>
         {% if field.vars.name == 'aktualisieren' %}
-        <td  class="checkout-link">
+        <td  colspan="2" class="checkout-link">
            <a href="{{ checkout_url}}" title="Zur Kasse" >Zur Kasse</td>
         </td>
          {% endif %}

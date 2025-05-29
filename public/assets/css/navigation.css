@@ -10,15 +10,15 @@
 @media only screen and (max-width: 960px) {
     /* Navigation Mobile */
     #main-dropdown-nav{
-        display:block;
+        display:none;
         z-index:998;
         box-sizing:border-box;
         position:fixed;
         width:100%;
         height:100%;
-        padding: 60px 0 0 0;
+        padding: 120px 0 0 0;
         margin:0;
-        background:rgba(255,255,255,0.8);
+        background:rgba(255,255,255,1);
         overflow-y:auto;
         
     }
@@ -31,7 +31,7 @@
     }
      #main-dropdown-nav .level-1{
         display:block;
-        width:80%;
+        width:70%;
         margin: 0 auto;
     }
     #main-dropdown-nav ul{
@@ -61,10 +61,11 @@
         z-index:999;
         box-sizing:border-box;
         position:absolute;
+        top:220px;
         display:block;
         height:auto;
         width:100%;
-        margin: 220px 0 0 0;
+        margin:0;
         background:rgba(255,255,255,0.8);
         }
     #main-dropdown-nav > div{

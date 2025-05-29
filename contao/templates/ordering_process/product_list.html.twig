@@ -30,19 +30,19 @@
         {% endfor %}
         <tr class="cart-shipment">
             <td colspan="4">
-                   Versand: {{ summary.shipment.(0).name }}
+                   Versand: {{ summary.shipment.name }}
             </td>
              <td colspan="2">
-             {{ summary.shipment.(0).costs }} €
+             {{ summary.shipment.costs }} €
           
             </td>
         </tr>
         <tr class="cart-spayment">
             <td colspan="4">
-                   Versand: {{ summary.payment.(0).name }}
+                   Versand: {{ summary.payment.name }}
             </td>
              <td colspan="2">
-             {{ summary.payment.(0).costs }} €
+             {{ summary.payment.costs }} €
           
             </td>
         </tr>

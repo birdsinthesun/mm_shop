@@ -747,8 +747,8 @@ class OrderingProcessModule extends Module
          $arrSummary['shipment'] = $this->connection->fetchAssociative(
                 'SELECT * FROM mm_shipment WHERE id = ?',[$shipmentId]);
         $arrSummary['payment'] = $this->connection->fetchAssociative(
-                'SELECT * FROM mm_shipment WHERE id = ?',[$paymentId]);
-                
+                'SELECT * FROM mm_payment WHERE id = ?',[$paymentId]);
+             //var_dump(        $arrSummary['payment']);   exit;
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
                 'SELECT * FROM mm_tax');
             $arrSummary['total'] = 0;
@@ -767,18 +767,26 @@ class OrderingProcessModule extends Module
                                 $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
                         }
-                         if($tax['id'] === $arrSummary['shipment'][0]['id']){
-                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment'][0]['costs'])/100*$tax['tax'];
+                         if($tax['id'] === $arrSummary['shipment']['id']){
+                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
+                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
+                                }
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment']['costs'])/100*$tax['tax'];
                          }
-                         if($tax['id'] === $arrSummary['payment'][0]['id']){
-                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['payment'][0]['costs'])/100*$tax['tax'];
+                         if($tax['id'] === $arrSummary['payment']['id']){
+                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
+                                $arrSummary['taxsubtotal'][$tax['id']] = 0;
+                                }
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',
+                             $arrSummary['payment']['costs'])/100*
+                             $tax['tax'];
                          }
                     }
              
              
              }
-             $arrSummary['total'] += str_replace(',','.',$arrSummary['shipment'][0]['costs']);
-             $arrSummary['total'] += str_replace(',','.',$arrSummary['payment'][0]['costs']);
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['shipment']['costs']);
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['payment']['costs']);
              
              $arrSummary['taxtotal'] = 0;
             foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
@@ -788,6 +796,9 @@ class OrderingProcessModule extends Module
                 
              $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
                //Format 0,00
+             $arrSummary['shipment']['costs'] = str_replace('.',',',number_format(round($arrSummary['shipment']['costs'],2),2));
+             $arrSummary['payment']['costs'] = str_replace('.',',',number_format(round($arrSummary['payment']['costs'],2),2));
+             
              $arrSummary['total'] = str_replace('.',',',number_format(round($arrSummary['total'],2),2));
              foreach($arrSummary['taxsubtotal'] as $key =>$tax){
                  $arrSummary['taxsubtotal'][$key] = str_replace('.',',',number_format(round($tax,2),2));
