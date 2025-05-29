@@ -30,33 +30,33 @@
         {% endfor %}
 
         <tr class="cart-subtotal">
-            <td >
+            <td colspan="4">
                    Zwischensumme:
             </td>
-             <td >
+             <td colspan="2">
              {{ summary.subtotal}} €
           
             </td>
         </tr>
         {% for id,tax in summary.taxsubtotal %}
             <tr class="cart-tax">
-            <td >
+            <td colspan="4">
              {% for k,taxType in summary.tax %}
                 {% if taxType.id == id %}
                    {{ taxType.name }}
                 {% endif %}
             {% endfor %}
             </td>
-            <td >
+            <td colspan="2">
                    {{ tax }} €
                 </td>
             </tr>
         {% endfor %}
         <tr class="cart-total">
-            <td >
+            <td colspan="4">
                    Summe:
             </td>
-             <td >
+             <td colspan="2">
              {{ summary.total}} €
          
             </td>        

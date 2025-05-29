@@ -85,20 +85,7 @@ class OrderingProcessModule extends Module
             ->addExtension(new CoreExtension()) // Core Extension für Formulare
             ->getFormFactory();
             
-        if(!is_array($this->session->getBag('contao_frontend')->get('cart')))
-        { 
-            //Redirect to Start 
-            
-             return $this->generateStepUrl('index', '/'.$objPage->__get('alias'));
-            //$this->session->getBag('contao_frontend')->set('cart',[]);
-            //$this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
-        }else{
-            
-                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
-               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
-               
       
-        }
         $this->mailer = $this->container->get('mailer');
         
         $this->translator = $this->container->get('translator');
@@ -117,6 +104,14 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
+          if(is_array($this->session->getBag('contao_frontend')->get('cart')))
+        { 
+            
+                $this->session->getBag('contao_frontend')->set('cart',$this->session->getBag('contao_frontend')->get('cart'));
+               $this->sessionCart = $this->session->getBag('contao_frontend')->get('cart');
+               
+      
+        }
         $arrAllowedSteps = [
                 $this->translator->trans('mm_shop.checkout.steps.0'),
                 $this->translator->trans('mm_shop.checkout.steps.1'),
@@ -518,7 +513,15 @@ class OrderingProcessModule extends Module
                 ]);  
                 break;
             default:
-            $this->redirectToStep($arrAllowedSteps[0])->send();
+             if(!is_array($this->session->getBag('contao_frontend')->get('cart'))
+                ||is_array($this->session->getBag('contao_frontend')->get('cart'))&&empty($this->session->getBag('contao_frontend')->get('cart')))
+                { 
+                    //Redirect to Start 
+                    $this->redirectToStep('index', '/'.$this->request->attributes->get('pageModel')->__get('alias'))->send();
+                }else{
+                    $this->redirectToStep($arrAllowedSteps[0])->send();
+            
+                }
             
             
         }
@@ -547,6 +550,7 @@ class OrderingProcessModule extends Module
     private function redirectToStep(string $step, string $prevStep = '')
     {
         $url = $this->generateStepUrl($step,$prevStep);
+
         return new RedirectResponse($url);
     }
 
