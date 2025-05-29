@@ -37,12 +37,13 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         }
 
         $routes = new RouteCollection();
-        $rootPageAlias = 'produkte';
+        $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',['1']);
+        $rootPageAlias = $this->db->fetchFirstColumn('SELECT alias FROM tl_page WHERE id = ?',[$rootPageId[0]]);
         $sql = "SELECT alias FROM mm_category WHERE published = '1'";
         $categories = $this->db->fetchFirstColumn($sql);
         
         $routeRoot = new Route(
-                '/'.$rootPageAlias.'{!parameters}',
+                '/'.$rootPageAlias[0].'{!parameters}',
                 
                 [
                     '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runRoot',
@@ -61,7 +62,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
             
             
             $routeList = new Route(
-                '/'.$rootPageAlias.'/' . $category.'{!parameters}',
+                '/'.$rootPageAlias[0].'/' . $category.'{!parameters}',
                 [
                     '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runCategory',
                     'category' => $category,
@@ -75,10 +76,8 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
             $routes->add('mm_product_list_' . $category, $routeList);
             
             
-            
-            
             $routeDetail = new Route(
-                '/'.$rootPageAlias.'/' . $category . '/{alias}{!parameters}',
+                '/'.$rootPageAlias[0].'/' . $category . '/{alias}{!parameters}',
                 [
                     '_controller' => 'Bits\MmShopBundle\Controller\ProductController::runDetail',
                     'category' => $category,

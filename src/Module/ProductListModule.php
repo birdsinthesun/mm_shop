@@ -53,6 +53,8 @@ class ProductListModule extends Module
     private $sessionCart;
     
     private $translator;
+    
+    private $rootProductPageAlias;
 
     public function __construct($module, $column = 'main')
     {
@@ -76,6 +78,10 @@ class ProductListModule extends Module
         } 
         
         $this->translator = $this->container->get('translator');
+        
+        $rootProductPageId = $this->connection->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',['1']);
+        $this->rootProductPageAlias = $this->connection->fetchFirstColumn('SELECT alias FROM tl_page WHERE id = ?',[$rootProductPageId[0]]);
+       
         
        
 
@@ -161,7 +167,7 @@ class ProductListModule extends Module
             
                  // var_dump($this->translator->getLocale(),$this->translator->trans('product_list.headline', [], 'mm_shop'));exit;
                   
-          return $this->twig->render('@Contao/mod_product_detail.html.twig', [
+          return $this->twig->render('@Contao/mod_product_list.html.twig', [
                 "headline" => $this->translator->trans('mm_shop.product_list.headline'),
                 "content" => $currentContent
         
@@ -178,13 +184,8 @@ class ProductListModule extends Module
     private function getProductUrls($items)
     {
         $arrUrls = [];
-            foreach($items as $key => $item){
-                
-                
-               $arrUrls[$item['raw']['id']] = '/produkte/'.$item['raw']['category']["__SELECT_RAW__"]['alias'].'/'.$item['raw']['alias'].'.html';
-                
-                
-                
+            foreach($items as $key => $item){  
+               $arrUrls[$item['raw']['id']] = '/'.$this->rootProductPageAlias[0].'/'.$item['raw']['category']["__SELECT_RAW__"]['alias'].'/'.$item['raw']['alias'].'.html';
                 }
         
         return $arrUrls;

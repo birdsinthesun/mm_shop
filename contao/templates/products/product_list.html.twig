@@ -1,15 +1,28 @@
   {% for item in items %}
+  {% set product_id = item.raw.id %}
         <div class="product">
+            <div class="product-preview">
+             
+            <a href='{{ item_urls.(product_id) }}' title='Produkt Details ansehen'>
+           {{ item.html5.images|raw }}
+           </a>
+            </div>
            <div class="product-info">
-            {% set i = loop.index0 %}
-                    {% for property in item.html5 %}
-                        {{ property|raw }}
-                     {% endfor %}
+           <h4>Made by {{ item.html5.brand|raw }}</h4>
+           <h3> <a href='{{ item_urls.(product_id) }}' title='Produkt Details ansehen'>
+           {{ item.html5.name|raw }}</a></h3>
+           
+            
+           {{ item.html5.tax|raw }} 
+           <span class="price">
+            {{ item.html5.price|raw }} €
+                  </span>  
+            
               
             </div>
            <div class="product-buttons">
                
-                     {% set product_id = item.raw.id %}
+                     
                     <a href='{{ item_urls.(product_id) }}' title='Produkt Details ansehen'>Ansehen</a>
                    
                     <a href='{{ url }}?add={{ product_id }}' title='Produkt in den Warenkorb legen'>In den Warenkorb</a>

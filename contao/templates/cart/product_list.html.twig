@@ -45,43 +45,43 @@
         {% if field.vars.name == 'aktualisieren' %}
 
         <tr class="cart-subtotal">
-            <td >
+            <td colspan="4">
                    Zwischensumme:
             </td>
-             <td >
+             <td colspan="2">
              {{ summary.subtotal}} €
           
             </td>
         </tr>
         {% for id,tax in summary.taxsubtotal %}
             <tr class="cart-tax">
-            <td >
+            <td colspan="4">
              {% for k,taxType in summary.tax %}
                 {% if taxType.id == id %}
                    {{ taxType.name }}
                 {% endif %}
             {% endfor %}
             </td>
-            <td >
+            <td colspan="2">
                    {{ tax }} €
                 </td>
             </tr>
         {% endfor %}
         <tr class="cart-total">
-            <td >
+            <td colspan="4">
                    Summe:
             </td>
-             <td >
+             <td colspan="2">
              {{ summary.total}} €
          
             </td>        </tr>
         {% endif %}
         <tr class="form-submit">
-        <td class="form-input">
+        <td colspan="5" class="form-input">
                 {{ form_widget(field) }}
             </td>
         {% if field.vars.name == 'aktualisieren' %}
-        <td class="checkout-link">
+        <td  class="checkout-link">
            <a href="{{ checkout_url}}" title="Zur Kasse" >Zur Kasse</td>
         </td>
          {% endif %}

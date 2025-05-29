@@ -41,7 +41,8 @@ class AddAssetListener
                 ['1']);
             if($useCustomCss[0]['use_custom_css'] === ''){
             
-            
+            //Product Pages
+            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/products.css';
            //Navigation
            $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/navigation.css';
            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/mmshop/assets/js/navigation.js';
