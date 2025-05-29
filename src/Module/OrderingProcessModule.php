@@ -686,8 +686,8 @@ class OrderingProcessModule extends Module
                 $builder = $overviewFormBuilder->fillBuilder($builder);
                
                 
-                $builder->add('weiter', SubmitType::class, [
-                'label' => 'Weiter'
+                $builder->add('ordner', SubmitType::class, [
+                'label' => 'Zahlungspflichtig Bestellen'
                 ])
                         ->add('FORM_SUBMIT', HiddenType::class, [
                                     'data' => 'ordering_process_form',
