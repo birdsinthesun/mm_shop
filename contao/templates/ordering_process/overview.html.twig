@@ -27,27 +27,27 @@
         <ul>
             
             <li><strong>Straße:</strong>
-            {% if order.personal_data.shipment_street %}
+            {% if 'shipment_street' in order.personal_data %}
                 {{ order.personal_data.shipment_street }} 
             {% endif %}
-             {% if order.personal_data.shipment_street_number %}
+             {% if 'shipment_street_number' in order.personal_data %}
                 {{ order.personal_data.shipment_street_number }}
              {% endif %}</li>
             <li><strong>Stadt:</strong> 
-            {% if order.personal_data.shipment_plz %}
+            {% if 'shipment_plz' in order.personal_data %}
                 {{ order.personal_data.shipment_plz }}
              {% endif %}
-             {% if order.personal_data.shipment_city %}
+             {% if 'shipment_city' in order.personal_data %}
                 {{ order.personal_data.shipment_city }}
             {% endif %}
             </li>
             <li><strong>Bundesland:</strong> 
-            {% if order.personal_data.shipment_state %}
+            {% if 'shipment_state' in order.personal_data %}
                 {{ order.personal_data.shipment_state }}
             {% endif %}
             </li>
             <li><strong>Land:</strong> 
-            {% if order.personal_data.shipment_country %}
+            {% if 'shipment_country' in order.personal_data %}
                 {{ order.personal_data.shipment_country }}
              {% endif %}
             </li>

@@ -397,6 +397,8 @@ class OrderingProcessModule extends Module
                 
                 $arrPersonalData = $this->session->get('order_personal_data');
                 $arrPersonalData['salutation'] = $salutation[0];
+                $arrPersonalData['use_for_shipment'] = (isset($this->session->get('order_personal_data')['use_for_shipment']))?$this->session->get('order_personal_data')['use_for_shipment']:'';
+               // var_dump($arrPersonalData);exit;
                 $arrOrder = [
                         'personal_data' => $arrPersonalData,
                         'shipment' => $shipment[0]['name'],
@@ -816,10 +818,15 @@ class OrderingProcessModule extends Module
             // mm_personal_data
             $arrPersonalData = array_filter(
                 $arrOrder['personal_data'],
-                fn($key) => stripos($key, 'invoice') === false,
+                fn($key) => stripos($key, 'shipment') === false,
                 ARRAY_FILTER_USE_KEY
             );
+           
             unset($arrPersonalData['finished']);
+            unset($arrPersonalData['FORM_SUBMIT']);
+            unset($arrPersonalData['REQUEST_TOKEN']);
+            $useForShipment = (isset($arrPersonalData['use_for_shipment']))?$arrPersonalData['use_for_shipment']:'';
+            unset($arrPersonalData['use_for_shipment']);
             $this->connection->insert('mm_personaldata',$arrPersonalData);
             $personalDataId = $this->connection->lastInsertId();
             
@@ -857,14 +864,22 @@ class OrderingProcessModule extends Module
                     $arrOrder2,            
                     ['id' => $orderId]      
                 );
-            // mm_adress_shipment
-            $arrAdressShipment = array_filter(
-                array_merge(['pid' => $orderId],$arrOrder['personal_data']),
-                fn($key) => stripos($key, 'invoice') !== false,
-                ARRAY_FILTER_USE_KEY
-            );
-            $this->connection->insert('mm_address_shipment',$arrAdressShipment);
-            
+                
+             if($useForShipment === false || $useForShipment === '') 
+             {
+                // mm_adress_shipment
+                $arrAdressShipment = array_filter(
+                    array_merge(['pid' => $orderId],$arrOrder['personal_data']),
+                    fn($key) => stripos($key, 'shipment') !== false,
+                    ARRAY_FILTER_USE_KEY
+                );
+                 $arrAdressShipment = array_combine(
+                    array_map(fn($key) => str_replace('shipment_', '', $key), array_keys($arrAdressShipment)),
+                    array_values($arrAdressShipment)
+                );
+                unset($arrAdressShipment['use_for_shipment']);
+                $this->connection->insert('mm_address_shipment',$arrAdressShipment);
+             }
             
             // mm_order_product
             foreach($items as $key => $item){
