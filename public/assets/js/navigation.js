@@ -64,5 +64,13 @@
   };
 })(jQuery);
  $(function() {
-    $('#main-dropdown-menu').mmShopDropdown();
+     if ($(window).width() < 961) {
+        $('#menu-toggler').click(function(){
+            $('#main-dropdown-nav').toggle();
+            });
+     }
+     if ($(window).width() >= 961) {
+        $('#main-dropdown-menu').mmShopDropdown();
+     }
+    
   });

@@ -49,11 +49,11 @@
     {% endfor %}
   </ul>
 {% endmacro %}
-
+<button id="menu-toggler" aria-controls="main-menu" aria-expanded="false">Menü</button>
+ 
 
 <nav id="main-dropdown-nav" aria-label="Hauptnavigation">
-  <button class="menu-toggle" aria-controls="main-menu" aria-expanded="false">Menü</button>
-  <div id="main-dropdown-menu" class="menu-container">
+   <div id="main-dropdown-menu" class="menu-container">
     {{ _self.render_navigation(navigationItems, currentPageId, 1) }}
   </div>
 </nav>
