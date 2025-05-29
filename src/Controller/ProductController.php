@@ -39,9 +39,10 @@ class ProductController extends AbstractController
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
                 ['1']);
         $objPage = PageModel::findPublishedById($pageId[0]);
-        $request->attributes->set('pageModel', $objPage);
+        
         $objPage->__set('layout','27');
         $objPage->__set('language','de');
+        $request->attributes->set('pageModel', $objPage);
 
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
@@ -66,14 +67,18 @@ class ProductController extends AbstractController
        }
 
         global $objPage;
-         $pageId = $this->db->fetchFirstColumn(
+        $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
                 ['1']);
         $objPage = PageModel::findPublishedById($pageId[0]);
-        $request->attributes->set('pageModel', $objPage);
+        $metaDescription = $this->db->fetchFirstColumn(
+                'SELECT short_description FROM mm_category WHERE alias = ?', 
+                [str_replace('.html','',$category)]);
+        $metaDescription = ($metaDescription[0])??'';
+        $objPage->__set('description',$metaDescription);
         $objPage->__set('layout','27');
         $objPage->__set('language','de');
-
+        $request->attributes->set('pageModel', $objPage);
         if (!$objPage) {
             throw new \RuntimeException('Produktseite nicht gefunden.');
         }
@@ -93,13 +98,18 @@ class ProductController extends AbstractController
           //Contao do not handle that at this point
           throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
         }
- //var_dump(!$this->resourceResolver->isProduct($category,$alias));exit;
+
   
         global $objPage;
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
                 ['1']);
         $objPage = PageModel::findPublishedById($pageId[0]);
+        $metaDescription = $this->db->fetchFirstColumn(
+                'SELECT short_description FROM mm_product WHERE alias = ?', 
+                [str_replace('.html','',$alias)]);
+        $metaDescription = ($metaDescription[0])??'';
+        $objPage->__set('description',$metaDescription);
          $objPage->__set('language','de');
         $request->attributes->set('pageModel', $objPage);
         
