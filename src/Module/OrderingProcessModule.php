@@ -415,7 +415,7 @@ class OrderingProcessModule extends Module
                 $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => $this->translator->trans('mm_shop.checkout.headlines.4'),
                     "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview(),
+                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']),
                     "formular" => $formView
             
                 ]);
@@ -478,7 +478,7 @@ class OrderingProcessModule extends Module
                     "invoice_number" => 'RG_'.$orderId[0].'_'.date("dmY"),
                     "order_date"=> date("dmY"),
                     "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview(), //Child-Template!!!
+                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']), //Child-Template!!!
                 ]);
                 $mpdf->WriteHTML($orderInvoice);
                 $pdfPath = $this->container->get('kernel')->getProjectDir(). '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
@@ -494,7 +494,7 @@ class OrderingProcessModule extends Module
                     'html' => $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
                         "headline" => $this->translator->trans('mm_shop.mail.confirmation.headline'),
                         "order" => $arrOrder,
-                        "cart" => $this->generateCartOverview()
+                        "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'])
                       
                 
                     ])
@@ -702,7 +702,7 @@ class OrderingProcessModule extends Module
         
     }
     
-       private function generateCartOverview()
+       private function generateCartOverview($shipmentId,$paymentId)
     {
                 // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
@@ -728,7 +728,7 @@ class OrderingProcessModule extends Module
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
-                $summary = $this->generateCartSummary($items);
+                $summary = $this->generateCartSummary($items,$shipmentId,$paymentId);
                 
                 return $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
             "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
@@ -740,10 +740,14 @@ class OrderingProcessModule extends Module
     
     }
     
-    private function generateCartSummary($items)
+    private function generateCartSummary($items,$shipmentId,$paymentId)
      {
          $arrSummary = [];
          
+         $arrSummary['shipment'] = $this->connection->fetchAssociative(
+                'SELECT * FROM mm_shipment WHERE id = ?',[$shipmentId]);
+        $arrSummary['payment'] = $this->connection->fetchAssociative(
+                'SELECT * FROM mm_shipment WHERE id = ?',[$paymentId]);
                 
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
                 'SELECT * FROM mm_tax');
@@ -753,6 +757,7 @@ class OrderingProcessModule extends Module
        
             $price = str_replace(',','.',$item['raw']['price']);
              $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
+             
                 foreach($arrSummary['tax'] as $k => $tax){
                         
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
@@ -762,10 +767,18 @@ class OrderingProcessModule extends Module
                                 $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
                         }
+                         if($tax['id'] === $arrSummary['shipment'][0]['id']){
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment'][0]['costs'])/100*$tax['tax'];
+                         }
+                         if($tax['id'] === $arrSummary['payment'][0]['id']){
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['payment'][0]['costs'])/100*$tax['tax'];
+                         }
                     }
              
              
              }
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['shipment'][0]['costs']);
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['payment'][0]['costs']);
              
              $arrSummary['taxtotal'] = 0;
             foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
@@ -812,7 +825,7 @@ class OrderingProcessModule extends Module
             
             $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
             $items = $itemList->getItems()->parseAll('html5',$objView);
-            $summary = $this->generateCartSummary($items);
+            $summary = $this->generateCartSummary($items,$this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
             
             
             // mm_personal_data

@@ -165,9 +165,9 @@ class CartModule extends Module
                 ['1']);
                 if($isBToB[0]['shop_b2b'] === '1'){
                     // ToDo
-                    $summary = $this->generateCartSummaryBToB($items);
+                    $summary = $this->generateCartSummaryBToB($items,$this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
                 }else{
-                    $summary = $this->generateCartSummary($items);
+                    $summary = $this->generateCartSummary($items,$this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
                 }
                 
                 $form = $this->generateForm($items,$data);
@@ -253,10 +253,14 @@ class CartModule extends Module
         
     }
     
-     private function generateCartSummary($items)
+    private function generateCartSummary($items,$shipmentId,$paymentId)
      {
          $arrSummary = [];
          
+         $arrSummary['shipment'] = $this->connection->fetchAssociative(
+                'SELECT * FROM mm_shipment WHERE id = ?',[$shipmentId]);
+        $arrSummary['payment'] = $this->connection->fetchAssociative(
+                'SELECT * FROM mm_shipment WHERE id = ?',[$paymentId]);
                 
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
                 'SELECT * FROM mm_tax');
@@ -266,6 +270,7 @@ class CartModule extends Module
        
             $price = str_replace(',','.',$item['raw']['price']);
              $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
+             
                 foreach($arrSummary['tax'] as $k => $tax){
                         
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
@@ -275,10 +280,18 @@ class CartModule extends Module
                                 $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
                         }
+                         if($tax['id'] === $arrSummary['shipment'][0]['id']){
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment'][0]['costs'])/100*$tax['tax'];
+                         }
+                         if($tax['id'] === $arrSummary['payment'][0]['id']){
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['payment'][0]['costs'])/100*$tax['tax'];
+                         }
                     }
              
              
              }
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['shipment'][0]['costs']);
+             $arrSummary['total'] += str_replace(',','.',$arrSummary['payment'][0]['costs']);
              
              $arrSummary['taxtotal'] = 0;
             foreach($arrSummary['taxsubtotal'] as $id => $taxtotal){
@@ -298,6 +311,7 @@ class CartModule extends Module
             
              return $arrSummary;
         }
+        
         
     // ToDo
      private function generateCartSummaryBToB($items)
