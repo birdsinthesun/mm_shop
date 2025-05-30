@@ -33,7 +33,7 @@ class Reconstruct
     {
         return $this->connection->fetchAssociative(
                             'SELECT * FROM tl_files WHERE uuid = ?', 
-                            [$this->getConfig()[0]['shop_logo']]);
+                            [$this->getConfig()['shop_logo']]);
         
     }
     
@@ -84,7 +84,7 @@ class Reconstruct
     public function getPayment()
     {
         return $this->connection->fetchAssociative(
-                            'SELECT * FROM payment WHERE id = ?', 
+                            'SELECT * FROM mm_payment WHERE id = ?', 
                             [$this->arrOrder['payment']]);
         
     }

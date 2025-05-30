@@ -7,6 +7,8 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Contao\System;
 use Bits\MmShopBundle\Order\Reconstruct;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 
 class MailSubmitListener
 {
@@ -92,12 +94,16 @@ class MailSubmitListener
                         
                         $arrItems[$key]['raw'] = $Product;
                         $arrItems[$key]['html5'] = $Product;
+                        foreach($Product as $name => $Attribut){
+                            $arrItems[$key]['attributes'][$name] =  $Attribut;
+                            }
+                        
                         $arrCartCount[$Product['id']] = [
                                     $Product['id'].'_count' => $Product['count']
                         ];
             } 
              
-            $htmlOrder = $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
+            $htmlOrder = $twig->render('@Contao/ordering_process/product_list.html.twig', [
                     "url" =>  '',
                     "items" => $arrItems,
                     "cart_count" => $arrCartCount,
