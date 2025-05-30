@@ -69,7 +69,7 @@ class MailSubmitListener
             
             
         }
-        if ($status === 'canceled')  {
+        if ($sendedInvoice === '1' && $status === 'canceled')  {
             
             
             $container = System::getContainer();
