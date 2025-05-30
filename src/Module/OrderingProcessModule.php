@@ -488,10 +488,10 @@ class OrderingProcessModule extends Module
                     
                 //  Email versenden
                 $arrMail = [
-                    'from' => 'info@monique-hahnefeld.de' ,// Shop-Mail
+                    'from' => $shopConfig[0]['owner_email'] ,// Shop-Mail
                     'to' => $this->session->get('order_personal_data')['email'],
                     'subject' => $this->translator->trans('mm_shop.mail.confirmation.subject'), //+Shop-Name
-                    'html' => $this->twig->render('@Contao/ordering_process/confirmation.html.twig', [
+                    'html' => $this->twig->render('@Contao/mail/confirmation.html.twig', [
                         "headline" => $this->translator->trans('mm_shop.mail.confirmation.headline'),
                         "order" => $arrOrder,
                         "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'])
