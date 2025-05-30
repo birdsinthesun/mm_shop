@@ -111,8 +111,8 @@ class ProductListModule extends Module
                 $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
             
                 $this->session->save();
-               
-                return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect = new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect->send();
             }
            
            // $alias = str_replace('.html','',$this->request->get('alias'));

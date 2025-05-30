@@ -106,8 +106,8 @@ class ProductDetailModule extends Module
                 $this->session->getBag('contao_frontend')->set('cart',$this->sessionCart);
             
                 $this->session->save();
-               
-                return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect = new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect->send();
             }
            //ToDo warum htm und nicht html? (Kommt von Contao)
             $alias = str_replace('.html','',$this->request->get('alias'));

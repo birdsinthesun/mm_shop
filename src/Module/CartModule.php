@@ -124,13 +124,12 @@ class CartModule extends Module
                 if($removeId !== Null){
                     $arrCart = $this->sessionCart;
                    unset($arrCart[$removeId]);
-               // var_dump($this->sessionCart[$removeId]);exit;
                 
                 $this->session->getBag('contao_frontend')->set('cart',$arrCart);
             
                 $this->session->save();
-               
-                    return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect = new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                $redirect->send();
                 }
                 
                 
