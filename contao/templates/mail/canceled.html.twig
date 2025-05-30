@@ -1,0 +1,30 @@
+<h2>{{ headline }}</h2>
+
+<section>
+    <h3>Persönliche Daten</h3>
+    <ul>
+        <li><strong>Anrede:</strong> {{ order.personal_data.salutation|capitalize }}</li>
+        <li><strong>Vorname:</strong> {{ order.personal_data.surname }}</li>
+        <li><strong>Nachname:</strong> {{ order.personal_data.lastname }}</li>
+        <li><strong>E-Mail:</strong> {{ order.personal_data.email }}</li>
+        <li><strong>Adresse:</strong> 
+            {{ order.personal_data.street }} {{ order.personal_data.street_number }}, 
+            {{ order.personal_data.city }}, {{ order.personal_data.state }}, {{ order.personal_data.country }}
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Versandart</h3>
+    <p>{{ order.shipment }}</p>
+</section>
+
+<section>
+    <h3>Zahlungsart</h3>
+    <p>{{ order.payment }}</p>
+</section>
+
+<section>
+    <h3>Produkte</h3>
+    {{ cart|raw }}
+</section>

@@ -24,6 +24,10 @@ mm_shop:
             headline: 'Order Confirmation'
         invoice:
             subject: 'Order'
+            headline: 'Invoice'
+        canceled:
+            subject: 'Order'
+            headline: 'Canceled Document'
     product_list:
         headline: 'Products'
     product_detail:

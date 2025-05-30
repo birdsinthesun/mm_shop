@@ -74,6 +74,11 @@ class MailSubmitListener
             
             $container = System::getContainer();
             $connection = $container->get('database_connection');
+            $twig = $container->get('twig');
+            $translator = $container->get('translator');
+            $mailer = $container->get('mailer');
+            $kernel = $container->get('kernel');
+            
             $objReconstruct = new Reconstruct($connection,$model->getId());
             
             $arrOrder = [];
@@ -109,11 +114,10 @@ class MailSubmitListener
                     "order_date"=> date("dmY",$model->getProperty('order_datetime')),
                     "order" => $arrOrder,
                     "cart" => $htmlOrder
-                ]);
-                $mpdf->WriteHTML($orderInvoice);
-                $pdfPath = $this->container->get('kernel')->getProjectDir(). '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
-               // fopen($pdfPath, 'w');
-                $mpdf->Output($pdfPath, Destination::FILE);
+            ]);
+            $mpdf->WriteHTML($orderCanceled);
+            $pdfPath = $kernel->getProjectDir(). '/files/Rechnungen/ST_'.$model->getId().'_'.date("dmY",$model->getProperty('order_datetime')).'.pdf';
+            $mpdf->Output($pdfPath, Destination::FILE);
             
             //Send Mail
             $arrMail = [
@@ -124,11 +128,10 @@ class MailSubmitListener
                         "headline" => $translator->trans('mm_shop.mail.canceled.headline'),
                         "order" => $arrOrder,
                         "cart" => $htmlOrder
-                      
-                
-                    ])
+                    ]),
+                    'attach' => [$kernel->getProjectDir().'/files/Rechnungen/ST_'.$model->getId().'_'.date('dmY',$model->getProperty('order_datetime')).'.pdf', 'ST_'.$model->getId().'_'.date('dmY',$model->getProperty('order_datetime')).'.pdf', 'application/pdf']
                 ];
-            
+            $this->sendConfirmation($mailer,$arrMail);
             
         }
     }

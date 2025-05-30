@@ -24,6 +24,10 @@ mm_shop:
             headline: 'Bestellbestätigung'
         invoice:
             subject: 'Bestellung'
+            headline: 'Rechnung'
+        canceled:
+            subject: 'Bestellung'
+            headline: 'Storno-Rechnung'
     product_list:
         headline: 'Produkte'
     product_detail:
