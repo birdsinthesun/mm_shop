@@ -65,13 +65,13 @@
 })(jQuery);
  $(function() {
      
-     if ($(window).width() < 961) {
+     
         $('#menu-toggler').click(function(){
-            $('#main-dropdown-nav').toggle();
+            $('#main-mobile-nav').toggle();
             });
-     }
-     if ($(window).width() >= 961) {
+     
+    
         $('#main-dropdown-menu').mmShopDropdown();
-     }
+     
     
   });

@@ -8,8 +8,11 @@
     }
 
 @media only screen and (max-width: 960px) {
+     #main-dropdown-nav{
+         display:none;
+         }
     /* Navigation Mobile */
-    #main-dropdown-nav{
+    #main-mobile-nav{
         display:none;
         z-index:998;
         box-sizing:border-box;
@@ -22,22 +25,22 @@
         overflow-y:auto;
         
     }
-    #main-dropdown-nav > div{
+    #main-mobile-nav > div{
         position:relative;
         float:left;
         width:100%;
         height:auto;
         margin: 0 ;
     }
-     #main-dropdown-nav .level-1{
+     #main-mobile-nav .level-1{
         display:block;
         width:70%;
         margin: 0 auto;
     }
-    #main-dropdown-nav ul{
+    #main-mobile-nav ul{
         list-style:none;
     }
-    #main-dropdown-nav li{
+    #main-mobile-nav li{
         display:inline-block;
         box-sizing:border-box;
         width:100%;
@@ -51,11 +54,15 @@
     .dropdown-2{
       display: block;
     }
+  
 }
 @media only screen and (min-width: 961px) {
     #menu-toggler{
         display:none;
     }
+    #main-mobile-nav{
+         display:none;
+         }
     /* Navigation Desktop */
     #main-dropdown-nav{
         z-index:999;

@@ -128,7 +128,9 @@ class NavigationModule extends Module
      // echo('<pre>'); var_dump($arrNavigationPages);exit;
         $navigation = $this->twig->render('@Contao/navigation/navigation.html.twig', [
                'navigationItems' => $arrNavigationPages,
-               'currentPageId' => $this->currentPage->__get('id')
+               'currentPageId' => $this->currentPage->__get('id'),
+               'css_id_str' => ($this->__get('mms_use_for_mobile'))?'mobile':'dropdown',
+               'aria_label' => ($this->__get('mms_use_for_mobile'))?'Mobile Navigation':'Hauptnavigation'
             ]);
         
 		
