@@ -1,10 +1,8 @@
 /* Navigation */
 
 .order-navigation {
-    display: flex;
     list-style: none;
     padding: 0;
-    gap: 1rem;
 }
 .order-navigation li {
     padding: 0.5rem 1rem;
@@ -23,4 +21,29 @@
     opacity: 0.4;
     pointer-events: none;
     cursor: not-allowed;
+}
+@media screen and (max-width: 960px) {
+     .order-navigation {
+        display: block;
+        float:left;
+        width:100%;
+    }
+    .order-navigation li{
+        display: inline-block;
+        float:left;
+        width:100%;
+    }
+    .ordering-process-module .cart{
+        max-width:100%;
+        overflow-x:scroll;
+        }
+    .ordering-process-module table{
+        min-width:960px;
+        }
+}
+@media screen and (min-width: 961px) {
+     .order-navigation {
+        display: flex;
+        gap: 1rem;
+    }
 }
