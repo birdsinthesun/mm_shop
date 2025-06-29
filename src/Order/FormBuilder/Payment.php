@@ -25,7 +25,7 @@ class Payment
     {
             $tags = $this->connection->fetchAllAssociative('SELECT * FROM mm_payment');
             foreach ($tags as $tag) {
-                    $choices[$tag['name']] = $tag['id'];
+                    $choices[$tag['name']] = $tag['alias'];
                     $descriptions[$tag['id']] = $tag['description'];
                 }
               

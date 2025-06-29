@@ -40,6 +40,9 @@ use Symfony\Component\Mime\Email;
 //PDF
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
+//Paypal
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Bits\MmShopBundle\Payment\Paypal;
 
 class OrderingProcessModule extends Module
 {
@@ -63,6 +66,8 @@ class OrderingProcessModule extends Module
     private $arrCart;
     
     private $translator;
+    
+    private $client;
    
 
     public function __construct($module, $column = 'main')
@@ -89,6 +94,8 @@ class OrderingProcessModule extends Module
         $this->mailer = $this->container->get('mailer');
         
         $this->translator = $this->container->get('translator');
+        
+        $this->client = $this->container->get(HttpClientInterface::class);
         
     }
     
@@ -361,25 +368,23 @@ class OrderingProcessModule extends Module
                             $paymentType = $this->session->get('order_payment')['payment'];
                            
                             switch($paymentType){
-                                case'1'://paypal
-                                
+                                case'paypal':
+                                    $summary = $this->getSummary($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
+                                    $paypal = $this->connection->fetchAssociative('SELECT * FROM mm_payment WHERE alias = "paypal"');
+                                    $apiPaypal = new Paypal($this->session,$this->client,$paypal['paypal_client_id'],$paypal['paypal_secret'],$paypal['paypal_api_base']);
+                                    $paypalRedirect = $apiPaypal->createOrder(
+                                        $summary['total'],
+                                        'EUR',
+                                        $this->generateStepUrl($arrAllowedSteps[5],'/'.$arrAllowedSteps[4]),
+                                        $this->generateStepUrl($arrAllowedSteps[3],'/'.$arrAllowedSteps[4])
+                                    );
+                                    return new RedirectResponse($paypalRedirect);
                                     break;
                                 default:
                                 
-                                }
-                            
-                            $paymentFeedback = ($this->session->get('order_payment_feedback'))?? false;
-                            if($paymentFeedback === false){
-                                //redirect
-                                return $this->redirectToStep($arrAllowedSteps[5],'/'.$arrAllowedSteps[4])->send();
-                                }
-                            elseif(isset($paymentFeedback['errors'])){
-                                  //handle Error  
-                            }
-                            else{
-                                //append Success Message 
                             }
                             
+                           
                             
                           
                     }
@@ -702,7 +707,7 @@ class OrderingProcessModule extends Module
         
     }
     
-       private function generateCartOverview($shipmentId,$paymentId)
+     private function getSummary($shipmentId,$paymentAlias)
     {
                 // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
@@ -728,8 +733,40 @@ class OrderingProcessModule extends Module
                 
                 $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
                 $items = $itemList->getItems()->parseAll('html5',$objView);
-                $summary = $this->generateCartSummary($items,$shipmentId,$paymentId);
+                return $this->generateCartSummary($items,$shipmentId,$paymentAlias);
                 
+        
+        
+    }
+       private function generateCartOverview($shipmentId,$paymentAlias)
+    {           
+                 // Deine Item-IDs:
+                $itemIds = array_keys($this->sessionCart);
+
+                // MetaModel-ID und RenderSetting-ID
+                $metaModelId = 2;
+                $renderSettingId = $this->connection->fetchFirstColumn(
+                'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
+                ['1']);
+                
+
+                // Services laden
+                $factory = $this->container->get('metamodels.factory');
+                $renderFactory = $this->container->get('metamodels.render_setting_factory');
+                $dispatcher = $this->container->get('event_dispatcher');
+
+                // ItemList instanziieren
+                $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
+                $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
+                $itemList->setLanguage('de'); // optional
+                $itemList->addFilterRule(new StaticIdList($itemIds));
+                $itemList->prepare();
+                
+                $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
+                $items = $itemList->getItems()->parseAll('html5',$objView);
+                $summary = $this->generateCartSummary($items,$shipmentId,$paymentAlias);
+                
+               
                 return $this->twig->render('@Contao/ordering_process/product_list.html.twig', [
             "url" =>  $this->request->getSchemeAndHttpHost() . $this->request->getPathInfo(),
             "items" => $items,
@@ -740,14 +777,14 @@ class OrderingProcessModule extends Module
     
     }
     
-    private function generateCartSummary($items,$shipmentId,$paymentId)
+    private function generateCartSummary($items,$shipmentId,$paymentAlias)
      {
          $arrSummary = [];
          
          $arrSummary['shipment'] = $this->connection->fetchAssociative(
                 'SELECT * FROM mm_shipment WHERE id = ?',[$shipmentId]);
         $arrSummary['payment'] = $this->connection->fetchAssociative(
-                'SELECT * FROM mm_payment WHERE id = ?',[$paymentId]);
+                'SELECT * FROM mm_payment WHERE id = ?',[$paymentAlias]);
              //var_dump(        $arrSummary['payment']);   exit;
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
                 'SELECT * FROM mm_tax');
@@ -864,7 +901,7 @@ class OrderingProcessModule extends Module
            // $orderId == fortlaufende Nr für Steuer
             
             //  var_dump($statusId,$summary['total'],'');exit;
-         
+         // $this->session->get('paypal_order_id')
             $arrOrder1 = [
                 'customer_id' => $personalDataId,
                 'order_datetime' => time(),
@@ -873,7 +910,8 @@ class OrderingProcessModule extends Module
                 'payment' => $arrOrder['payment']['payment'],
                 'shipment' => $arrOrder['shipment']['shipment'],
                 'order_total' => $summary['total'],
-                'sended_invoice' => ''
+                'sended_invoice' => '',
+                'paypal_order_id' => ($this->session->get('paypal_order_id'))?:''
             ];
             $this->connection->insert('mm_order',$arrOrder1);
             $orderId = $this->connection->lastInsertId();
