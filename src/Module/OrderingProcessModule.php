@@ -41,7 +41,7 @@ use Symfony\Component\Mime\Email;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 //Paypal
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Bits\MmShopBundle\Service\ClientService;
 use Bits\MmShopBundle\Payment\Paypal;
 
 class OrderingProcessModule extends Module
@@ -95,7 +95,7 @@ class OrderingProcessModule extends Module
         
         $this->translator = $this->container->get('translator');
         
-        $this->client = $this->container->get(HttpClientInterface::class);
+        $this->client = $this->container->get(ClientService::class);
         
     }
     
@@ -371,7 +371,7 @@ class OrderingProcessModule extends Module
                                 case'paypal':
                                     $summary = $this->getSummary($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
                                     $paypal = $this->connection->fetchAssociative('SELECT * FROM mm_payment WHERE alias = "paypal"');
-                                    $apiPaypal = new Paypal($this->session,$this->client,$paypal['paypal_client_id'],$paypal['paypal_secret'],$paypal['paypal_api_base']);
+                                    $apiPaypal = new Paypal($this->session,$this->client->getClient(),$paypal['paypal_client_id'],$paypal['paypal_secret'],$paypal['paypal_api_base']);
                                     $paypalRedirect = $apiPaypal->createOrder(
                                         $summary['total'],
                                         'EUR',
@@ -397,7 +397,7 @@ class OrderingProcessModule extends Module
                             'SELECT name FROM mm_shipment WHERE id = ?', 
                             [$this->session->get('order_shipment')['shipment']]);
                 $payment =  $this->connection->fetchAllAssociative(
-                            'SELECT name FROM mm_payment WHERE id = ?', 
+                            'SELECT name FROM mm_payment WHERE alias = ?', 
                             [$this->session->get('order_payment')['payment']]);
                 
                 $arrPersonalData = $this->session->get('order_personal_data');
@@ -784,7 +784,7 @@ class OrderingProcessModule extends Module
          $arrSummary['shipment'] = $this->connection->fetchAssociative(
                 'SELECT * FROM mm_shipment WHERE id = ?',[$shipmentId]);
         $arrSummary['payment'] = $this->connection->fetchAssociative(
-                'SELECT * FROM mm_payment WHERE id = ?',[$paymentAlias]);
+                'SELECT * FROM mm_payment WHERE alias = ?',[$paymentAlias]);
              //var_dump(        $arrSummary['payment']);   exit;
          $arrSummary['tax'] = $this->connection->fetchAllAssociative(
                 'SELECT * FROM mm_tax');

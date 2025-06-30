@@ -9,6 +9,11 @@ services:
         class: 'Bits\MmShopBundle\MmShopBundle'
         public: true
         
+    Bits\MmShopBundle\Service\ClientService:
+        public: true
+        arguments:
+            $client: '@http_client'
+      
     Bits\MmShopBundle\Migration\InstallMmShop:
         arguments:
             $connection: '@database_connection'

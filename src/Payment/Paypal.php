@@ -2,6 +2,8 @@
 
 namespace Bits\MmShopBundle\Payment;
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 class Paypal
 {
     private $session;
@@ -33,7 +35,7 @@ class Paypal
         return $data['access_token'];
     }
 
-    public function createOrder(float $amount, string $currency, string $returnUrl, string $cancelUrl): string
+    public function createOrder(string $amount, string $currency, string $returnUrl, string $cancelUrl): string
     {
         $accessToken = $this->getAccessToken();
 

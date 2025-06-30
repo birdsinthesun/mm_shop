@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Bits\MmShopBundle\DependencyInjection\ClientCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\MailCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\RoutingCompilerPass;
 use Bits\MmShopBundle\DependencyInjection\FormCompilerPass;
@@ -32,7 +33,8 @@ class MmShopBundle extends Bundle
         $container->addCompilerPass(new FormCompilerPass());
         $container->addCompilerPass(new RoutingCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
         $container->addCompilerPass(new MailCompilerPass());
-    }
+        $container->addCompilerPass(new ClientCompilerPass());
+     }
     
    
 }
