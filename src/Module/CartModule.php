@@ -89,13 +89,14 @@ class CartModule extends Module
         }
         
         $this->translator = $this->container->get('translator');
-            
+         
+        
         
     }
     
     public function generate(){
         
-        
+        global $objPage;
         if ($this->request && $this->container->get('contao.routing.scope_matcher')->isBackendRequest($this->request))
 		{
 			 return $this->twig->render('@Contao/backend/be_wildcard.html.twig', [
@@ -135,12 +136,15 @@ class CartModule extends Module
                 
                  // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
-
+                var_dump($objPage->rootId);exit;
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
+                $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
                 $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT cart_rendering FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
                
                 
 

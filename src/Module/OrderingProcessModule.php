@@ -111,6 +111,7 @@ class OrderingProcessModule extends Module
             ]);
             
 		}
+        global $objPage;
           if(is_array($this->session->getBag('contao_frontend')->get('cart')))
         { 
             
@@ -716,9 +717,12 @@ class OrderingProcessModule extends Module
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
+                $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
                 $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
                 
 
                 // Services laden
@@ -747,9 +751,12 @@ class OrderingProcessModule extends Module
 
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
+                $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
                 $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
                 
 
                 // Services laden
@@ -858,7 +865,12 @@ class OrderingProcessModule extends Module
 
             // MetaModel-ID und RenderSetting-ID
             $metaModelId = 2;
-            $renderSettingId = 15;
+            $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
+            $renderSettingId = $this->connection->fetchFirstColumn(
+                'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
+                [$shopConfigId[0]]);
             
 
             // Services laden
@@ -915,7 +927,8 @@ class OrderingProcessModule extends Module
                 'shipment' => $arrOrder['shipment']['shipment'],
                 'order_total' => $summary['total'],
                 'sended_invoice' => '',
-                'paypal_order_id' => ($this->session->get('paypal_order_id'))?:''
+                'paypal_order_id' => ($this->session->get('paypal_order_id'))?:'',
+                'shop_config_id' => $shopConfigId[0]
             ];
             $this->connection->insert('mm_order',$arrOrder1);
             $orderId = $this->connection->lastInsertId();

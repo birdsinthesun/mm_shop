@@ -27,7 +27,7 @@ class Reconstruct
     {
         return $this->connection->fetchAssociative(
                             'SELECT * FROM mm_shop WHERE id = ?', 
-                            ['1']);
+                            [$this->getOrder()['shop_config_id']]);
     }
     public function getLogo()
     {

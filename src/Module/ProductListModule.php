@@ -99,7 +99,7 @@ class ProductListModule extends Module
             ]);
             
 		}
-        
+        global $objPage;
             //add to card
             $addId = Input::get('add');
             if($addId !== Null){
@@ -120,9 +120,12 @@ class ProductListModule extends Module
 
             // MetaModel-ID und RenderSetting-ID
             $metaModelId = 2;
+            $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
             $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT product_list_rendering FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
             
 
             // Services laden
