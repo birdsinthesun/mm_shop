@@ -1,4 +1,4 @@
-Ist fast fertig. Noch Migration und PayPal fehlen.
+Ist fast fertig. Noch Migration fehlt.
 #Vorschau:
 
 # MM_Shop

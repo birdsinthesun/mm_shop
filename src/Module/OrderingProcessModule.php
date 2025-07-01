@@ -370,6 +370,8 @@ class OrderingProcessModule extends Module
                             switch($paymentType){
                                 case'paypal':
                                     $summary = $this->getSummary($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
+                                    //var_dump($summary['total']);exit;
+                                    
                                     $paypal = $this->connection->fetchAssociative('SELECT * FROM mm_payment WHERE alias = "paypal"');
                                     $apiPaypal = new Paypal($this->session,$this->client->getClient(),$paypal['paypal_client_id'],$paypal['paypal_secret'],$paypal['paypal_api_base']);
                                     $paypalRedirect = $apiPaypal->createOrder(
@@ -456,7 +458,7 @@ class OrderingProcessModule extends Module
                             'SELECT name FROM mm_shipment WHERE id = ?', 
                             [$this->session->get('order_shipment')['shipment']]);
                 $payment =  $this->connection->fetchAllAssociative(
-                            'SELECT name FROM mm_payment WHERE id = ?', 
+                            'SELECT name FROM mm_payment WHERE alias = ?', 
                             [$this->session->get('order_payment')['payment']]);
                             
                 $arrOrder['shipment'] = $shipment[0]['name'];
@@ -899,7 +901,9 @@ class OrderingProcessModule extends Module
                 'SELECT id FROM mm_order_status WHERE alias = ?', 
                 ['not_paid']);
            // $orderId == fortlaufende Nr für Steuer
-            
+            $payment =  $this->connection->fetchFirstColumn(
+                            'SELECT id FROM mm_payment WHERE alias = ?', 
+                            [$this->session->get('order_payment')['payment']]);
             //  var_dump($statusId,$summary['total'],'');exit;
          // $this->session->get('paypal_order_id')
             $arrOrder1 = [
@@ -907,7 +911,7 @@ class OrderingProcessModule extends Module
                 'order_datetime' => time(),
                 'updated_datetime' => time(),
                 'status' => $statusId[0]['id'],
-                'payment' => $arrOrder['payment']['payment'],
+                'payment' => $payment[0],
                 'shipment' => $arrOrder['shipment']['shipment'],
                 'order_total' => $summary['total'],
                 'sended_invoice' => '',

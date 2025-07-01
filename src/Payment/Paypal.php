@@ -38,7 +38,7 @@ class Paypal
     public function createOrder(string $amount, string $currency, string $returnUrl, string $cancelUrl): string
     {
         $accessToken = $this->getAccessToken();
-
+       
         $response = $this->client->request('POST', $this->apiBase . '/v2/checkout/orders', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -49,16 +49,17 @@ class Paypal
                 'purchase_units' => [[
                     'amount' => [
                         'currency_code' => $currency,
-                        'value' => $amount,//number_format($amount, 2, '.', ''),
+                        'value' => str_replace(',','.',$amount),
                     ]
                 ]],
                 'application_context' => [
                     'return_url' => $returnUrl,
                     'cancel_url' => $cancelUrl,
+                    'user_action'  => 'PAY_NOW'
                 ],
             ],
         ]);
-
+  
         $data = $response->toArray();
         //save paypal_order_id
         $this->session->set('paypal_order_id',$data['id']);
