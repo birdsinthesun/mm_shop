@@ -370,7 +370,7 @@ class OrderingProcessModule extends Module
                            
                             switch($paymentType){
                                 case'paypal':
-                                    $summary = $this->getSummary($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
+                                    $summary = $this->getSummary($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'],$objPage->rootId);
                                     //var_dump($summary['total']);exit;
                                     
                                     $paypal = $this->connection->fetchAssociative('SELECT * FROM mm_payment WHERE alias = "paypal"');
@@ -381,9 +381,11 @@ class OrderingProcessModule extends Module
                                         $this->generateStepUrl($arrAllowedSteps[5],'/'.$arrAllowedSteps[4]),
                                         $this->generateStepUrl($arrAllowedSteps[3],'/'.$arrAllowedSteps[4])
                                     );
-                                    return new RedirectResponse($paypalRedirect);
+                            return (new RedirectResponse($paypalRedirect))->send();
                                     break;
                                 default:
+                                 return $this->redirectToStep($arrAllowedSteps[5],'/'.$arrAllowedSteps[4])->send();
+                    
                                 
                             }
                             
@@ -423,7 +425,7 @@ class OrderingProcessModule extends Module
                 $currentOutput = $this->twig->render('@Contao/ordering_process/overview.html.twig', [
                     "headline" => $this->translator->trans('mm_shop.checkout.headlines.4'),
                     "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']),
+                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'],$objPage->rootId),
                     "formular" => $formView
             
                 ]);
@@ -449,7 +451,7 @@ class OrderingProcessModule extends Module
                
                 
                     // Rechnung in mm_order_invoice speichern und PDF generieren
-                $this->saveOrder($arrOrder);
+                $this->saveOrder($arrOrder,$objPage->rootId);
                 $salutation = $this->connection->fetchFirstColumn(
                             'SELECT name FROM mm_salutation WHERE id = ?', 
                             [$this->session->get('order_personal_data')['salutation']]);
@@ -486,7 +488,7 @@ class OrderingProcessModule extends Module
                     "invoice_number" => 'RG_'.$orderId[0].'_'.date("dmY"),
                     "order_date"=> date("dmY"),
                     "order" => $arrOrder,
-                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']), //Child-Template!!!
+                    "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'],$objPage->rootId), //Child-Template!!!
                 ]);
                 $mpdf->WriteHTML($orderInvoice);
                 $pdfPath = $this->container->get('kernel')->getProjectDir(). '/files/Rechnungen/RG_'.$orderId[0].'_'.date("dmY").'.pdf';
@@ -502,7 +504,7 @@ class OrderingProcessModule extends Module
                     'html' => $this->twig->render('@Contao/mail/confirmation.html.twig', [
                         "headline" => $this->translator->trans('mm_shop.mail.confirmation.headline'),
                         "order" => $arrOrder,
-                        "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'])
+                        "cart" => $this->generateCartOverview($this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment'],$objPage->rootId)
                       
                 
                     ])
@@ -710,7 +712,7 @@ class OrderingProcessModule extends Module
         
     }
     
-     private function getSummary($shipmentId,$paymentAlias)
+     private function getSummary($shipmentId,$paymentAlias,$rootId)
     {
                 // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
@@ -719,7 +721,7 @@ class OrderingProcessModule extends Module
                 $metaModelId = 2;
                 $shopConfigId = $this->connection->fetchFirstColumn(
                 'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
-                [$objPage->rootId]);
+                [$rootId]);
                 $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
                 [$shopConfigId[0]]);
@@ -744,7 +746,7 @@ class OrderingProcessModule extends Module
         
         
     }
-       private function generateCartOverview($shipmentId,$paymentAlias)
+       private function generateCartOverview($shipmentId,$paymentAlias,$rootId)
     {           
                  // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
@@ -753,7 +755,7 @@ class OrderingProcessModule extends Module
                 $metaModelId = 2;
                 $shopConfigId = $this->connection->fetchFirstColumn(
                 'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
-                [$objPage->rootId]);
+                [$rootId]);
                 $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
                 [$shopConfigId[0]]);
@@ -857,7 +859,7 @@ class OrderingProcessModule extends Module
         }
         
         
-          private function saveOrder($arrOrder)
+          private function saveOrder($arrOrder,$rootId)
         {
             //prepare cart data
             // Deine Item-IDs:
@@ -867,7 +869,7 @@ class OrderingProcessModule extends Module
             $metaModelId = 2;
             $shopConfigId = $this->connection->fetchFirstColumn(
                 'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
-                [$objPage->rootId]);
+                [$rootId]);
             $renderSettingId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_rendering FROM mm_shop WHERE id = ?', 
                 [$shopConfigId[0]]);
@@ -880,12 +882,12 @@ class OrderingProcessModule extends Module
 
             // ItemList instanziieren
             $itemList = new ItemList($factory, null, $renderFactory, $dispatcher);
-            $itemList->setMetaModel($metaModelId,$renderSettingId);
+            $itemList->setMetaModel($metaModelId,$renderSettingId[0]);
             $itemList->setLanguage('de'); // optional
             $itemList->addFilterRule(new StaticIdList($itemIds));
             $itemList->prepare();
             
-            $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId);
+            $objView  = $renderFactory->createCollection($itemList->getMetaModel(), $renderSettingId[0]);
             $items = $itemList->getItems()->parseAll('html5',$objView);
             $summary = $this->generateCartSummary($items,$this->session->get('order_shipment')['shipment'],$this->session->get('order_payment')['payment']);
             
@@ -927,8 +929,11 @@ class OrderingProcessModule extends Module
                 'shipment' => $arrOrder['shipment']['shipment'],
                 'order_total' => $summary['total'],
                 'sended_invoice' => '',
-                'paypal_order_id' => ($this->session->get('paypal_order_id'))?:'',
-                'shop_config_id' => $shopConfigId[0]
+                'paypal_order_id' => ($this->session->get('paypal_order_id'))?$this->session->get('paypal_order_id'):'',
+                'shop_config_id' => $shopConfigId[0],
+                'agb_akzeptiert' => ($arrOrder['overview']['agb'])?'1':'',
+                'datenschutzerklaerung_akzeptiert' => ($arrOrder['overview']['datenschutzerklarung'])?'1':'',
+                'newsletter' => ($arrOrder['overview']['newsletter'])?'1':''
             ];
             $this->connection->insert('mm_order',$arrOrder1);
             $orderId = $this->connection->lastInsertId();

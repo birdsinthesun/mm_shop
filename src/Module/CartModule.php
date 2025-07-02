@@ -136,7 +136,7 @@ class CartModule extends Module
                 
                  // Deine Item-IDs:
                 $itemIds = array_keys($this->sessionCart);
-                var_dump($objPage->rootId);exit;
+                
                 // MetaModel-ID und RenderSetting-ID
                 $metaModelId = 2;
                 $shopConfigId = $this->connection->fetchFirstColumn(
