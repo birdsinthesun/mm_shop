@@ -1,16 +1,16 @@
-CREATE TABLE `tl_metamodel` (
-  `id` int UNSIGNED NOT NULL,
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tableName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `translated` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `languages` text COLLATE utf8mb4_unicode_ci,
-  `varsupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `localeterritorysupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel (
+  id int UNSIGNED NOT NULL,
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tableName varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  translated char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  languages text COLLATE utf8mb4_unicode_ci,
+  varsupport char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  localeterritorysupport char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel` (`id`, `tstamp`, `sorting`, `name`, `tableName`, `translated`, `languages`, `varsupport`, `localeterritorysupport`) VALUES
+INSERT IGNORE INTO tl_metamodel (id, tstamp, sorting, name, tableName, translated, languages, varsupport, localeterritorysupport) VALUES
 (1, 1746971884, 256, 'Shop Konfiguration', 'mm_shop', '', NULL, '', ''),
 (2, 1747374108, 512, 'Produkte', 'mm_product', '', NULL, '', ''),
 (3, 1747702561, 2048, 'Tags Steuer', 'mm_tax', '', NULL, '', ''),
@@ -27,57 +27,57 @@ INSERT IGNORE INTO `tl_metamodel` (`id`, `tstamp`, `sorting`, `name`, `tableName
 (20, 1747702595, 896, 'Lieferadresse', 'mm_address_shipment', '', NULL, '', ''),
 (21, 1747702561, 1024, 'bestellte Produkte', 'mm_order_product', '', NULL, '', '');
 
-CREATE TABLE `tl_metamodel_attribute` (
-  `id` int UNSIGNED NOT NULL,
-  `file_filesOnly` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `name` text COLLATE utf8mb4_unicode_ci,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `colname` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `isvariant` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `isunique` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_table` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_column` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_sorting` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_where` text COLLATE utf8mb4_unicode_ci,
-  `tag_filter` int UNSIGNED NOT NULL DEFAULT '0',
-  `tag_filterparams` text COLLATE utf8mb4_unicode_ci,
-  `tag_sort` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
-  `check_publish` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `check_inverse` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `check_listview` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `check_listviewicon` blob,
-  `check_listviewicondisabled` blob,
-  `countries` text COLLATE utf8mb4_unicode_ci,
-  `force_alias` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `validAliasCharacters` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `slugLocale` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `noIntegerPrefix` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `alias_prefix` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `alias_postfix` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `alias_fields` blob,
-  `file_customFiletree` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_multiple` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_uploadFolder` blob,
-  `file_validFileTypes` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_table` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_column` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_sorting` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `select_sort` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
-  `select_where` text COLLATE utf8mb4_unicode_ci,
-  `select_filter` int UNSIGNED NOT NULL DEFAULT '0',
-  `select_filterparams` text COLLATE utf8mb4_unicode_ci,
-  `timetype` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_attribute (
+  id int UNSIGNED NOT NULL,
+  file_filesOnly char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  type varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  name text COLLATE utf8mb4_unicode_ci,
+  description text COLLATE utf8mb4_unicode_ci,
+  colname varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  isvariant char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  isunique char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_table varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_column varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_id varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_alias varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_sorting varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_where text COLLATE utf8mb4_unicode_ci,
+  tag_filter int UNSIGNED NOT NULL DEFAULT '0',
+  tag_filterparams text COLLATE utf8mb4_unicode_ci,
+  tag_sort varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
+  check_publish char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  check_inverse char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  check_listview char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  check_listviewicon blob,
+  check_listviewicondisabled blob,
+  countries text COLLATE utf8mb4_unicode_ci,
+  force_alias char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  validAliasCharacters varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  slugLocale varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  noIntegerPrefix char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  alias_prefix varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  alias_postfix varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  alias_fields blob,
+  file_customFiletree char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_multiple char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_uploadFolder blob,
+  file_validFileTypes varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_table varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_column varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_id varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_alias varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_sorting varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  select_sort varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
+  select_where text COLLATE utf8mb4_unicode_ci,
+  select_filter int UNSIGNED NOT NULL DEFAULT '0',
+  select_filterparams text COLLATE utf8mb4_unicode_ci,
+  timetype varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_attribute` (`id`, `file_filesOnly`, `pid`, `sorting`, `tstamp`, `type`, `name`, `description`, `colname`, `isvariant`, `isunique`, `tag_table`, `tag_column`, `tag_id`, `tag_alias`, `tag_sorting`, `tag_where`, `tag_filter`, `tag_filterparams`, `tag_sort`, `check_publish`, `check_inverse`, `check_listview`, `check_listviewicon`, `check_listviewicondisabled`, `countries`, `force_alias`, `validAliasCharacters`, `slugLocale`, `noIntegerPrefix`, `alias_prefix`, `alias_postfix`, `alias_fields`, `file_customFiletree`, `file_multiple`, `file_uploadFolder`, `file_validFileTypes`, `select_table`, `select_column`, `select_id`, `select_alias`, `select_sorting`, `select_sort`, `select_where`, `select_filter`, `select_filterparams`, `timetype`) VALUES
+INSERT IGNORE INTO tl_metamodel_attribute (id, file_filesOnly, pid, sorting, tstamp, type, name, description, colname, isvariant, isunique, tag_table, tag_column, tag_id, tag_alias, tag_sorting, tag_where, tag_filter, tag_filterparams, tag_sort, check_publish, check_inverse, check_listview, check_listviewicon, check_listviewicondisabled, countries, force_alias, validAliasCharacters, slugLocale, noIntegerPrefix, alias_prefix, alias_postfix, alias_fields, file_customFiletree, file_multiple, file_uploadFolder, file_validFileTypes, select_table, select_column, select_id, select_alias, select_sorting, select_sort, select_where, select_filter, select_filterparams, timetype) VALUES
 (1, '', 1, 128, 1746903769, 'text', 'Name', 'Name der Shop Konfiguration', 'name', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (3, '', 3, 128, 1746924567, 'text', 'Name', NULL, 'name', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (4, '', 3, 256, 1746924605, 'alias', 'Alias', NULL, 'alias', '', '1', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '1', '', NULL, '1', '', '', 0x613a313a7b693a303b613a313a7b733a31353a226669656c645f617474726962757465223b733a343a226e616d65223b7d7d, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
@@ -186,27 +186,27 @@ INSERT IGNORE INTO `tl_metamodel_attribute` (`id`, `file_filesOnly`, `pid`, `sor
 (114, '', 4, 1792, 1751417190, 'checkbox', 'Datenschutzerklärung akzeptiert', NULL, 'datenschutzerklaerung_akzeptiert', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (115, '', 4, 1920, 1751417246, 'checkbox', 'Newsletter', NULL, 'newsletter', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, '');
 
-CREATE TABLE `tl_metamodel_dca` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rendertype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `ptable` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rendermode` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `showColumns` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `backendsection` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `backendicon` blob,
-  `backendcaption` text COLLATE utf8mb4_unicode_ci,
-  `panelLayout` blob,
-  `iseditable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `iscreatable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `isdeleteable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `subheadline` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_dca (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rendertype varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  ptable varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rendermode varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  showColumns char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  backendsection varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  backendicon blob,
+  backendcaption text COLLATE utf8mb4_unicode_ci,
+  panelLayout blob,
+  iseditable char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  iscreatable char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  isdeleteable char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  subheadline varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dca` (`id`, `pid`, `sorting`, `tstamp`, `name`, `rendertype`, `ptable`, `rendermode`, `showColumns`, `backendsection`, `backendicon`, `backendcaption`, `panelLayout`, `iseditable`, `iscreatable`, `isdeleteable`, `subheadline`) VALUES
+INSERT IGNORE INTO tl_metamodel_dca (id, pid, sorting, tstamp, name, rendertype, ptable, rendermode, showColumns, backendsection, backendicon, backendcaption, panelLayout, iseditable, iscreatable, isdeleteable, subheadline) VALUES
 (1, 1, 0, 1746918642, 'Shop Konfiguration', 'standalone', '', 'flat', '1', 'shop', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:4:\"Shop\";s:11:\"description\";s:18:\"Shop Konfiguration\";}}', 0x6c696d69742c736561726368, '1', '1', '1', ''),
 (2, 2, 0, 1746995005, 'Produkte', 'standalone', 'mm_shop', 'flat', '', 'shop', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:8:\"Produkte\";s:11:\"description\";s:8:\"Produkte\";}}', 0x6c696d69742c66696c7465722c736561726368, '1', '1', '1', ''),
 (3, 3, 0, 1747602671, 'Steuer', 'standalone', '', 'flat', '', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:10:\"Tag Steuer\";s:11:\"description\";s:10:\"Tag Steuer\";}}', 0x6c696d6974, '1', '1', '', 'Steuerwert der im Produkt ausgewählt werden muss'),
@@ -224,46 +224,46 @@ INSERT IGNORE INTO `tl_metamodel_dca` (`id`, `pid`, `sorting`, `tstamp`, `name`,
 (17, 20, 0, 1747721518, 'Lieferadresse', 'ctable', 'mm_order', 'flat', '1', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:13:\"Lieferadresse\";s:11:\"description\";s:13:\"Lieferadresse\";}}', 0x6c696d6974, '1', '1', '1', ''),
 (18, 21, 0, 1747714758, 'bestellte Produkte', 'ctable', 'mm_order', 'flat', '1', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:2:\"ab\";s:5:\"label\";s:18:\"bestellte Produkte\";s:11:\"description\";s:18:\"bestellte Produkte\";}}', 0x6c696d6974, '1', '1', '1', '');
 
-CREATE TABLE `tl_metamodel_dcasetting` (
-  `id` int UNSIGNED NOT NULL,
-  `tl_class` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'w50',
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `dcatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `attr_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `be_template` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `legendhide` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `legendtitle` text COLLATE utf8mb4_unicode_ci,
-  `mandatory` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `alwaysSave` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `filterable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `searchable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `chosen` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `allowHtml` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `preserveTags` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `decodeEntities` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rte` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tinyMCE',
-  `rows` int NOT NULL DEFAULT '0',
-  `cols` int NOT NULL DEFAULT '0',
-  `trailingSlash` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '2',
-  `spaceToUnderscore` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `includeBlankOption` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `submitOnChange` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `readonly` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rgxp` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `tag_as_wizard` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `tag_minLevel` int NOT NULL DEFAULT '0',
-  `tag_maxLevel` int NOT NULL DEFAULT '0',
-  `file_widgetMode` char(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal',
-  `select_as_radio` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `select_minLevel` int NOT NULL DEFAULT '0',
-  `select_maxLevel` int NOT NULL DEFAULT '0',
-  `clear_datetime` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_dcasetting (
+  id int UNSIGNED NOT NULL,
+  tl_class varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'w50',
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  published char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  dcatype varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  attr_id int UNSIGNED NOT NULL DEFAULT '0',
+  be_template varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  legendhide varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  legendtitle text COLLATE utf8mb4_unicode_ci,
+  mandatory char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  alwaysSave char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  filterable char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  searchable char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  chosen char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  allowHtml char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  preserveTags char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  decodeEntities char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rte varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tinyMCE',
+  rows int NOT NULL DEFAULT '0',
+  cols int NOT NULL DEFAULT '0',
+  trailingSlash char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '2',
+  spaceToUnderscore char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  includeBlankOption char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  submitOnChange char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  readonly char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rgxp varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  tag_as_wizard varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  tag_minLevel int NOT NULL DEFAULT '0',
+  tag_maxLevel int NOT NULL DEFAULT '0',
+  file_widgetMode char(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'normal',
+  select_as_radio varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  select_minLevel int NOT NULL DEFAULT '0',
+  select_maxLevel int NOT NULL DEFAULT '0',
+  clear_datetime varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dcasetting` (`id`, `tl_class`, `pid`, `sorting`, `tstamp`, `published`, `dcatype`, `attr_id`, `be_template`, `legendhide`, `legendtitle`, `mandatory`, `alwaysSave`, `filterable`, `searchable`, `chosen`, `allowHtml`, `preserveTags`, `decodeEntities`, `rte`, `rows`, `cols`, `trailingSlash`, `spaceToUnderscore`, `includeBlankOption`, `submitOnChange`, `readonly`, `rgxp`, `tag_as_wizard`, `tag_minLevel`, `tag_maxLevel`, `file_widgetMode`, `select_as_radio`, `select_minLevel`, `select_maxLevel`, `clear_datetime`) VALUES
+INSERT IGNORE INTO tl_metamodel_dcasetting (id, tl_class, pid, sorting, tstamp, published, dcatype, attr_id, be_template, legendhide, legendtitle, mandatory, alwaysSave, filterable, searchable, chosen, allowHtml, preserveTags, decodeEntities, rte, rows, cols, trailingSlash, spaceToUnderscore, includeBlankOption, submitOnChange, readonly, rgxp, tag_as_wizard, tag_minLevel, tag_maxLevel, file_widgetMode, select_as_radio, select_minLevel, select_maxLevel, clear_datetime) VALUES
 (1, 'w50', 1, 128, 1746903945, '1', 'attribute', 1, '', '', NULL, '1', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (2, 'w50', 8, 128, 1746930539, '1', 'attribute', 47, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (3, 'w50', 8, 256, 1746930574, '1', 'attribute', 48, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
@@ -384,32 +384,32 @@ INSERT IGNORE INTO `tl_metamodel_dcasetting` (`id`, `tl_class`, `pid`, `sorting`
 (125, 'w50', 4, 1536, 1751419126, '1', 'attribute', 114, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (126, 'w50', 4, 1664, 1751419159, '1', 'attribute', 115, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, '');
 
-CREATE TABLE `tl_metamodel_dcasetting_condition` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `settingId` int UNSIGNED NOT NULL DEFAULT '0',
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `enabled` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `attr_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `value` blob
+CREATE TABLE tl_metamodel_dcasetting_condition (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  settingId int UNSIGNED NOT NULL DEFAULT '0',
+  type varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  enabled char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  comment varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  attr_id int UNSIGNED NOT NULL DEFAULT '0',
+  value blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `tl_metamodel_dca_combine` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `fe_group` int NOT NULL DEFAULT '0',
-  `be_group` int NOT NULL DEFAULT '0',
-  `view_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `dca_id` int UNSIGNED NOT NULL DEFAULT '0'
+CREATE TABLE tl_metamodel_dca_combine (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  fe_group int NOT NULL DEFAULT '0',
+  be_group int NOT NULL DEFAULT '0',
+  view_id int UNSIGNED NOT NULL DEFAULT '0',
+  dca_id int UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
-INSERT IGNORE INTO `tl_metamodel_dca_combine` (`id`, `pid`, `sorting`, `tstamp`, `fe_group`, `be_group`, `view_id`, `dca_id`) VALUES
+INSERT IGNORE INTO tl_metamodel_dca_combine (id, pid, sorting, tstamp, fe_group, be_group, view_id, dca_id) VALUES
 (1, 1, 0, 1746905341, 0, 0, 3, 1),
 (2, 2, 0, 1746969513, 0, 0, 10, 2),
 (3, 3, 0, 1747602756, 0, 0, 12, 3),
@@ -426,23 +426,23 @@ INSERT IGNORE INTO `tl_metamodel_dca_combine` (`id`, `pid`, `sorting`, `tstamp`,
 (16, 21, 0, 1747703133, 0, 0, 22, 18),
 (17, 20, 0, 1747721453, 0, 0, 20, 17);
 
-CREATE TABLE `tl_metamodel_dca_sortgroup` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `isdefault` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `ismanualsort` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rendersort` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
-  `rendersortattr` int UNSIGNED NOT NULL DEFAULT '0',
-  `rendergrouptype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
-  `rendergroupattr` int UNSIGNED NOT NULL DEFAULT '0',
-  `rendergrouplen` int UNSIGNED NOT NULL DEFAULT '1'
+CREATE TABLE tl_metamodel_dca_sortgroup (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  published char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  isdefault char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  ismanualsort char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rendersort varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'asc',
+  rendersortattr int UNSIGNED NOT NULL DEFAULT '0',
+  rendergrouptype varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
+  rendergroupattr int UNSIGNED NOT NULL DEFAULT '0',
+  rendergrouplen int UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` (`id`, `pid`, `sorting`, `tstamp`, `published`, `name`, `isdefault`, `ismanualsort`, `rendersort`, `rendersortattr`, `rendergrouptype`, `rendergroupattr`, `rendergrouplen`) VALUES
+INSERT IGNORE INTO tl_metamodel_dca_sortgroup (id, pid, sorting, tstamp, published, name, isdefault, ismanualsort, rendersort, rendersortattr, rendergrouptype, rendergroupattr, rendergrouplen) VALUES
 (1, 1, 128, 1746904574, '1', 'Name', '1', '', 'asc', 1, 'none', 0, 1),
 (2, 8, 128, 1746966398, '1', 'Name', '1', '', 'asc', 47, 'none', 0, 1),
 (3, 7, 128, 1746966434, '1', 'Name', '1', '', 'asc', 45, 'none', 0, 1),
@@ -459,84 +459,84 @@ INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` (`id`, `pid`, `sorting`, `tstamp
 (15, 4, 128, 1747697842, '1', 'Bestellungen', '1', '', 'asc', 94, 'none', 0, 1),
 (16, 18, 128, 1747703054, '1', 'Name', '1', '', 'asc', 90, 'none', 0, 1);
 
-CREATE TABLE `tl_metamodel_filter` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_filter (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_filter` (`id`, `pid`, `tstamp`, `name`) VALUES
+INSERT IGNORE INTO tl_metamodel_filter (id, pid, tstamp, name) VALUES
 (1, 1, 1746905431, 'Name'),
 (2, 2, 1746994674, 'Name'),
 (5, 7, 1747699233, 'Mail');
 
-CREATE TABLE `tl_metamodel_filtersetting` (
-  `id` int UNSIGNED NOT NULL,
-  `apply_sorting` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `fid` int UNSIGNED NOT NULL DEFAULT '0',
-  `type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `enabled` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `attr_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `all_langs` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `items` text COLLATE utf8mb4_unicode_ci,
-  `urlparam` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `predef_param` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `fe_widget` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `customsql` text COLLATE utf8mb4_unicode_ci,
-  `allow_empty` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `stop_after_match` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `label` blob,
-  `template` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `blankoption` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `onlyused` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `onlypossible` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `skipfilteroptions` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `defaultid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `hide_label` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `label_as_blankoption` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `cssID` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `placeholder` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `use_only_in_env` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `ynfield` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `ynmode` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `option_label_param` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `useor` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `show_select_all` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `check_ignorepublished` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `check_allowpreview` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `textsearch` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `delimiter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_filtersetting (
+  id int UNSIGNED NOT NULL,
+  apply_sorting varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  fid int UNSIGNED NOT NULL DEFAULT '0',
+  type varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  enabled char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  comment varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  attr_id int UNSIGNED NOT NULL DEFAULT '0',
+  all_langs char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  items text COLLATE utf8mb4_unicode_ci,
+  urlparam varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  predef_param char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  fe_widget char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  customsql text COLLATE utf8mb4_unicode_ci,
+  allow_empty char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  stop_after_match char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  label blob,
+  template varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  blankoption char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  onlyused char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  onlypossible char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  skipfilteroptions char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  defaultid varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  hide_label char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  label_as_blankoption char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  cssID varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  placeholder varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  use_only_in_env varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  ynfield char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  ynmode varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  option_label_param char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  useor char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  show_select_all char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  check_ignorepublished char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  check_allowpreview char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  textsearch varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  delimiter varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  pattern varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_filtersetting` (`id`, `apply_sorting`, `pid`, `sorting`, `tstamp`, `fid`, `type`, `enabled`, `comment`, `attr_id`, `all_langs`, `items`, `urlparam`, `predef_param`, `fe_widget`, `customsql`, `allow_empty`, `stop_after_match`, `label`, `template`, `blankoption`, `onlyused`, `onlypossible`, `skipfilteroptions`, `defaultid`, `hide_label`, `label_as_blankoption`, `cssID`, `placeholder`, `use_only_in_env`, `ynfield`, `ynmode`, `option_label_param`, `useor`, `show_select_all`, `check_ignorepublished`, `check_allowpreview`, `textsearch`, `delimiter`, `pattern`) VALUES
+INSERT IGNORE INTO tl_metamodel_filtersetting (id, apply_sorting, pid, sorting, tstamp, fid, type, enabled, comment, attr_id, all_langs, items, urlparam, predef_param, fe_widget, customsql, allow_empty, stop_after_match, label, template, blankoption, onlyused, onlypossible, skipfilteroptions, defaultid, hide_label, label_as_blankoption, cssID, placeholder, use_only_in_env, ynfield, ynmode, option_label_param, useor, show_select_all, check_ignorepublished, check_allowpreview, textsearch, delimiter, pattern) VALUES
 (1, '', 0, 384, 1747001975, 2, 'text', '1', '', 35, '', NULL, 'name', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', 0x4e616d65, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'beginswith', '', '%s'),
 (4, '', 0, 128, 1747700056, 5, 'text', '1', '', 57, '', NULL, '', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', NULL, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'all', '', '%s');
 
-CREATE TABLE `tl_metamodel_rendersetting` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `attr_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `template` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `additional_class` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `enabled` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_sortBy` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_showLink` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_protectedDownload` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_showImage` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `file_imageSize` varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
-  `file_placeholder` blob,
-  `timeformat` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+CREATE TABLE tl_metamodel_rendersetting (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  sorting int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  attr_id int UNSIGNED NOT NULL DEFAULT '0',
+  template varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  additional_class varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  enabled char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_sortBy varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_showLink char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_protectedDownload char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_showImage char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  file_imageSize varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
+  file_placeholder blob,
+  timeformat varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_rendersetting` (`id`, `pid`, `sorting`, `tstamp`, `attr_id`, `template`, `additional_class`, `enabled`, `file_sortBy`, `file_showLink`, `file_protectedDownload`, `file_showImage`, `file_imageSize`, `file_placeholder`, `timeformat`) VALUES
+INSERT IGNORE INTO tl_metamodel_rendersetting (id, pid, sorting, tstamp, attr_id, template, additional_class, enabled, file_sortBy, file_showLink, file_protectedDownload, file_showImage, file_imageSize, file_placeholder, timeformat) VALUES
 (1, 3, 0, 1746979899, 1, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, ''),
 (2, 10, 256, 1748466534, 35, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, ''),
 (3, 10, 128, 1748466534, 42, 'mm_attr_file_preview', '', '1', 'name_asc', '', '', '1', 'a:3:{i:2;s:12:\"proportional\";i:0;s:3:\"120\";i:1;s:0:\"\";}', NULL, ''),
@@ -615,21 +615,21 @@ INSERT IGNORE INTO `tl_metamodel_rendersetting` (`id`, `pid`, `sorting`, `tstamp
 (80, 22, 512, 1747702930, 99, 'mm_attr_select', '', '1', '', '', '', '', '', NULL, ''),
 (81, 22, 640, 1747702945, 93, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, '');
 
-CREATE TABLE `tl_metamodel_rendersettings` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `hideEmptyValues` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `hideLabels` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `template` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `format` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `jumpTo` blob,
-  `additionalCss` blob,
-  `additionalJs` blob
+CREATE TABLE tl_metamodel_rendersettings (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  hideEmptyValues char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  hideLabels char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  template varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  format varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  jumpTo blob,
+  additionalCss blob,
+  additionalJs blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_rendersettings` (`id`, `pid`, `tstamp`, `name`, `hideEmptyValues`, `hideLabels`, `template`, `format`, `jumpTo`, `additionalCss`, `additionalJs`) VALUES
+INSERT IGNORE INTO tl_metamodel_rendersettings (id, pid, tstamp, name, hideEmptyValues, hideLabels, template, format, jumpTo, additionalCss, additionalJs) VALUES
 (1, 1, 1746903459, 'Html5', '', '', 'metamodel_prerendered', 'html5', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (3, 1, 1746905325, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (4, 14, 1746930620, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
@@ -651,125 +651,125 @@ INSERT IGNORE INTO `tl_metamodel_rendersettings` (`id`, `pid`, `tstamp`, `name`,
 (21, 4, 1747697134, 'Text', '', '1', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (22, 21, 1747702857, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d);
 
-CREATE TABLE `tl_metamodel_searchable_pages` (
-  `id` int UNSIGNED NOT NULL,
-  `pid` int UNSIGNED NOT NULL DEFAULT '0',
-  `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rendersetting` int UNSIGNED NOT NULL DEFAULT '0',
-  `filter` int UNSIGNED NOT NULL DEFAULT '0',
-  `filterparams` longblob,
-  `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1'
+CREATE TABLE tl_metamodel_searchable_pages (
+  id int UNSIGNED NOT NULL,
+  pid int UNSIGNED NOT NULL DEFAULT '0',
+  tstamp int UNSIGNED NOT NULL DEFAULT '0',
+  name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  rendersetting int UNSIGNED NOT NULL DEFAULT '0',
+  filter int UNSIGNED NOT NULL DEFAULT '0',
+  filterparams longblob,
+  published char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_searchable_pages` (`id`, `pid`, `tstamp`, `name`, `rendersetting`, `filter`, `filterparams`, `published`) VALUES
+INSERT IGNORE INTO tl_metamodel_searchable_pages (id, pid, tstamp, name, rendersetting, filter, filterparams, published) VALUES
 (1, 1, 1746905461, 'Name', 3, 1, NULL, '1'),
 (2, 2, 1746994917, 'Name', 10, 2, NULL, '1'),
 (3, 7, 1747699338, 'Mail', 9, 5, NULL, '1');
 
-CREATE TABLE `tl_metamodel_tag_relation` (
-  `id` int UNSIGNED NOT NULL,
-  `att_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `item_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `value_sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `value_id` int UNSIGNED NOT NULL DEFAULT '0'
+CREATE TABLE tl_metamodel_tag_relation (
+  id int UNSIGNED NOT NULL,
+  att_id int UNSIGNED NOT NULL DEFAULT '0',
+  item_id int UNSIGNED NOT NULL DEFAULT '0',
+  value_sorting int UNSIGNED NOT NULL DEFAULT '0',
+  value_id int UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
-ALTER TABLE `tl_metamodel`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `tablename` (`tableName`);
+ALTER TABLE tl_metamodel
+  ADD PRIMARY KEY (id),
+  ADD UNIQUE KEY tablename (tableName);
 
-ALTER TABLE `tl_metamodel_attribute`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `pid_colname` (`pid`,`colname`),
-  ADD KEY `pid` (`pid`),
-  ADD KEY `colname` (`colname`);
+ALTER TABLE tl_metamodel_attribute
+  ADD PRIMARY KEY (id),
+  ADD UNIQUE KEY pid_colname (pid,colname),
+  ADD KEY pid (pid),
+  ADD KEY colname (colname);
 
-ALTER TABLE `tl_metamodel_dca`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_dca
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_dcasetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_dcasetting
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_dcasetting_condition`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_dcasetting_condition
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_dca_combine`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`),
-  ADD KEY `fe_group` (`fe_group`),
-  ADD KEY `be_group` (`be_group`);
+ALTER TABLE tl_metamodel_dca_combine
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid),
+  ADD KEY fe_group (fe_group),
+  ADD KEY be_group (be_group);
 
-ALTER TABLE `tl_metamodel_dca_sortgroup`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_dca_sortgroup
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_filter`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_filter
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_filtersetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_filtersetting
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_rendersetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_rendersetting
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_rendersettings`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_rendersettings
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_searchable_pages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+ALTER TABLE tl_metamodel_searchable_pages
+  ADD PRIMARY KEY (id),
+  ADD KEY pid (pid);
 
-ALTER TABLE `tl_metamodel_tag_relation`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `att_id_item_id_value_id` (`att_id`,`item_id`,`value_id`);
+ALTER TABLE tl_metamodel_tag_relation
+  ADD PRIMARY KEY (id),
+  ADD UNIQUE KEY att_id_item_id_value_id (att_id,item_id,value_id);
 
 
-ALTER TABLE `tl_metamodel`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+ALTER TABLE tl_metamodel
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
-ALTER TABLE `tl_metamodel_attribute`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+ALTER TABLE tl_metamodel_attribute
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
-ALTER TABLE `tl_metamodel_dca`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+ALTER TABLE tl_metamodel_dca
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
-ALTER TABLE `tl_metamodel_dcasetting`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+ALTER TABLE tl_metamodel_dcasetting
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
-ALTER TABLE `tl_metamodel_dcasetting_condition`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE tl_metamodel_dcasetting_condition
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
-ALTER TABLE `tl_metamodel_dca_combine`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+ALTER TABLE tl_metamodel_dca_combine
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
-ALTER TABLE `tl_metamodel_dca_sortgroup`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+ALTER TABLE tl_metamodel_dca_sortgroup
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
-ALTER TABLE `tl_metamodel_filter`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE tl_metamodel_filter
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
-ALTER TABLE `tl_metamodel_filtersetting`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE tl_metamodel_filtersetting
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
-ALTER TABLE `tl_metamodel_rendersetting`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+ALTER TABLE tl_metamodel_rendersetting
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
-ALTER TABLE `tl_metamodel_rendersettings`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+ALTER TABLE tl_metamodel_rendersettings
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
-ALTER TABLE `tl_metamodel_searchable_pages`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE tl_metamodel_searchable_pages
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
-ALTER TABLE `tl_metamodel_tag_relation`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE tl_metamodel_tag_relation
+  MODIFY id int UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
