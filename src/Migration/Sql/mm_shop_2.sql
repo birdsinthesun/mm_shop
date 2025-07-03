@@ -7,7 +7,7 @@ CREATE TABLE `mm_order_status` (
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_order_status` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
+INSERT DELAYED IGNORE INTO `mm_order_status` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
 (1, 0, 0, 1747694668, 'Bezahlt', 'paid'),
 (2, 0, 0, 1747694653, 'Noch nicht bezahlt', 'not_paid'),
 (3, 0, 0, 1747694694, 'Storniert', 'canceled'),
@@ -23,7 +23,7 @@ CREATE TABLE `mm_overview` (
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_overview` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `alias`) VALUES
+INSERT DELAYED IGNORE INTO `mm_overview` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `alias`) VALUES
 (1, 0, 0, 1747260190, 'Datenschutzerklärung', '<p>Ich habe die <a title=\"Zur Datenschutzerklärung \" href=\"#\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung </a>gelesen</p>', 'datenschutzerklarung'),
 (2, 0, 0, 1748558112, 'AGB', '<p>Ich aktzeptiere die <a title=\"Zu den AGBs\" href=\"#\" target=\"_blank\" rel=\"noopener\">AGB</a>.</p>', 'agb'),
 (3, 0, 0, 1747260323, 'Newsletter', '<p>Ja ich möchte auf dem Laufenden bleiben.</p>', 'newsletter');
@@ -43,7 +43,7 @@ CREATE TABLE `mm_payment` (
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_payment` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `costs`, `tax`, `paypal_client_id`, `paypal_secret`, `paypal_api_base`, `alias`) VALUES
+INSERT DELAYED IGNORE INTO `mm_payment` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `costs`, `tax`, `paypal_client_id`, `paypal_secret`, `paypal_api_base`, `alias`) VALUES
 (1, 0, 0, 1751246052, 'PayPal', '<p>Nach dem Sie &#34;kostenpflichtig Kaufen&#34; geklickt haben werden Sie an PayPal weitergeleitet.<br><br><a title=\"Weitere Informationen finden sie hier\" href=\"#\" target=\"_blank\" rel=\"noopener\">Weitere Informationen finden sie hier</a></p>', 0, 1, 'AR7fxJdUlnENpZ7vXHmXDZMwrlRBVCeh4ht9i2sMF0ljQwRjFN49xi9zfkfZ7tTSmpSGTJCXK-AU6WeG', 'EFODPxVnIOXZZseDjTxK-grvHfdvat9_AWQBfQUEfoSdVx__PO5e5URxefw3juVcaiezM1A18ROP1pfy', 'https://api-m.sandbox.paypal.com', 'paypal'),
 (2, 0, 0, 1751233432, 'Banküberweisung', '<p>Nach dem Sie &#34;kostenpflichtig Kaufen&#34; geklickt haben bekommen Sie eine Bestätigungsmail, in der sich unsere Bank-Verbindungsdaten befinden.<br><br><a title=\"Weitere Informationen finden sie hier\" href=\"#\" target=\"_blank\" rel=\"noopener\">Weitere Informationen finden sie hier</a></p>', 0, 1, NULL, NULL, NULL, 'bankuberweisung');
 
@@ -56,7 +56,7 @@ CREATE TABLE `mm_product_availability` (
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_product_availability` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
+INSERT DELAYED IGNORE INTO `mm_product_availability` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
 (1, 0, 0, 1746930991, 'verfügbar', 'in stock'),
 (2, 0, 0, 1746931037, 'nicht verfügbar', 'out of stock');
 
@@ -69,7 +69,7 @@ CREATE TABLE `mm_product_condition` (
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_product_condition` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
+INSERT DELAYED IGNORE INTO `mm_product_condition` (`id`, `pid`, `sorting`, `tstamp`, `name`, `alias`) VALUES
 (1, 0, 0, 1746931088, 'neu', 'new'),
 (2, 0, 0, 1746931117, 'generalüberholt', 'refurbished'),
 (3, 0, 0, 1746931143, 'gebraucht', 'used');
@@ -83,7 +83,7 @@ CREATE TABLE `mm_salutation` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_salutation` (`id`, `pid`, `sorting`, `tstamp`, `alias`, `name`) VALUES
+INSERT DELAYED IGNORE INTO `mm_salutation` (`id`, `pid`, `sorting`, `tstamp`, `alias`, `name`) VALUES
 (1, 0, 0, 1747027072, 'frau', 'Frau'),
 (2, 0, 0, 1747027101, 'herr', 'Herr'),
 (3, 0, 0, 1747027156, 'divers', 'Divers');
@@ -99,7 +99,7 @@ CREATE TABLE `mm_shipment` (
   `tax` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_shipment` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `costs`, `tax`) VALUES
+INSERT DELAYED IGNORE INTO `mm_shipment` (`id`, `pid`, `sorting`, `tstamp`, `name`, `description`, `costs`, `tax`) VALUES
 (1, 0, 0, 1748548910, 'Standard', '<p>Versandkosten 6,50 € inkl. 19% Mwst</p>\n<p><a title=\"Weitere Informationen zum Versand\" href=\"#\" target=\"_blank\" rel=\"noopener\">Weitere Informationen zum Versand</a></p>', 6.5, 1),
 (2, 0, 0, 1748548884, 'Abholung', '<p>Wir sind in Berlin.</p>\n<p><a title=\"Hier können Sie die Ware abholen\" href=\"#\" target=\"_blank\" rel=\"noopener\">Hier können Sie die Ware abholen</a></p>', 0, 1);
 
@@ -149,7 +149,7 @@ CREATE TABLE `mm_tax` (
   `tax` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `mm_tax` (`id`, `pid`, `sorting`, `tstamp`, `name`, `is_inclusive`, `alias`, `tax`) VALUES
+INSERT DELAYED IGNORE INTO `mm_tax` (`id`, `pid`, `sorting`, `tstamp`, `name`, `is_inclusive`, `alias`, `tax`) VALUES
 (1, 0, 0, 1748477718, 'inkl. 19 % Mwst', '1', 'inkl-19-mwst', 19),
 (2, 0, 0, 1748477728, 'inkl. 7 % Mwst', '1', 'inkl-7-mwst', 7),
 (3, 0, 0, 1746997225, '7 %', '', '7', 7),
