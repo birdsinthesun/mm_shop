@@ -418,6 +418,7 @@ CREATE TABLE `tl_metamodel_dca_combine` (
   `dca_id` int UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
+
 INSERT INTO `tl_metamodel_dca_combine` (`id`, `pid`, `sorting`, `tstamp`, `fe_group`, `be_group`, `view_id`, `dca_id`) VALUES
 (1, 1, 0, 1746905341, 0, 0, 3, 1),
 (2, 2, 0, 1746969513, 0, 0, 10, 2),
