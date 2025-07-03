@@ -676,103 +676,101 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_tag_relation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
-ALTER TABLE `tl_metamodel`
+ALTER TABLE IF NOT EXISTS `tl_metamodel`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `tablename` (`tableName`);
 
-ALTER TABLE `tl_metamodel_attribute`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_attribute`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `pid_colname` (`pid`,`colname`),
   ADD KEY `pid` (`pid`),
   ADD KEY `colname` (`colname`);
 
-ALTER TABLE `tl_metamodel_dca`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_dcasetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dcasetting`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_dcasetting_condition`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dcasetting_condition`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_dca_combine`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca_combine`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`),
   ADD KEY `fe_group` (`fe_group`),
   ADD KEY `be_group` (`be_group`);
 
-ALTER TABLE `tl_metamodel_dca_sortgroup`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca_sortgroup`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_filter`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_filter`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_filtersetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_filtersetting`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_rendersetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_rendersetting`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_rendersettings`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_rendersettings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_searchable_pages`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_searchable_pages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pid` (`pid`);
 
-ALTER TABLE `tl_metamodel_tag_relation`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_tag_relation`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `att_id_item_id_value_id` (`att_id`,`item_id`,`value_id`);
 
 
-ALTER TABLE `tl_metamodel`
+ALTER TABLE IF NOT EXISTS `tl_metamodel`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
-ALTER TABLE `tl_metamodel_attribute`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_attribute`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
-ALTER TABLE `tl_metamodel_dca`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
-ALTER TABLE `tl_metamodel_dcasetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dcasetting`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
-ALTER TABLE `tl_metamodel_dcasetting_condition`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dcasetting_condition`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
-ALTER TABLE `tl_metamodel_dca_combine`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca_combine`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
-ALTER TABLE `tl_metamodel_dca_sortgroup`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_dca_sortgroup`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
-ALTER TABLE `tl_metamodel_filter`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_filter`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
-ALTER TABLE `tl_metamodel_filtersetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_filtersetting`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
-ALTER TABLE `tl_metamodel_rendersetting`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_rendersetting`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
-ALTER TABLE `tl_metamodel_rendersettings`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_rendersettings`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
-ALTER TABLE `tl_metamodel_searchable_pages`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_searchable_pages`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
-ALTER TABLE `tl_metamodel_tag_relation`
+ALTER TABLE IF NOT EXISTS `tl_metamodel_tag_relation`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
