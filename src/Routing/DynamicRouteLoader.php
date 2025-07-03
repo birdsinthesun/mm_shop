@@ -35,7 +35,9 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         if ($this->loaded) {
             throw new \RuntimeException('Do not load this loader twice.');
         }
-
+        if(!$this->db->exists('mm_shop')){
+            return;
+            }
         $routes = new RouteCollection();
         $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',['1']);
         $rootPageAlias = $this->db->fetchFirstColumn('SELECT alias FROM tl_page WHERE id = ?',[$rootPageId[0]]);

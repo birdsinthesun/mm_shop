@@ -18,17 +18,17 @@ class InstallMmShop extends AbstractMigration
 
     public function getName(): string
     {
-        return 'MM Shop: Install MetaModels-Tables and MM Shop Tables';
+        return 'MM Shop: Install MetaModels-Tables and MM Shop Tables'.__DIR__;
     }
 
     public function run(): MigrationResult
     {
         
         $filesystem = new Filesystem();
-
-        $sqlFiles = [ __DIR__ . '/Migration/Sql/metamodels.sql'
-        , __DIR__ . '/Migration/Sql/mm_shop_1.sql'
-        , __DIR__ . '/Migration/Sql/mm_shop_2.sql'];
+       
+        $sqlFiles = [ __DIR__ . '/Sql/metamodels.sql'
+        , __DIR__ . '/Sql/mm_shop_1.sql'
+        , __DIR__ . '/Sql/mm_shop_2.sql'];
         
         foreach($sqlFiles as $sqlFile){
             if ($filesystem->exists($sqlFile)) {

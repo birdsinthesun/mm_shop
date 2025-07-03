@@ -68,7 +68,7 @@ class NavigationModule extends Module
                 'id' => $this->id
             ]);
         } 
-        
+        global $objPage;
         //ToDos
         //Settings will given in the Modul 
         $useAsSiteMap = '';
@@ -81,21 +81,24 @@ class NavigationModule extends Module
         if(!$this->currentPage){
             return '';
             }
+        $shopConfigId = $this->connection->fetchFirstColumn(
+                'SELECT mm_shop_config FROM tl_page WHERE id = ?', 
+                [$objPage->rootId]);
         //if Page === Detail
         $this->detailPageId = $this->connection->fetchFirstColumn(
                 'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
         //if Page === List
         $this->listPageId = $this->connection->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
         //Skipp Cart & Checkout
         $cartPageId = $this->connection->fetchFirstColumn(
                 'SELECT cart_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
         $checkoutPageId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId[0]]);
         //if Page === Category
     
       //if Page type==='forward'
