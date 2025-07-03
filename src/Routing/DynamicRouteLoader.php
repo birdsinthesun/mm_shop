@@ -35,7 +35,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         if ($this->loaded) {
             throw new \RuntimeException('Do not load this loader twice.');
         }
-        if(!$this->db->exists('mm_shop')){
+        if(!$this->db->tableExists('mm_shop')){
             return;
             }
         $routes = new RouteCollection();
@@ -105,5 +105,14 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
     {
         
         return 'dynamic' === $type;
+    }
+    
+     private function tableExists(string $table): bool
+    {
+        $schemaManager = method_exists($this->db, 'createSchemaManager')
+            ? $this->db->createSchemaManager()
+            : $this->db->getSchemaManager();
+
+        return $schemaManager->tablesExist([$table]);
     }
 }
