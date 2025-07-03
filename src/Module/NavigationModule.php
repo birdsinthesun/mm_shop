@@ -333,7 +333,7 @@ class NavigationModule extends Module
                   if(in_array($page['id'],array_keys($this->arrTrailPages))){
                        $cssClass .= ' trail';
                         }
-                if($page['id'] === $this->currentPage->__get('id')){
+                if($page['id'] === $this->currentPage->__get('id')&&!$this->request->attributes->get('category')){
                        $cssClass .= ' active';
                         }
               }
