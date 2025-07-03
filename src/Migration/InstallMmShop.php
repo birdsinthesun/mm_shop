@@ -33,11 +33,11 @@ class InstallMmShop extends AbstractMigration
         foreach($sqlFiles as $sqlFile){
             if ($filesystem->exists($sqlFile)) {
                 $sql = file_get_contents($sqlFile);
-                $statements = array_filter(array_map('trim', explode(";PHP_EOL", $sql)));
+                $statements = explode(";PHP_EOL", $sql);
 
                 foreach ($statements as $statement) {
                     if ($statement !== '') {
-                        $this->connection->executeStatement(str_replace("PHP_EOL","",$statement));
+                        $this->connection->executeStatement(trim(str_replace("PHP_EOL","",$statement)));
                     }
                 }
                 
