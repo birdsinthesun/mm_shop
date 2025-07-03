@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel` (
   `translated` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `languages` text COLLATE utf8mb4_unicode_ci,
   `varsupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `localeterritorysupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `localeterritorysupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tablename` (`tableName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel` (`id`, `tstamp`, `sorting`, `name`, `tableName`, `translated`, `languages`, `varsupport`, `localeterritorysupport`) VALUES
@@ -74,7 +76,11 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_attribute` (
   `select_where` text COLLATE utf8mb4_unicode_ci,
   `select_filter` int UNSIGNED NOT NULL DEFAULT '0',
   `select_filterparams` text COLLATE utf8mb4_unicode_ci,
-  `timetype` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `timetype` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `pid_colname` (`pid`,`colname`),
+   KEY `pid` (`pid`),
+   KEY `colname` (`colname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_attribute` (`id`, `file_filesOnly`, `pid`, `sorting`, `tstamp`, `type`, `name`, `description`, `colname`, `isvariant`, `isunique`, `tag_table`, `tag_column`, `tag_id`, `tag_alias`, `tag_sorting`, `tag_where`, `tag_filter`, `tag_filterparams`, `tag_sort`, `check_publish`, `check_inverse`, `check_listview`, `check_listviewicon`, `check_listviewicondisabled`, `countries`, `force_alias`, `validAliasCharacters`, `slugLocale`, `noIntegerPrefix`, `alias_prefix`, `alias_postfix`, `alias_fields`, `file_customFiletree`, `file_multiple`, `file_uploadFolder`, `file_validFileTypes`, `select_table`, `select_column`, `select_id`, `select_alias`, `select_sorting`, `select_sort`, `select_where`, `select_filter`, `select_filterparams`, `timetype`) VALUES
@@ -203,7 +209,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_dca` (
   `iseditable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `iscreatable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `isdeleteable` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `subheadline` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `subheadline` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_dca` (`id`, `pid`, `sorting`, `tstamp`, `name`, `rendertype`, `ptable`, `rendermode`, `showColumns`, `backendsection`, `backendicon`, `backendcaption`, `panelLayout`, `iseditable`, `iscreatable`, `isdeleteable`, `subheadline`) VALUES
@@ -260,7 +268,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_dcasetting` (
   `select_as_radio` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `select_minLevel` int NOT NULL DEFAULT '0',
   `select_maxLevel` int NOT NULL DEFAULT '0',
-  `clear_datetime` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `clear_datetime` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_dcasetting` (`id`, `tl_class`, `pid`, `sorting`, `tstamp`, `published`, `dcatype`, `attr_id`, `be_template`, `legendhide`, `legendtitle`, `mandatory`, `alwaysSave`, `filterable`, `searchable`, `chosen`, `allowHtml`, `preserveTags`, `decodeEntities`, `rte`, `rows`, `cols`, `trailingSlash`, `spaceToUnderscore`, `includeBlankOption`, `submitOnChange`, `readonly`, `rgxp`, `tag_as_wizard`, `tag_minLevel`, `tag_maxLevel`, `file_widgetMode`, `select_as_radio`, `select_minLevel`, `select_maxLevel`, `clear_datetime`) VALUES
@@ -394,7 +404,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_dcasetting_condition` (
   `enabled` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `attr_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `value` blob
+  `value` blob,
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `tl_metamodel_dca_combine` (
@@ -405,7 +417,11 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_dca_combine` (
   `fe_group` int NOT NULL DEFAULT '0',
   `be_group` int NOT NULL DEFAULT '0',
   `view_id` int UNSIGNED NOT NULL DEFAULT '0',
-  `dca_id` int UNSIGNED NOT NULL DEFAULT '0'
+  `dca_id` int UNSIGNED NOT NULL DEFAULT '0',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`),
+   KEY `fe_group` (`fe_group`),
+   KEY `be_group` (`be_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
@@ -439,7 +455,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_dca_sortgroup` (
   `rendersortattr` int UNSIGNED NOT NULL DEFAULT '0',
   `rendergrouptype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
   `rendergroupattr` int UNSIGNED NOT NULL DEFAULT '0',
-  `rendergrouplen` int UNSIGNED NOT NULL DEFAULT '1'
+  `rendergrouplen` int UNSIGNED NOT NULL DEFAULT '1',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` (`id`, `pid`, `sorting`, `tstamp`, `published`, `name`, `isdefault`, `ismanualsort`, `rendersort`, `rendersortattr`, `rendergrouptype`, `rendergroupattr`, `rendergrouplen`) VALUES
@@ -463,7 +481,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_filter` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_filter` (`id`, `pid`, `tstamp`, `name`) VALUES
@@ -511,7 +531,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_filtersetting` (
   `check_allowpreview` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `textsearch` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `delimiter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_filtersetting` (`id`, `apply_sorting`, `pid`, `sorting`, `tstamp`, `fid`, `type`, `enabled`, `comment`, `attr_id`, `all_langs`, `items`, `urlparam`, `predef_param`, `fe_widget`, `customsql`, `allow_empty`, `stop_after_match`, `label`, `template`, `blankoption`, `onlyused`, `onlypossible`, `skipfilteroptions`, `defaultid`, `hide_label`, `label_as_blankoption`, `cssID`, `placeholder`, `use_only_in_env`, `ynfield`, `ynmode`, `option_label_param`, `useor`, `show_select_all`, `check_ignorepublished`, `check_allowpreview`, `textsearch`, `delimiter`, `pattern`) VALUES
@@ -533,7 +555,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_rendersetting` (
   `file_showImage` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `file_imageSize` varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
   `file_placeholder` blob,
-  `timeformat` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `timeformat` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_rendersetting` (`id`, `pid`, `sorting`, `tstamp`, `attr_id`, `template`, `additional_class`, `enabled`, `file_sortBy`, `file_showLink`, `file_protectedDownload`, `file_showImage`, `file_imageSize`, `file_placeholder`, `timeformat`) VALUES
@@ -626,7 +650,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_rendersettings` (
   `format` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `jumpTo` blob,
   `additionalCss` blob,
-  `additionalJs` blob
+  `additionalJs` blob,
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_rendersettings` (`id`, `pid`, `tstamp`, `name`, `hideEmptyValues`, `hideLabels`, `template`, `format`, `jumpTo`, `additionalCss`, `additionalJs`) VALUES
@@ -659,7 +685,9 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_searchable_pages` (
   `rendersetting` int UNSIGNED NOT NULL DEFAULT '0',
   `filter` int UNSIGNED NOT NULL DEFAULT '0',
   `filterparams` longblob,
-  `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1'
+  `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+   PRIMARY KEY (`id`),
+   KEY `pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT IGNORE INTO `tl_metamodel_searchable_pages` (`id`, `pid`, `tstamp`, `name`, `rendersetting`, `filter`, `filterparams`, `published`) VALUES
@@ -672,63 +700,7 @@ CREATE TABLE IF NOT EXISTS `tl_metamodel_tag_relation` (
   `att_id` int UNSIGNED NOT NULL DEFAULT '0',
   `item_id` int UNSIGNED NOT NULL DEFAULT '0',
   `value_sorting` int UNSIGNED NOT NULL DEFAULT '0',
-  `value_id` int UNSIGNED NOT NULL DEFAULT '0'
+  `value_id` int UNSIGNED NOT NULL DEFAULT '0',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `att_id_item_id_value_id` (`att_id`,`item_id`,`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-
-
-ALTER TABLE `tl_metamodel`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `tablename` (`tableName`);
-
-ALTER TABLE `tl_metamodel_attribute`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `pid_colname` (`pid`,`colname`),
-  ADD KEY `pid` (`pid`),
-  ADD KEY `colname` (`colname`);
-
-ALTER TABLE `tl_metamodel_dca`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_dcasetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_dcasetting_condition`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_dca_combine`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`),
-  ADD KEY `fe_group` (`fe_group`),
-  ADD KEY `be_group` (`be_group`);
-
-ALTER TABLE `tl_metamodel_dca_sortgroup`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_filter`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_filtersetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_rendersetting`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_rendersettings`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_searchable_pages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
-
-ALTER TABLE `tl_metamodel_tag_relation`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `att_id_item_id_value_id` (`att_id`,`item_id`,`value_id`);
-
