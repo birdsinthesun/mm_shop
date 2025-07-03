@@ -37,7 +37,7 @@ class InstallMmShop extends AbstractMigration
 
                 foreach ($statements as $statement) {
                     if ($statement !== '') {
-                        $this->connection->executeStatement(str_replace(";PHP_EOL",";",$statement));
+                        $this->connection->executeStatement(str_replace("PHP_EOL","",$statement));
                     }
                 }
                 
