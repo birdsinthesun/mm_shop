@@ -71,5 +71,5 @@ services:
         
     Bits\MmShopBundle\:
         resource: '../src/*'
-        exclude: '../src/{Module,Controller,Resources,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{Module,Controller,Resources,DependencyInjection,Entity,Migration,Tests,Kernel.php}'
 
