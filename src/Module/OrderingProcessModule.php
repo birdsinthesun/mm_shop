@@ -807,26 +807,26 @@ class OrderingProcessModule extends Module
              $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
              
                 foreach($arrSummary['tax'] as $k => $tax){
-                        
+                        $base = 100+$tax['tax'];
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
-                                $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
+                                $arrSummary['taxsubtotal'][$tax['id']] += $price/$base*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
                         }
                          if($tax['id'] === $arrSummary['shipment']['id']){
                              if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
-                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment']['costs'])/100*$tax['tax'];
+                             $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',$arrSummary['shipment']['costs'])/$base*$tax['tax'];
                          }
                          if($tax['id'] === $arrSummary['payment']['id']){
                              if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
                              $arrSummary['taxsubtotal'][$tax['id']] += str_replace(',','.',
-                             $arrSummary['payment']['costs'])/100*
+                             $arrSummary['payment']['costs'])/$base*
                              $tax['tax'];
                          }
                     }
