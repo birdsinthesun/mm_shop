@@ -35,7 +35,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         if ($this->loaded) {
             throw new \RuntimeException('Do not load this loader twice.');
         }
-        if(!$this->db->tableExists('mm_shop')){
+        if(!$this->tableExists('mm_shop')){
             return;
             }
         $routes = new RouteCollection();
