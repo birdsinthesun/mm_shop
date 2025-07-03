@@ -37,7 +37,7 @@ class InstallMmShop extends AbstractMigration
 
                 foreach ($statements as $statement) {
                     if ($statement !== '') {
-                        $this->connection->execute($statement);
+                        $this->connection->executeStatement($statement);
                     }
                 }
                 
