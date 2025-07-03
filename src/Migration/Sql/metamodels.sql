@@ -10,7 +10,7 @@ CREATE TABLE `tl_metamodel` (
   `localeterritorysupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel` VALUES
+INSERT IGNORE INTO `tl_metamodel` (`id`, `tstamp`, `sorting`, `name`, `tableName`, `translated`, `languages`, `varsupport`, `localeterritorysupport`) VALUES
 (1, 1746971884, 256, 'Shop Konfiguration', 'mm_shop', '', NULL, '', ''),
 (2, 1747374108, 512, 'Produkte', 'mm_product', '', NULL, '', ''),
 (3, 1747702561, 2048, 'Tags Steuer', 'mm_tax', '', NULL, '', ''),
@@ -77,7 +77,7 @@ CREATE TABLE `tl_metamodel_attribute` (
   `timetype` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_attribute` VALUES
+INSERT IGNORE INTO `tl_metamodel_attribute` (`id`, `file_filesOnly`, `pid`, `sorting`, `tstamp`, `type`, `name`, `description`, `colname`, `isvariant`, `isunique`, `tag_table`, `tag_column`, `tag_id`, `tag_alias`, `tag_sorting`, `tag_where`, `tag_filter`, `tag_filterparams`, `tag_sort`, `check_publish`, `check_inverse`, `check_listview`, `check_listviewicon`, `check_listviewicondisabled`, `countries`, `force_alias`, `validAliasCharacters`, `slugLocale`, `noIntegerPrefix`, `alias_prefix`, `alias_postfix`, `alias_fields`, `file_customFiletree`, `file_multiple`, `file_uploadFolder`, `file_validFileTypes`, `select_table`, `select_column`, `select_id`, `select_alias`, `select_sorting`, `select_sort`, `select_where`, `select_filter`, `select_filterparams`, `timetype`) VALUES
 (1, '', 1, 128, 1746903769, 'text', 'Name', 'Name der Shop Konfiguration', 'name', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (3, '', 3, 128, 1746924567, 'text', 'Name', NULL, 'name', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (4, '', 3, 256, 1746924605, 'alias', 'Alias', NULL, 'alias', '', '1', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '1', '', NULL, '1', '', '', 0x613a313a7b693a303b613a313a7b733a31353a226669656c645f617474726962757465223b733a343a226e616d65223b7d7d, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
@@ -206,7 +206,7 @@ CREATE TABLE `tl_metamodel_dca` (
   `subheadline` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dca` VALUES
+INSERT IGNORE INTO `tl_metamodel_dca` (`id`, `pid`, `sorting`, `tstamp`, `name`, `rendertype`, `ptable`, `rendermode`, `showColumns`, `backendsection`, `backendicon`, `backendcaption`, `panelLayout`, `iseditable`, `iscreatable`, `isdeleteable`, `subheadline`) VALUES
 (1, 1, 0, 1746918642, 'Shop Konfiguration', 'standalone', '', 'flat', '1', 'shop', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:4:\"Shop\";s:11:\"description\";s:18:\"Shop Konfiguration\";}}', 0x6c696d69742c736561726368, '1', '1', '1', ''),
 (2, 2, 0, 1746995005, 'Produkte', 'standalone', 'mm_shop', 'flat', '', 'shop', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:8:\"Produkte\";s:11:\"description\";s:8:\"Produkte\";}}', 0x6c696d69742c66696c7465722c736561726368, '1', '1', '1', ''),
 (3, 3, 0, 1747602671, 'Steuer', 'standalone', '', 'flat', '', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:10:\"Tag Steuer\";s:11:\"description\";s:10:\"Tag Steuer\";}}', 0x6c696d6974, '1', '1', '', 'Steuerwert der im Produkt ausgewählt werden muss'),
@@ -263,7 +263,7 @@ CREATE TABLE `tl_metamodel_dcasetting` (
   `clear_datetime` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dcasetting` VALUES
+INSERT IGNORE INTO `tl_metamodel_dcasetting` (`id`, `tl_class`, `pid`, `sorting`, `tstamp`, `published`, `dcatype`, `attr_id`, `be_template`, `legendhide`, `legendtitle`, `mandatory`, `alwaysSave`, `filterable`, `searchable`, `chosen`, `allowHtml`, `preserveTags`, `decodeEntities`, `rte`, `rows`, `cols`, `trailingSlash`, `spaceToUnderscore`, `includeBlankOption`, `submitOnChange`, `readonly`, `rgxp`, `tag_as_wizard`, `tag_minLevel`, `tag_maxLevel`, `file_widgetMode`, `select_as_radio`, `select_minLevel`, `select_maxLevel`, `clear_datetime`) VALUES
 (1, 'w50', 1, 128, 1746903945, '1', 'attribute', 1, '', '', NULL, '1', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (2, 'w50', 8, 128, 1746930539, '1', 'attribute', 47, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (3, 'w50', 8, 256, 1746930574, '1', 'attribute', 48, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
@@ -408,7 +408,8 @@ CREATE TABLE `tl_metamodel_dca_combine` (
   `dca_id` int UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dca_combine` VALUES
+
+INSERT IGNORE INTO `tl_metamodel_dca_combine` (`id`, `pid`, `sorting`, `tstamp`, `fe_group`, `be_group`, `view_id`, `dca_id`) VALUES
 (1, 1, 0, 1746905341, 0, 0, 3, 1),
 (2, 2, 0, 1746969513, 0, 0, 10, 2),
 (3, 3, 0, 1747602756, 0, 0, 12, 3),
@@ -441,7 +442,7 @@ CREATE TABLE `tl_metamodel_dca_sortgroup` (
   `rendergrouplen` int UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` VALUES
+INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` (`id`, `pid`, `sorting`, `tstamp`, `published`, `name`, `isdefault`, `ismanualsort`, `rendersort`, `rendersortattr`, `rendergrouptype`, `rendergroupattr`, `rendergrouplen`) VALUES
 (1, 1, 128, 1746904574, '1', 'Name', '1', '', 'asc', 1, 'none', 0, 1),
 (2, 8, 128, 1746966398, '1', 'Name', '1', '', 'asc', 47, 'none', 0, 1),
 (3, 7, 128, 1746966434, '1', 'Name', '1', '', 'asc', 45, 'none', 0, 1),
@@ -465,7 +466,7 @@ CREATE TABLE `tl_metamodel_filter` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_filter` VALUES
+INSERT IGNORE INTO `tl_metamodel_filter` (`id`, `pid`, `tstamp`, `name`) VALUES
 (1, 1, 1746905431, 'Name'),
 (2, 2, 1746994674, 'Name'),
 (5, 7, 1747699233, 'Mail');
@@ -513,7 +514,7 @@ CREATE TABLE `tl_metamodel_filtersetting` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_filtersetting` VALUES
+INSERT IGNORE INTO `tl_metamodel_filtersetting` (`id`, `apply_sorting`, `pid`, `sorting`, `tstamp`, `fid`, `type`, `enabled`, `comment`, `attr_id`, `all_langs`, `items`, `urlparam`, `predef_param`, `fe_widget`, `customsql`, `allow_empty`, `stop_after_match`, `label`, `template`, `blankoption`, `onlyused`, `onlypossible`, `skipfilteroptions`, `defaultid`, `hide_label`, `label_as_blankoption`, `cssID`, `placeholder`, `use_only_in_env`, `ynfield`, `ynmode`, `option_label_param`, `useor`, `show_select_all`, `check_ignorepublished`, `check_allowpreview`, `textsearch`, `delimiter`, `pattern`) VALUES
 (1, '', 0, 384, 1747001975, 2, 'text', '1', '', 35, '', NULL, 'name', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', 0x4e616d65, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'beginswith', '', '%s'),
 (4, '', 0, 128, 1747700056, 5, 'text', '1', '', 57, '', NULL, '', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', NULL, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'all', '', '%s');
 
@@ -535,7 +536,7 @@ CREATE TABLE `tl_metamodel_rendersetting` (
   `timeformat` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_rendersetting` VALUES
+INSERT IGNORE INTO `tl_metamodel_rendersetting` (`id`, `pid`, `sorting`, `tstamp`, `attr_id`, `template`, `additional_class`, `enabled`, `file_sortBy`, `file_showLink`, `file_protectedDownload`, `file_showImage`, `file_imageSize`, `file_placeholder`, `timeformat`) VALUES
 (1, 3, 0, 1746979899, 1, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, ''),
 (2, 10, 256, 1748466534, 35, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, ''),
 (3, 10, 128, 1748466534, 42, 'mm_attr_file_preview', '', '1', 'name_asc', '', '', '1', 'a:3:{i:2;s:12:\"proportional\";i:0;s:3:\"120\";i:1;s:0:\"\";}', NULL, ''),
@@ -628,7 +629,7 @@ CREATE TABLE `tl_metamodel_rendersettings` (
   `additionalJs` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_rendersettings` VALUES
+INSERT IGNORE INTO `tl_metamodel_rendersettings` (`id`, `pid`, `tstamp`, `name`, `hideEmptyValues`, `hideLabels`, `template`, `format`, `jumpTo`, `additionalCss`, `additionalJs`) VALUES
 (1, 1, 1746903459, 'Html5', '', '', 'metamodel_prerendered', 'html5', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (3, 1, 1746905325, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (4, 14, 1746930620, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
@@ -661,7 +662,7 @@ CREATE TABLE `tl_metamodel_searchable_pages` (
   `published` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT IGNORE INTO `tl_metamodel_searchable_pages` VALUES
+INSERT IGNORE INTO `tl_metamodel_searchable_pages` (`id`, `pid`, `tstamp`, `name`, `rendersetting`, `filter`, `filterparams`, `published`) VALUES
 (1, 1, 1746905461, 'Name', 3, 1, NULL, '1'),
 (2, 2, 1746994917, 'Name', 10, 2, NULL, '1'),
 (3, 7, 1747699338, 'Mail', 9, 5, NULL, '1');
@@ -771,3 +772,4 @@ ALTER TABLE `tl_metamodel_searchable_pages`
 ALTER TABLE `tl_metamodel_tag_relation`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
+
