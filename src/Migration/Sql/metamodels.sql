@@ -10,7 +10,7 @@ CREATE TABLE `tl_metamodel` (
   `localeterritorysupport` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-INSERT DELAYED IGNORE INTO `tl_metamodel` (`id`,`tstamp`,`sorting`,`name`,`tableName`,`translated`,`languages`,`varsupport`,`localeterritorysupport`) VALUES
+INSERT DELAYED IGNORE INTO tl_metamodel (`id`,`tstamp`,`sorting`,`name`,`tableName`,`translated`,`languages`,`varsupport`,`localeterritorysupport`) VALUES
 (1,1746971884,256,'Shop Konfiguration','mm_shop','',NULL,'',''),
 (2,1747374108,512,'Produkte','mm_product','',NULL,'',''),
 (3,1747702561,2048,'Tags Steuer','mm_tax','',NULL,'',''),
