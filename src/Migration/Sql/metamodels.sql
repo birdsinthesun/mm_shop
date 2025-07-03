@@ -1,4 +1,4 @@
-CREATE TABLE `tl_metamodel` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel` (
   `id` int UNSIGNED NOT NULL,
   `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -27,7 +27,7 @@ INSERT IGNORE INTO `tl_metamodel` (`id`, `tstamp`, `sorting`, `name`, `tableName
 (20, 1747702595, 896, 'Lieferadresse', 'mm_address_shipment', '', NULL, '', ''),
 (21, 1747702561, 1024, 'bestellte Produkte', 'mm_order_product', '', NULL, '', '');
 
-CREATE TABLE `tl_metamodel_attribute` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_attribute` (
   `id` int UNSIGNED NOT NULL,
   `file_filesOnly` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
@@ -186,7 +186,7 @@ INSERT IGNORE INTO `tl_metamodel_attribute` (`id`, `file_filesOnly`, `pid`, `sor
 (114, '', 4, 1792, 1751417190, 'checkbox', 'Datenschutzerklärung akzeptiert', NULL, 'datenschutzerklaerung_akzeptiert', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, ''),
 (115, '', 4, 1920, 1751417246, 'checkbox', 'Newsletter', NULL, 'newsletter', '', '', '', '', '', '', '', NULL, 0, NULL, 'asc', '', '', '', NULL, NULL, NULL, '', '', NULL, '1', '', '', NULL, '', '', NULL, '', '', '', '', '', '', 'asc', NULL, 0, NULL, '');
 
-CREATE TABLE `tl_metamodel_dca` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_dca` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -224,7 +224,7 @@ INSERT IGNORE INTO `tl_metamodel_dca` (`id`, `pid`, `sorting`, `tstamp`, `name`,
 (17, 20, 0, 1747721518, 'Lieferadresse', 'ctable', 'mm_order', 'flat', '1', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:5:\"de_DE\";s:5:\"label\";s:13:\"Lieferadresse\";s:11:\"description\";s:13:\"Lieferadresse\";}}', 0x6c696d6974, '1', '1', '1', ''),
 (18, 21, 0, 1747714758, 'bestellte Produkte', 'ctable', 'mm_order', 'flat', '1', 'metamodels', NULL, 'a:1:{i:0;a:3:{s:8:\"langcode\";s:2:\"ab\";s:5:\"label\";s:18:\"bestellte Produkte\";s:11:\"description\";s:18:\"bestellte Produkte\";}}', 0x6c696d6974, '1', '1', '1', '');
 
-CREATE TABLE `tl_metamodel_dcasetting` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_dcasetting` (
   `id` int UNSIGNED NOT NULL,
   `tl_class` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'w50',
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
@@ -384,7 +384,7 @@ INSERT IGNORE INTO `tl_metamodel_dcasetting` (`id`, `tl_class`, `pid`, `sorting`
 (125, 'w50', 4, 1536, 1751419126, '1', 'attribute', 114, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, ''),
 (126, 'w50', 4, 1664, 1751419159, '1', 'attribute', 115, '', '', NULL, '', '', '', '', '', '', '', '', 'tinyMCE', 0, 0, '2', '', '1', '', '', '', '0', 0, 0, 'normal', '0', 0, 0, '');
 
-CREATE TABLE `tl_metamodel_dcasetting_condition` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_dcasetting_condition` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -397,7 +397,7 @@ CREATE TABLE `tl_metamodel_dcasetting_condition` (
   `value` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `tl_metamodel_dca_combine` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_dca_combine` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -426,7 +426,7 @@ INSERT IGNORE INTO `tl_metamodel_dca_combine` (`id`, `pid`, `sorting`, `tstamp`,
 (16, 21, 0, 1747703133, 0, 0, 22, 18),
 (17, 20, 0, 1747721453, 0, 0, 20, 17);
 
-CREATE TABLE `tl_metamodel_dca_sortgroup` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_dca_sortgroup` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -459,7 +459,7 @@ INSERT IGNORE INTO `tl_metamodel_dca_sortgroup` (`id`, `pid`, `sorting`, `tstamp
 (15, 4, 128, 1747697842, '1', 'Bestellungen', '1', '', 'asc', 94, 'none', 0, 1),
 (16, 18, 128, 1747703054, '1', 'Name', '1', '', 'asc', 90, 'none', 0, 1);
 
-CREATE TABLE `tl_metamodel_filter` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_filter` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
@@ -471,7 +471,7 @@ INSERT IGNORE INTO `tl_metamodel_filter` (`id`, `pid`, `tstamp`, `name`) VALUES
 (2, 2, 1746994674, 'Name'),
 (5, 7, 1747699233, 'Mail');
 
-CREATE TABLE `tl_metamodel_filtersetting` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_filtersetting` (
   `id` int UNSIGNED NOT NULL,
   `apply_sorting` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
@@ -518,7 +518,7 @@ INSERT IGNORE INTO `tl_metamodel_filtersetting` (`id`, `apply_sorting`, `pid`, `
 (1, '', 0, 384, 1747001975, 2, 'text', '1', '', 35, '', NULL, 'name', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', 0x4e616d65, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'beginswith', '', '%s'),
 (4, '', 0, 128, 1747700056, 5, 'text', '1', '', 57, '', NULL, '', '', '', 'SELECT id FROM {{table}}\nWHERE 1 = 1', '', '', NULL, 'mm_filteritem_default', '1', '1', '1', '', '', '', '', 'a:2:{i:0;s:0:\"\";i:1;s:0:\"\";}', '', '', '1', 'yes', '1', '1', '0', '', '', 'all', '', '%s');
 
-CREATE TABLE `tl_metamodel_rendersetting` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_rendersetting` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -615,7 +615,7 @@ INSERT IGNORE INTO `tl_metamodel_rendersetting` (`id`, `pid`, `sorting`, `tstamp
 (80, 22, 512, 1747702930, 99, 'mm_attr_select', '', '1', '', '', '', '', '', NULL, ''),
 (81, 22, 640, 1747702945, 93, 'mm_attr_text', '', '1', '', '', '', '', '', NULL, '');
 
-CREATE TABLE `tl_metamodel_rendersettings` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_rendersettings` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
@@ -651,7 +651,7 @@ INSERT IGNORE INTO `tl_metamodel_rendersettings` (`id`, `pid`, `tstamp`, `name`,
 (21, 4, 1747697134, 'Text', '', '1', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d),
 (22, 21, 1747702857, 'Text', '', '', 'metamodel_prerendered', 'text', 0x613a313a7b693a303b613a343a7b733a383a226c616e67636f6465223b733a323a227878223b733a343a2274797065223b693a313b733a353a2276616c7565223b733a303a22223b733a363a2266696c746572223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d, 0x613a313a7b693a303b613a323a7b733a343a2266696c65223b733a303a22223b733a393a227075626c6973686564223b733a303a22223b7d7d);
 
-CREATE TABLE `tl_metamodel_searchable_pages` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_searchable_pages` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `tstamp` int UNSIGNED NOT NULL DEFAULT '0',
@@ -667,7 +667,7 @@ INSERT IGNORE INTO `tl_metamodel_searchable_pages` (`id`, `pid`, `tstamp`, `name
 (2, 2, 1746994917, 'Name', 10, 2, NULL, '1'),
 (3, 7, 1747699338, 'Mail', 9, 5, NULL, '1');
 
-CREATE TABLE `tl_metamodel_tag_relation` (
+CREATE TABLE IF NOT EXISTS `tl_metamodel_tag_relation` (
   `id` int UNSIGNED NOT NULL,
   `att_id` int UNSIGNED NOT NULL DEFAULT '0',
   `item_id` int UNSIGNED NOT NULL DEFAULT '0',
