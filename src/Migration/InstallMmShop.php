@@ -18,7 +18,7 @@ class InstallMmShop extends AbstractMigration
 
     public function getName(): string
     {
-        return 'MM Shop: Install MetaModels-Tables and MM Shop Tables'.__DIR__;
+        return 'MM Shop: Install MetaModels-Tables and MM Shop Tables';
     }
 
     public function run(): MigrationResult
@@ -33,7 +33,7 @@ class InstallMmShop extends AbstractMigration
         foreach($sqlFiles as $sqlFile){
             if ($filesystem->exists($sqlFile)) {
                 $sql = file_get_contents($sqlFile);
-                $statements = array_filter(array_map('trim', explode(";PHP_EOL", $sql)));
+                $statements = array_filter(array_map('trim', explode(";".PHP_EOL, $sql)));
 
                 foreach ($statements as $statement) {
                     if ($statement !== '') {
