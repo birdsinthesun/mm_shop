@@ -36,10 +36,10 @@ class AddAssetListener
             
                 }
         }else{
-            $useCustomCss = $this->db->fetchAllAssociative(
+            $useCustomCss = $this->db->fetchAssociative(
                 'SELECT use_custom_css FROM mm_shop WHERE id = ?', 
                 ['1']);
-            if(($useCustomCss[0]['use_custom_css'])&&$useCustomCss[0]['use_custom_css'] === ''){
+            if(($useCustomCss['use_custom_css'])&&$useCustomCss['use_custom_css'] === ''){
             
             //Product Pages
             $GLOBALS['TL_CSS'][] = 'bundles/mmshop/assets/css/products.css';
