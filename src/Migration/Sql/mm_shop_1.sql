@@ -1,4 +1,4 @@
-CREATE TABLE `mm_address_shipment` (
+CREATE TABLE IF NOT EXISTS `mm_address_shipment` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -8,11 +8,12 @@ CREATE TABLE `mm_address_shipment` (
   `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `plz` int DEFAULT NULL
+  `plz` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
-CREATE TABLE `mm_category` (
+CREATE TABLE IF NOT EXISTS `mm_category` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -20,12 +21,13 @@ CREATE TABLE `mm_category` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `published` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
-  `short_description` text COLLATE utf8mb4_unicode_ci
+  `short_description` text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
 
-CREATE TABLE `mm_order` (
+CREATE TABLE IF NOT EXISTS `mm_order` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -44,10 +46,11 @@ CREATE TABLE `mm_order` (
   `shop_config_id` int DEFAULT NULL,
   `agb_akzeptiert` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
   `datenschutzerklaerung_akzeptiert` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
-  `newsletter` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''
+  `newsletter` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `mm_order_product` (
+CREATE TABLE IF NOT EXISTS `mm_order_product` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -56,11 +59,12 @@ CREATE TABLE `mm_order_product` (
   `price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_id` int DEFAULT NULL,
   `count` int DEFAULT NULL,
-  `tax` int DEFAULT NULL
+  `tax` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 
-CREATE TABLE `mm_personaldata` (
+CREATE TABLE IF NOT EXISTS `mm_personaldata` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -75,10 +79,11 @@ CREATE TABLE `mm_personaldata` (
   `salutation` int DEFAULT NULL,
   `use_for_shipment` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `mm_product` (
+CREATE TABLE IF NOT EXISTS `mm_product` (
   `id` int UNSIGNED NOT NULL,
   `pid` int UNSIGNED NOT NULL DEFAULT '0',
   `sorting` int UNSIGNED NOT NULL DEFAULT '0',
@@ -96,45 +101,7 @@ CREATE TABLE `mm_product` (
   `images` blob,
   `images__sort` blob,
   `category` int DEFAULT NULL,
-  `published` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''
+  `published` char(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-
-
-ALTER TABLE `mm_address_shipment`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `mm_category`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `mm_order`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `mm_order_product`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `mm_personaldata`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `mm_product`
-  ADD PRIMARY KEY (`id`);
-
-
-ALTER TABLE `mm_address_shipment`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-
-ALTER TABLE `mm_category`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-
-ALTER TABLE `mm_order`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-
-ALTER TABLE `mm_order_product`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-
-ALTER TABLE `mm_personaldata`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-
-ALTER TABLE `mm_product`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
-COMMIT;
 
