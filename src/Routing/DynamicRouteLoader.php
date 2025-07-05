@@ -40,6 +40,9 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
             }
         $routes = new RouteCollection();
         $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',['1']);
+         if(!$rootPageId){
+            return;
+            }
         $rootPageAlias = $this->db->fetchFirstColumn('SELECT alias FROM tl_page WHERE id = ?',[$rootPageId[0]]);
         $sql = "SELECT alias FROM mm_category WHERE published = '1'";
         $categories = $this->db->fetchFirstColumn($sql);
