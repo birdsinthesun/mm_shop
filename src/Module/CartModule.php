@@ -270,12 +270,12 @@ class CartModule extends Module
              $arrSummary['total'] += $price* $this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
              
                 foreach($arrSummary['tax'] as $k => $tax){
-                        
+                        $base = 100+$tax['tax'];
                         if($tax['id'] === $item['raw']['tax']["__SELECT_RAW__"]['id']){
                             if(!isset($arrSummary['taxsubtotal'][$tax['id']])){
                                 $arrSummary['taxsubtotal'][$tax['id']] = 0;
                                 }
-                                $arrSummary['taxsubtotal'][$tax['id']] += $price/100*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
+                                $arrSummary['taxsubtotal'][$tax['id']] += $price/$base*$tax['tax']*$this->sessionCart[$item['raw']['id']][$item['raw']['id'].'_count'];
                                
                         }
                          
@@ -290,7 +290,7 @@ class CartModule extends Module
                 $arrSummary['taxtotal'] += $taxtotal;
                 }
                 
-             $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'];
+             $arrSummary['subtotal'] = $arrSummary['total'];
                //Format 0,00
              $arrSummary['total'] = str_replace('.',',',number_format(round($arrSummary['total'],2),2));
              foreach($arrSummary['taxsubtotal'] as $key =>$tax){
