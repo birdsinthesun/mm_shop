@@ -2,7 +2,10 @@
 
 **MM_Shop** ist eine schlanke, sichere und flexible Open-Source-Shop-Erweiterung für **Contao 5.3**, entwickelt für den deutschsprachigen Raum und kleinere Shops, die ihre Produkte in **Euro (€)** anbieten möchten.
 
-MM_Shop basiert auf **Symfony 6.4** und nutzt die leistungsfähige Erweiterung **MetaModels 2.4** für eine individuelle und flexible Datenmodellierung.
+MM_Shop basiert auf **Symfony 6.4** und nutzt die leistungsfähige Erweiterung **MetaModels 2.4** für eine individuelle und flexible Datenmodellierung.  
+
+Es gibt auch ein Theme passent zur Erweiterung: https://packagist.org/packages/birdsinthesun/contao-theme-ara
+Liveansicht: https://ara.birdsinthesun.de
 
 ## 🔧 Installation
 
