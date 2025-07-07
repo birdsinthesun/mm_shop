@@ -184,7 +184,7 @@ class CartModule extends Module
                     $this->session->getBag('contao_frontend')->set('cart',$arrCart);
                     
                     $this->session->save();
-                     return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo());
+                     return (new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getPathInfo()))->send();
                    
                          
                          
