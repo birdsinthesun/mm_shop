@@ -842,7 +842,7 @@ class OrderingProcessModule extends Module
                 $arrSummary['taxtotal'] += $taxtotal;
                 }
                 
-             $arrSummary['subtotal'] = $arrSummary['total'];
+             $arrSummary['subtotal'] = $arrSummary['total'] - $arrSummary['taxtotal'] ;
                //Format 0,00
              $arrSummary['shipment']['costs'] = str_replace('.',',',number_format(round($arrSummary['shipment']['costs'],2),2));
              $arrSummary['payment']['costs'] = str_replace('.',',',number_format(round($arrSummary['payment']['costs'],2),2));
