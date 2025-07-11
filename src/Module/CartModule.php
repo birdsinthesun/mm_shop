@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -232,6 +233,8 @@ class CartModule extends Module
                         'required' => true,
                             'constraints' => [new NotBlank([
                             'message' => 'Bitte geben Sie eine Anzahl ein.'
+                            ]),new Positive([
+                            'message' => 'Bitte geben Sie eine Anzahl größer Null ein.'
                             ])]
                     ]); 
             }  
