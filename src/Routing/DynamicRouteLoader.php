@@ -10,16 +10,19 @@ use Bits\MmShopBundle\Controller\ProductListController;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Routing\RequestContextAwareInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
 {
     private bool $loaded = false;
     private Connection $db; 
     private $context;
+    private ParameterBagInterface $params;
 
     public function __construct(Connection $db)
     {
         $this->db = $db;
+        $this->params = $params;
     }
     
     public function getContext():RequestContext
@@ -38,8 +41,9 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         if(!$this->tableExists('mm_shop')){
             return;
             }
+        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
         $routes = new RouteCollection();
-        $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',['1']);
+        $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',[$shopConfigId]);
          if(!$rootPageId){
             return;
             }

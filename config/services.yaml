@@ -39,6 +39,7 @@ services:
         public: true
         arguments:
             $db: '@doctrine.dbal.default_connection'
+            $params: '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
     
     Bits\MmShopBundle\Routing\DynamicRouteLoader:
         autoconfigure: false
