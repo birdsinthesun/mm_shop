@@ -33,18 +33,19 @@ services:
             $db: '@doctrine.dbal.default_connection'
             $resourceResolver: '@Bits\MmShopBundle\Service\ResourceResolver'
             $framework: '@contao.framework'
+            $params: '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
         tags: ['controller.service_arguments']
         
     Bits\MmShopBundle\Service\ResourceResolver:
         public: true
         arguments:
-            $db: '@doctrine.dbal.default_connection'
-            $params: '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
+            $db: '@doctrine.dbal.default_connection'            
     
     Bits\MmShopBundle\Routing\DynamicRouteLoader:
         autoconfigure: false
         arguments:
             $db: '@doctrine.dbal.default_connection'
+            $params: '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
         tags:
             - { name: routing.loader }
     

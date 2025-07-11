@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Bits\MmShopBundle\Service\ResourceResolver;
 use Doctrine\DBAL\Connection;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
 #[Route(defaults: ['_scope' => 'frontend'])]
@@ -24,7 +25,8 @@ class ProductController extends AbstractController
     public function __construct(
         private Connection $db,
         private ResourceResolver $resourceResolver,
-        private readonly ContaoFramework $framework
+        private readonly ContaoFramework $framework,
+        private ParameterBagInterface $params
     ) {
        
         $this->resourceResolver = $resourceResolver;
@@ -35,12 +37,11 @@ class ProductController extends AbstractController
          
 
         global $objPage;
+        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId]);
         $objPage = PageModel::findPublishedById($pageId[0]);
-        
-        $objPage->__set('layout','27');
         $objPage->__set('language','de');
         $request->attributes->set('pageModel', $objPage);
 
@@ -67,16 +68,16 @@ class ProductController extends AbstractController
        }
 
         global $objPage;
+        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId]);
         $objPage = PageModel::findPublishedById($pageId[0]);
         $metaDescription = $this->db->fetchFirstColumn(
                 'SELECT short_description FROM mm_category WHERE alias = ?', 
                 [str_replace('.html','',$category)]);
         $metaDescription = ($metaDescription[0])??'';
         $objPage->__set('description',$metaDescription);
-        $objPage->__set('layout','27');
         $objPage->__set('language','de');
         $request->attributes->set('pageModel', $objPage);
         if (!$objPage) {
@@ -101,9 +102,10 @@ class ProductController extends AbstractController
 
   
         global $objPage;
+        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
-                ['1']);
+                [$shopConfigId]);
         $objPage = PageModel::findPublishedById($pageId[0]);
         $metaDescription = $this->db->fetchFirstColumn(
                 'SELECT short_description FROM mm_product WHERE alias = ?', 
