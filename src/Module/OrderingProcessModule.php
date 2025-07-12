@@ -186,7 +186,11 @@ class OrderingProcessModule extends Module
                               
                               $this->session->set('order_personal_data', $data);
                             $this->session->save();
-                            return $this->redirectToStep($arrAllowedSteps[1],'/'.$arrAllowedSteps[0])->send();
+                            
+                            $form->getErrors(true, false);
+                
+                  
+                           // return $this->redirectToStep($arrAllowedSteps[1],'/'.$arrAllowedSteps[0])->send();
                        
                               }
                         
@@ -255,6 +259,9 @@ class OrderingProcessModule extends Module
                               
                             }
                     }
+                if (Input::post('personal_data_shipment')&&$form->isSubmitted() && !$form->isValid()) {
+                    $form->getErrors(true, false);
+                }
                   
                     
                     
@@ -297,6 +304,9 @@ class OrderingProcessModule extends Module
                             
                           
                     }
+                if (Input::post('shipment')&&$form->isSubmitted() && !$form->isValid()) {
+                    $form->getErrors(true, false);
+                }
                     
                 $formView = $form->createView();
               // var_dump(array_keys($formView ->children['shipment']->children[0]->vars));exit;
@@ -334,6 +344,9 @@ class OrderingProcessModule extends Module
                             
                           
                     }
+                if (Input::post('payment')&&$form->isSubmitted() && !$form->isValid()) {
+                    $form->getErrors(true, false);
+                }
                     
                 $formView = $form->createView();
                 $currentOutput = $this->twig->render('@Contao/ordering_process/payment.html.twig', [
@@ -388,7 +401,9 @@ class OrderingProcessModule extends Module
                     
                                 
                             }
-                            
+                    if (Input::post('overview')&&$form->isSubmitted() && !$form->isValid()) {
+                        $form->getErrors(true, false);
+                    }       
                            
                             
                           
