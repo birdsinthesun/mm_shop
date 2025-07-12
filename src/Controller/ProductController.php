@@ -37,7 +37,7 @@ class ProductController extends AbstractController
          
 
         global $objPage;
-        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
+        $shopConfigId = $this->params->get('mm_shop_config_de');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
                 [$shopConfigId]);
@@ -68,7 +68,7 @@ class ProductController extends AbstractController
        }
 
         global $objPage;
-        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
+        $shopConfigId = $this->params->get('mm_shop_config_de');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_list_page FROM mm_shop WHERE id = ?', 
                 [$shopConfigId]);
@@ -102,7 +102,7 @@ class ProductController extends AbstractController
 
   
         global $objPage;
-        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
+        $shopConfigId = $this->params->get('mm_shop_config_de');
         $pageId = $this->db->fetchFirstColumn(
                 'SELECT product_detail_page FROM mm_shop WHERE id = ?', 
                 [$shopConfigId]);

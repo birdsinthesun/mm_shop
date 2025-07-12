@@ -1,4 +1,5 @@
-parameters: null
+parameters:
+    mm_shop_config_de: '%env(MM_SHOP_CONFIG_DE)%'
 
 services:
     _defaults:

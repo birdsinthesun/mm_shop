@@ -19,7 +19,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
     private $context;
     private ParameterBagInterface $params;
 
-    public function __construct(Connection $db)
+    public function __construct(Connection $db,ParameterBagInterface $params)
     {
         $this->db = $db;
         $this->params = $params;
@@ -41,7 +41,7 @@ class DynamicRouteLoader extends Loader implements RequestContextAwareInterface
         if(!$this->tableExists('mm_shop')){
             return;
             }
-        $shopConfigId = $this->params->get('env(MM_SHOP_CONFIG_DE)');
+        $shopConfigId = $this->params->get('mm_shop_config_de');
         $routes = new RouteCollection();
         $rootPageId = $this->db->fetchFirstColumn('SELECT product_list_page FROM mm_shop WHERE id = ?',[$shopConfigId]);
          if(!$rootPageId){
