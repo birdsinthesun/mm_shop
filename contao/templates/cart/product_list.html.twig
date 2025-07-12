@@ -17,9 +17,9 @@
                                 {{ form_widget(field) }}
                            
 
-                            {% if field in form_errors(form) %}
+                            {% if field.vars.errors is not empty %}
                                 <div class="form-errors">
-                                    {{ form_errors(field) }}
+                                    {{ field.vars.errors }}
                                 </div>
                             {% endif %}
                             </td>

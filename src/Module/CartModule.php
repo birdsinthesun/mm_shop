@@ -190,6 +190,9 @@ class CartModule extends Module
                          
                          
                 }
+                if ($form->isSubmitted() && !$form->isValid()) {
+                    $form->getErrors(true, false);
+                }
                 //Checkout Url
                 $checkoutId = $this->connection->fetchFirstColumn(
                 'SELECT checkout_page FROM mm_shop WHERE id = ?', 
